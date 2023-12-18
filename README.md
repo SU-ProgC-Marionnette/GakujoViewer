@@ -60,9 +60,9 @@
     }
 
     class DataProcessor {
-        {static} +getContactList() : ContactList
-        {static} +getExamList() : ExpireList
-        {static} +getReportList() : ReportList
+        {static} +getContactList() : Array<ContactData>
+        {static} +getExamList() : Array<ExpireData>
+        {static} +getReportList() : Array<ReportData>
     }
 
     class StringProcessor {
@@ -80,12 +80,12 @@
         +remove(key : string) : boolean
     }
 
-    interface List {
+    interface ListData {
         subject : string
         title : string
     }
 
-    interface ContactList extends List {
+    interface ContactData extends ListData {
         staff : string
         type : ContactType
         date : Date
@@ -94,14 +94,14 @@
         important : boolean
     }
 
-    interface ExpireList extends List {
+    interface ExpireData extends ListData {
         status : ExpireStatus
         start : Date
         expire : Date
         type : SubmitType
     }
 
-    interface ReportList extends ExpireList {
+    interface ReportData extends ExpireData {
         submit : Date?
     }
 
@@ -130,16 +130,16 @@
 
     ViewController --> DataProcessor
     DataProcessor --> Scraper
-    DataProcessor --> ContactList
-    DataProcessor --> ExpireList
-    DataProcessor --> ReportList
+    DataProcessor --> ContactData
+    DataProcessor --> ExpireData
+    DataProcessor --> ReportData
     DataProcessor --> StringProcessor
     DataProcessor --> JsonUtil
     Scraper --> JsonUtil
-    ContactType --> ContactList
-    SubmitType --> ExpireList
+    ContactType --> ContactData
+    SubmitType --> ExpireData
     Pages --> Scraper
-    ExpireStatus --> ExpireList
+    ExpireStatus --> ExpireData
 </details>
 
 #### クラス
@@ -158,7 +158,7 @@
   - getTable(): 現在のページにある表をオブジェクトとして返す。失敗したらnull
 - DataProcessor
   - JsonUtilを使ってキャッシュする
-  - 各メソッド: ScraperのgetTableで取ってきたオブジェクトを解析してListに変換する
+  - 各メソッド: ScraperのgetTableで取ってきたオブジェクトを解析してDataの配列に変換する
 - StringProcessor
   - toDateList(str): strに含まれる日付を全部抽出して配列にして返す
   - getBody(str): strから【重要】や（未読）みたいな付加情報を消したものを返す
@@ -169,15 +169,15 @@
 
 #### インタフェース
 
-- List
-  - 教科名とタイトルのみのリスト
+- ListData
+  - 教科名とタイトルのみのデータ
   - たぶん直接は使わない
-- ContactList
-  - 授業連絡リスト用
-- ExpireList
-  - 小テストみたいな期限があるリスト
-- ReportList
-  - ExpireListのとくにレポート用
+- ContactData
+  - 授業連絡データ
+- ExpireData
+  - 小テストみたいな期限があるデータ
+- ReportData
+  - ExpireDataのとくにレポート用
 
 #### Enum
 
