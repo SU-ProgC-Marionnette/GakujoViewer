@@ -55,7 +55,7 @@
         {static} +logged : boolean
         {static} +error : boolean
         {static} +page : Page
-        {static} -movePage(page : Pages) : boolean
+        {static} +movePage(page : Pages) : boolean
         {static} +getTable() : object?
     }
 
