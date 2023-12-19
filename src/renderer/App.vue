@@ -2,7 +2,12 @@
 	<v-app>
 		<v-navigation-drawer permanent absolute>
 			<v-list>
-				<v-list-item v-for="(view, i) in views" :key="i" :value="view" :to="view.to">
+				<v-list-item
+					v-for="(view, i) in views"
+					:key="i"
+					:value="view"
+					:to="view.to"
+				>
 					<v-list-item-title v-text="view.text"></v-list-item-title>
 				</v-list-item>
 			</v-list>
@@ -19,23 +24,26 @@ export default {
 	data: () => ({
 		views: [
 			{
-				text: 'ホーム',
-				to: '/'
+				text: "ホーム",
+				to: "/",
 			},
 			{
-				text: 'レポート一覧',
-				to: '/report'
+				text: "レポート一覧",
+				to: "/report",
 			},
 			{
-				text: '設定',
-				to: '/setting'
+				text: "設定",
+				to: "/setting",
 			},
 			{
-				text: 'このアプリについて',
-				to: '/about'
-			}
-		]
-	})
+				text: "このアプリについて",
+				to: "/about",
+			},
+			{
+				text: "テストページ",
+				to: "/test",
+			},
+		],
+	}),
 }
 </script>
-
