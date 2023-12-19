@@ -1,5 +1,14 @@
 # GakujoViewer
 
+## 目次
+
+- [設計](#設計)
+- [環境構築](#環境構築)
+- [詳細な開発方法](#詳細な開発方法)
+- [Additional Commands](#additional-commands)
+- [Project Structure](#project-structure)
+- [Using static files](#using-static-files)
+
 ## 設計
 
 とりあえず情報を表示するだけの場合の設計
@@ -203,6 +212,10 @@ npm install
 ```bash
 npm run dev
 ```
+
+## 詳細な開発方法
+
+[詳細な開発方法](docs/developing.md)を参照
 
 ## Additional Commands
 
