@@ -12,6 +12,7 @@ import Top from './views/Top.vue'
 import Report from './views/Report.vue'
 import Setting from './views/Setting.vue'
 import About from './views/About.vue'
+import Test from './views/Test.vue'
 
 const routes = [
 	{
@@ -29,6 +30,10 @@ const routes = [
 	{
 		path: '/about',
 		component: About
+	},
+	{
+		path: '/test',
+		component: Test
 	}
 ]
 
