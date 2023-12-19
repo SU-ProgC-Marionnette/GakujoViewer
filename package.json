@@ -18,6 +18,8 @@
 		"chokidar": "^3.5.3",
 		"electron": "^27.1.0",
 		"electron-builder": "^24.2.1",
+		"eslint": "^8.56.0",
+		"eslint-plugin-vue": "^9.19.2",
 		"typescript": "^5.2.2",
 		"vite": "^4.5.0"
 	},
