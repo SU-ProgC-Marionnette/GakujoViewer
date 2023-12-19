@@ -19,10 +19,9 @@ import { StringUtil } from "../../main/util/stringutil"
 const strUtil = new StringUtil()
 let testVars = {}
 
-let testInput = "sample input"
-
 // testVars.[任意の名前]に代入することで表示される
-testVars.testOutput = strUtil.testFunction(testInput)
+testVars.testInput = "sample input"
+testVars.testOutput = strUtil.testFunction(testVars.testInput)
 testVars.foo = "foo string"
 
 export default {
