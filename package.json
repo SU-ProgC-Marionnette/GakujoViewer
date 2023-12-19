@@ -13,6 +13,8 @@
 	"repository": "https://github.com/SU-ProgC-Marionnette/GakujoViewer",
 	"devDependencies": {
 		"@mdi/font": "^7.3.67",
+		"@typescript-eslint/eslint-plugin": "^6.15.0",
+		"@typescript-eslint/parser": "^6.15.0",
 		"@vitejs/plugin-vue": "^4.4.1",
 		"chalk": "^4.1.2",
 		"chokidar": "^3.5.3",
