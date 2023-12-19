@@ -9,12 +9,17 @@ import '@mdi/font/css/materialdesignicons.css'
 
 import App from './App.vue'
 import Top from './views/Top.vue'
+import Setting from './views/Setting.vue'
 import About from './views/About.vue'
 
 const routes = [
 	{
 		path: '/',
 		component: Top
+	},
+	{
+		path: '/setting',
+		component: Setting
 	},
 	{
 		path: '/about',

@@ -23,6 +23,10 @@ export default {
 				to: '/'
 			},
 			{
+				text: '設定',
+				to: '/setting'
+			},
+			{
 				text: 'このアプリについて',
 				to: '/about'
 			}
@@ -30,6 +34,4 @@ export default {
 	})
 }
 </script>
-
-
 
