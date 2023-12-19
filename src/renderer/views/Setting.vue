@@ -5,8 +5,8 @@
 				{{ category.text }}
 			</div>
 			<div v-for="item in  category.items ">
-				<v-text-field v-bind="item.props" :id="category.id + '.' + item.id">
-				</v-text-field>
+				<component :is="item.component" v-bind="item.props" :id="category.id + '.' + item.id">
+				</component>
 			</div>
 		</div>
 		<v-btn>
@@ -45,4 +45,6 @@ export default {
 	})
 }
 </script>
+
+
 
