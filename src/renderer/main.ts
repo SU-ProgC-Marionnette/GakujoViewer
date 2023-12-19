@@ -9,6 +9,7 @@ import '@mdi/font/css/materialdesignicons.css'
 
 import App from './App.vue'
 import Top from './views/Top.vue'
+import Report from './views/Report.vue'
 import Setting from './views/Setting.vue'
 import About from './views/About.vue'
 
@@ -16,6 +17,10 @@ const routes = [
 	{
 		path: '/',
 		component: Top
+	},
+	{
+		path: '/report',
+		component: Report
 	},
 	{
 		path: '/setting',

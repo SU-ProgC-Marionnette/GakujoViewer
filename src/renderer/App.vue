@@ -23,6 +23,10 @@ export default {
 				to: '/'
 			},
 			{
+				text: 'レポート一覧',
+				to: '/report'
+			},
+			{
 				text: '設定',
 				to: '/setting'
 			},
