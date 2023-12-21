@@ -5,6 +5,7 @@
 - [設計](#設計)
 - [環境構築](#環境構築)
 - [詳細な開発方法](#詳細な開発方法)
+- [開発テクニック](#開発テクニック)
 - [Additional Commands](#additional-commands)
 - [Project Structure](#project-structure)
 - [Using static files](#using-static-files)
@@ -229,6 +230,80 @@ npm run build:win # uses windows as build target
 npm run build:mac # uses mac as build target
 npm run build:linux # uses linux as build target
 ```
+
+## 開発テクニック
+
+### クラスを作る
+
+- クラスはTypeScriptファイル(拡張子: `.ts`)の中に、次のように書くことで外部から`import`できるようになる。
+    ```typescript
+    export class クラス名 {
+        // 内容(関数、コンストラクタなど)
+    }
+    ```
+
+- 次のように書くことで、クラスを`import`できる。
+    - ファイルパスは`Test.vue`からの相対パスで指定する。
+    - ファイルパスには拡張子(`.ts`)をつけない
+        - `src/main/util/stringutil.ts`なら`../../main/util/stringutil`とする
+    - 複数のクラスを`import`したいときはカンマ区切りで指定する。
+
+    ```typescript
+    import { クラス名 } from "クラスがあるTypeScriptへのファイルパス"
+    ```
+
+### 関数・クラスのテストをする
+
+#### `npm run dev`でソフトを起動してテストする
+- 動かしたままにしておくとコードの保存時に自動で再読み込みされる
+    - 変更したコードによっては再読み込みされない or 正しく動作しないことがあるので、そのときは閉じて起動しなおす
+- アプリ内で`Ctrl + Shift + F5`で手動で再読み込みできる
+- アプリ内で`Ctrl + Shift + I`で開発ツールを出せる
+    - プログラムを追加して正常に動作しない(白画面などになる)ときは`Console`にエラーが表示されている
+
+#### 変数の内容を表示する
+- `src/renderer/views/Test.vue`にコードを書くことで表示できる
+- `<script>`タグの中の`export default ...`の前の部分なら好きなようにテスト用のスクリプトを書ける
+    - `<script lang="ts">`としないとTypeScriptで書けないかも(JavaScriptとして書く)
+- 次のようにすると、アプリ内のテストページに変数の内容を表示できる
+
+    ```
+    testVars.任意の変数名 = 代入する変数など
+    ```
+
+- `git add .`をするとき、`Test.vue`の編集内容もステージしないように気をつけたほうがいい
+    - 次の編集したファイルを元に戻す方法を参照
+
+### ファイルの編集やGitでの操作を戻したいとき
+
+#### 編集したファイル(ステージング前)を編集前までもどす
+- 特定のファイルだけ戻す
+    ```
+    git checkout <ファイル名>
+    ```
+
+- 全てのファイルを戻す
+    ```
+    git checkout .
+    ```
+
+#### ステージングをキャンセル(`git add`したのを戻す)
+- 特定のファイルだけ戻す
+    ```
+    git reset <ファイル名>
+    ```
+
+- 全てのファイルを戻す
+    ```
+    git reset
+    ```
+
+- 最後のコミット状態まで(ファイルの内容も)戻す
+    ```
+    git reset --head HEAD
+    ```
+
+### 値の表示
 
 ## Project Structure
 
