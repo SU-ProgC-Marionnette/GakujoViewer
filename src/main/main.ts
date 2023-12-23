@@ -1,5 +1,6 @@
 import {app, BrowserWindow, ipcMain, session} from 'electron';
 import {join} from 'path';
+import {GakujoApi} from './api/gakujoapi';
 
 function createWindow () {
   const mainWindow = new BrowserWindow({
@@ -22,6 +23,7 @@ function createWindow () {
 }
 
 app.whenReady().then(() => {
+
   createWindow();
 
   session.defaultSession.webRequest.onHeadersReceived((details, callback) => {
@@ -49,3 +51,8 @@ app.on('window-all-closed', function () {
 ipcMain.on('message', (event, message) => {
   console.log(message);
 })
+
+const gakujoApi = new GakujoApi()
+
+ipcMain.handle('initApi', gakujoApi.init)
+ipcMain.handle('getTitle', gakujoApi.getTitle)
