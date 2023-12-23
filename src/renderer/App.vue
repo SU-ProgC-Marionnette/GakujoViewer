@@ -20,6 +20,8 @@
 </template>
 
 <script>
+window.electronAPI.initApi()
+
 export default {
 	data: () => ({
 		views: [

@@ -24,6 +24,16 @@ testVars.testInput = "sample input"
 testVars.testOutput = strUtil.testFunction(testVars.testInput)
 testVars.foo = "foo string"
 
+const getTitle = async () => {
+	testVars.title = await window.electronAPI.getTitle()
+
+	if (testVars.title == null) {
+		setTimeout(getTitle, 1000)
+	}
+}
+
+await getTitle()
+
 export default {
 	data: () => ({
 		testVars: testVars,
