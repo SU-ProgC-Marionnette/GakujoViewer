@@ -1,17 +1,19 @@
 <template>
 	<v-container>
-		<div v-for="category in settings ">
+		<div v-for="category in settings">
 			<div class="text-h4">
 				{{ category.text }}
 			</div>
-			<div v-for="item in  category.items ">
-				<component :is="item.component" v-bind="item.props" :id="category.id + '.' + item.id">
+			<div v-for="item in category.items">
+				<component
+					:is="item.component"
+					v-bind="item.props"
+					:id="category.id + '.' + item.id"
+				>
 				</component>
 			</div>
 		</div>
-		<v-btn>
-			保存
-		</v-btn>
+		<v-btn> 保存 </v-btn>
 	</v-container>
 </template>
 
@@ -20,6 +22,7 @@ export default {
 	data: () => ({
 		settings: [
 			{
+				/*
 				text: '認証設定',
 				id: 'auth',
 				items: [
@@ -40,9 +43,9 @@ export default {
 						}
 					}
 				]
-			}
-		]
-	})
+				*/
+			},
+		],
+	}),
 }
 </script>
-
