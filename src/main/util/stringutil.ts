@@ -23,27 +23,21 @@ export class StringUtil {
 
 	getBody(str: string): string{
 		//strから[重要]な(未読)みたいな付加情報を消したものを返す
+		/*
 		if(this.isImportant(str)){
-			const result = str.match(/[^【重要】]+/);//正規表現ver
-			if(result != null){
-				str = result.join('');
-			}
-			
-			
 			//str = str.substring(4);
-		}else if(this.isRead(str)){
-			const result = str.match(/[^（未読）]+/);//正規表現ver
-			if(result != null){
-				str = result.join('');
-			}
-			
+		}
+		if(this.isRead(str)){
 			//str = str.substring(0,str.length-5);
 		}
+		*/
+		str = str.replace(/^（未読）/,"");
+		str = str.replace(/【重要】$/,"");
 		return str;
 	}
 
 	isRead(str: string):boolean{
-		//strに(未読)が含まれているか
+		//strが(未読)で終わるか
 		/*
 		let unRead: string ="（未読）";
 		if(str.substring(str.length-4,str.length-1) === unRead){
@@ -52,15 +46,16 @@ export class StringUtil {
 			return false;
 		}
 		*/
-		if(str.match(/（未読）/) != null){
-			return true;
+		//if(str.match(/（未読）/) != null){
+		if(str.match(/^.*(?<!（未読）)$/) == null){
+				return true;
 		}else{
 			return false;
 		}
 	}
 
 	isImportant(str: string):boolean{
-		//strに[重要]が含まれているか
+		//strが[重要]で始まるか
 		/*
 		let important="【重要】";
 		if(str.substring(0,4) === important){
@@ -69,7 +64,7 @@ export class StringUtil {
 			return false;
 		}
 		*/
-		if(str.match(/【重要】/) != null){
+		if(str.match(/^(?!【重要】).*$/) == null){
 			return true;
 		}else{
 			return false;
