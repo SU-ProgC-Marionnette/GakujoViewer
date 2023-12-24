@@ -6,7 +6,7 @@ export class FileUtil {
 	// file names
 	private static _LOGIN_COOKIE: string
 
-	private static init(): void {
+	public static init(): void {
 		const userDataPath: string = app.getPath('userData')
 
 		this._LOGIN_COOKIE = join(userDataPath, 'login_cookie.dat')
