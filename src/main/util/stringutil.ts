@@ -47,11 +47,14 @@ export class StringUtil {
 		}
 		*/
 		//if(str.match(/（未読）/) != null){
+		/*
 		if(str.match(/^.*(?<!（未読）)$/) == null){
 				return true;
 		}else{
 			return false;
 		}
+		*/
+		return /^.*(?<=（未読）)$/.test(str);
 	}
 
 	isImportant(str: string):boolean{
@@ -64,10 +67,13 @@ export class StringUtil {
 			return false;
 		}
 		*/
+		/*
 		if(str.match(/^(?!【重要】).*$/) == null){
 			return true;
 		}else{
 			return false;
 		}
+		*/
+		return /^(?=【重要】).*$/.test(str);
 	}
 }
