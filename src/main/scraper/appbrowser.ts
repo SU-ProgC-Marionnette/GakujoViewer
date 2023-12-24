@@ -32,8 +32,9 @@ export class AppBrowser {
 			timeout: 0
 		})
 
-		// cookieを保存
-		const cookies = await this.page.cookies()
+		// cookieを保存(3rd party cookieを含む)
+		const client = await this.page.target().createCDPSession()
+		const cookies = (await client.send('Network.getAllCookies')).cookies
 		FileUtil.write(FileUtil.LOGIN_COOKIE, JSON.stringify(cookies))
 
 		this.browser.close()
