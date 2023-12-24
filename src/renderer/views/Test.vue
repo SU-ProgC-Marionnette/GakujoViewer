@@ -21,7 +21,6 @@ let testVars = {}
 
 // testVars.[任意の名前]に代入することで表示される
 testVars.testInput = "sample input"
-testVars.testOutput = strUtil.testFunction(testVars.testInput)
 testVars.foo = "foo string"
 
 const getTitle = async () => {
