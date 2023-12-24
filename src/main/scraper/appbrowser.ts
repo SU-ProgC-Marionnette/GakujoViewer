@@ -13,11 +13,9 @@ export class AppBrowser {
 	public async login(): Promise<void> {
 		this.browser = await puppeteer.launch({
 			headless: false,
-			args: ['--app'] // アドレスバーを非表示
+			args: ['--app=' + this.url] // アドレスバーを非表示
 		})
-		this.page = await this.browser.newPage()
-
-		await this.page.goto(this.url)
+		this.page = (await this.browser.pages()).slice(-1)[0]
 
 		// login
 		const loginBtnSel: string = '.btn_login'
