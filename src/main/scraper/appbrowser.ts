@@ -1,0 +1,43 @@
+import puppeteer from 'puppeteer'
+
+import { FileUtil } from '../util/fileutil'
+
+export class AppBrowser {
+	private url = 'https://gakujo.shizuoka.ac.jp/portal/'
+	private browser
+	private page
+
+	constructor() {
+	}
+
+	public async login(): Promise<void> {
+		this.browser = await puppeteer.launch({
+			headless: false,
+			args: ['--app'] // アドレスバーを非表示
+		})
+		this.page = await this.browser.newPage()
+
+		await this.page.goto(this.url)
+
+		// login
+		const loginBtnSel: string = '.btn_login'
+		await this.page.waitForSelector(loginBtnSel)
+		const loginBtn = await this.page.$(loginBtnSel)
+		await loginBtn.evaluate(btn => btn.click())
+
+		// 手動でログインしてもらう
+
+		// トップページが読みこまれるのを待つ
+		await this.page.waitForSelector('#home.new', {
+			timeout: 0
+		})
+
+		// cookieを保存
+		const cookies = await this.page.cookies()
+		FileUtil.write(FileUtil.LOGIN_COOKIE, JSON.stringify(cookies))
+
+		this.browser.close()
+
+		return
+	}
+}
