@@ -36,6 +36,14 @@ checker.init(
 					}
 				}
 
+				if(licenseText == '') {
+					console.log(`${name}: no license file`)
+				}
+
+				if(pack.licenses == 'UNKNOWN') {
+					console.log(`${name}: UNKNOWN license`)
+				}
+
 				const index = output.findIndex(obj => obj.licenseText == licenseText)
 
 				if(index == -1) {
@@ -52,6 +60,8 @@ checker.init(
 					])
 				}
 			}
+
+			output.sort((a, b) => (a.license < b.license ? -1 : 1))
 
 			writeFileSync(
 				path.join(__dirname, '..', 'src', 'renderer', 'assets', 'license.json'),
