@@ -8,9 +8,11 @@
 		"build": "node scripts/build.js && electron-builder",
 		"build:win": "node scripts/build.js && electron-builder --win",
 		"build:mac": "node scripts/build.js && electron-builder --mac",
-		"build:linux": "node scripts/build.js && electron-builder --linux"
+		"build:linux": "node scripts/build.js && electron-builder --linux",
+		"license": "node scripts/license-gen.js"
 	},
 	"repository": "https://github.com/SU-ProgC-Marionnette/GakujoViewer",
+	"license": "MIT",
 	"devDependencies": {
 		"@mdi/font": "^7.3.67",
 		"@typescript-eslint/eslint-plugin": "^6.15.0",
@@ -22,6 +24,7 @@
 		"electron-builder": "^24.2.1",
 		"eslint": "^8.56.0",
 		"eslint-plugin-vue": "^9.19.2",
+		"license-checker": "^25.0.1",
 		"typescript": "^5.2.2",
 		"vite": "^4.5.0"
 	},
