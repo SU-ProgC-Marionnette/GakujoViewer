@@ -57,99 +57,160 @@
     hide empty fields
     hide empty methods
 
-    class ViewController {
+    package main {
+        package api {
+            class GakujoApi {
+            }
+        }
+
+        package scraper {
+            class Scraper {
+                -url: string
+                -browser: Browser
+                -page: Page
+                +init(): Promise<void>
+                +movePage(page: Pages): Promise<boolean>
+                +getTable(): Promise<object | null>
+            }
+
+            class AppBrowser {
+                -url: string
+                -browser: Browser
+                -page: Page
+                +login(): Promise<void>
+            }
+
+            enum Pages {
+                Top
+                Report
+                Exam
+                Contact
+                Error
+                Unknown
+            }
+        }
+
+        package util {
+            class DataUtil {
+                {static} +toContactList(table: object): Promise<ContactData[]>
+                {static} +toExamList(table: object): Promise<ExpireData[]>
+                {static} +toReportList(table: object): Promise<ReportData[]>
+            }
+
+            class StringUtil {
+                {static} +toDateArray(str: string): Date[] | null
+                {static} +getBody(str: string): string
+                {static} +isRead(str: string): boolean
+                {static} +isImportant(str: string): boolean
+            }
+
+            class FileUtil {
+                {static} +LOGIN_COOKIE: string
+                {static} +CACHE: string
+                {static} +init(): void
+                {static} +write(file: string, data: string): Promise<boolean>
+                {static} +read(file: string): Promise<string
+            }
+
+            class CacheUtil {
+                {static} +REPORT_LIST: string
+                {static} +CONTACT_LIST: string
+                {static} +EXAM_LIST: string
+                {static} +init(): void
+                {static} +save(data: ContactData[] | ExpireData[] | ReportData[]): Promise<boolean>
+                {static} +get(spec: string): Promise<ContactData[] | ExpireData[] | ReportData[]>
+            }
+        }
+
+        package data {
+            class ListData {
+                subject : string
+                title : string
+            }
+
+            class ContactData extends ListData {
+                staff : string
+                type : ContactType
+                date : Date
+                targetDate : Date?
+                read : boolean
+                important : boolean
+            }
+
+            class ExpireData extends ListData {
+                status : ExpireStatus
+                start : Date
+                expire : Date
+                type : SubmitType
+            }
+
+            class ReportData extends ExpireData {
+                submit : Date?
+            }
+
+            enum ContactType {
+                Staff
+            }
+
+            enum SubmitType {
+                Web
+            }
+
+            enum ExpireStatus {
+                Accepting
+                Submitted
+                Closed
+            }
+        }
     }
 
-    class Scraper {
-        {static} +busy : boolean
-        {static} +logged : boolean
-        {static} +error : boolean
-        {static} +page : Page
-        {static} +movePage(page : Pages) : boolean
-        {static} +getTable() : object?
+    package renderer {
+        class App
+        class main
+
+        package views {
+            class Top
+            class Contact
+            class Report
+            class Exam
+            class About
+            class Test
+        }
+
+        package stores {
+            class ApiStore
+        }
     }
 
-    class DataProcessor {
-        {static} +getContactList() : Array<ContactData>
-        {static} +getExamList() : Array<ExpireData>
-        {static} +getReportList() : Array<ReportData>
-    }
+    GakujoApi --> Scraper
+    GakujoApi --> DataUtil
+    GakujoApi --> CacheUtil
+    Scraper --> FileUtil
+    Scraper --> Pages
+    Scraper --> AppBrowser
+    AppBrowser --> FileUtil
+    DataUtil --> ContactData
+    DataUtil --> ExpireData
+    DataUtil --> ReportData
+    DataUtil --> StringUtil
+    CacheUtil --> FileUtil
+    ContactData --> ContactType
+    ExpireData --> ExpireStatus
+    ExpireData --> SubmitType
 
-    class StringProcessor {
-        {static} +toDateList(str : string) : Array<Date>
-        {static} +getBody(str : string) : string
-        {static} +isRead(str : string) : boolean
-        {static} +isImportant(str : string) : boolean
-    }
+    main --> App
+    App --> Top
+    App --> Contact
+    App --> Report
+    App --> Exam
+    App --> About
+    App --> Test
 
-    class JsonUtil {
-        +fileName : string
-        -type Data = int | string | boolean
-        +get(key : string) : Data
-        +set(key : string, value : Data)
-        +remove(key : string) : boolean
-    }
-
-    interface ListData {
-        subject : string
-        title : string
-    }
-
-    interface ContactData extends ListData {
-        staff : string
-        type : ContactType
-        date : Date
-        targetDate : Date?
-        read : boolean
-        important : boolean
-    }
-
-    interface ExpireData extends ListData {
-        status : ExpireStatus
-        start : Date
-        expire : Date
-        type : SubmitType
-    }
-
-    interface ReportData extends ExpireData {
-        submit : Date?
-    }
-
-    enum Pages {
-        Top
-        Report
-        Exam
-        Contact
-        Error
-        Unknown
-    }
-
-    enum ContactType {
-        Staff
-    }
-
-    enum SubmitType {
-        Web
-    }
-
-    enum ExpireStatus {
-        Accepting
-        Submitted
-        Closed
-    }
-
-    ViewController --> DataProcessor
-    DataProcessor --> Scraper
-    DataProcessor --> ContactData
-    DataProcessor --> ExpireData
-    DataProcessor --> ReportData
-    DataProcessor --> StringProcessor
-    DataProcessor --> JsonUtil
-    Scraper --> JsonUtil
-    ContactType --> ContactData
-    SubmitType --> ExpireData
-    Pages --> Scraper
-    ExpireStatus --> ExpireData
+    App --> ApiStore
+    Contact --> ApiStore
+    Report --> ApiStore
+    Exam --> ApiStore
+    Test --> ApiStore
 </details>
 
 #### クラス
@@ -236,6 +297,7 @@ npm run build:linux # uses linux as build target
 ### クラスを作る
 
 - クラスはTypeScriptファイル(拡張子: `.ts`)の中に、次のように書くことで外部から`import`できるようになる。
+
     ```typescript
     export class クラス名 {
         // 内容(関数、コンストラクタなど)
@@ -243,10 +305,10 @@ npm run build:linux # uses linux as build target
     ```
 
 - 次のように書くことで、クラスを`import`できる。
-    - ファイルパスは`Test.vue`からの相対パスで指定する。
-    - ファイルパスには拡張子(`.ts`)をつけない
-        - `src/main/util/stringutil.ts`なら`../../main/util/stringutil`とする
-    - 複数のクラスを`import`したいときはカンマ区切りで指定する。
+  - ファイルパスは`Test.vue`からの相対パスで指定する。
+  - ファイルパスには拡張子(`.ts`)をつけない
+    - `src/main/util/stringutil.ts`なら`../../main/util/stringutil`とする
+  - 複数のクラスを`import`したいときはカンマ区切りで指定する。
 
     ```typescript
     import { クラス名 } from "クラスがあるTypeScriptへのファイルパス"
@@ -255,16 +317,18 @@ npm run build:linux # uses linux as build target
 ### 関数・クラスのテストをする
 
 #### `npm run dev`でソフトを起動してテストする
+
 - 動かしたままにしておくとコードの保存時に自動で再読み込みされる
-    - 変更したコードによっては再読み込みされない or 正しく動作しないことがあるので、そのときは閉じて起動しなおす
+  - 変更したコードによっては再読み込みされない or 正しく動作しないことがあるので、そのときは閉じて起動しなおす
 - アプリ内で`Ctrl + Shift + F5`で手動で再読み込みできる
 - アプリ内で`Ctrl + Shift + I`で開発ツールを出せる
-    - プログラムを追加して正常に動作しない(白画面などになる)ときは`Console`にエラーが表示されている
+  - プログラムを追加して正常に動作しない(白画面などになる)ときは`Console`にエラーが表示されている
 
 #### 変数の内容を表示する
+
 - `src/renderer/views/Test.vue`にコードを書くことで表示できる
 - `<script>`タグの中の`export default ...`の前の部分なら好きなようにテスト用のスクリプトを書ける
-    - `<script lang="ts">`としないとTypeScriptで書けないかも(JavaScriptとして書く)
+  - `<script lang="ts">`としないとTypeScriptで書けないかも(JavaScriptとして書く)
 - 次のようにすると、アプリ内のテストページに変数の内容を表示できる
 
     ```
@@ -272,33 +336,40 @@ npm run build:linux # uses linux as build target
     ```
 
 - `git add .`をするとき、`Test.vue`の編集内容もステージしないように気をつけたほうがいい
-    - 次の編集したファイルを元に戻す方法を参照
+  - 次の編集したファイルを元に戻す方法を参照
 
 ### ファイルの編集やGitでの操作を戻したいとき
 
 #### 編集したファイル(ステージング前)を編集前までもどす
+
 - 特定のファイルだけ戻す
+
     ```
     git checkout <ファイル名>
     ```
 
 - 全てのファイルを戻す
+
     ```
     git checkout .
     ```
 
 #### ステージングをキャンセル(`git add`したのを戻す)
+
 - 特定のファイルだけ戻す
+
     ```
     git reset <ファイル名>
     ```
 
 - 全てのファイルを戻す
+
     ```
     git reset
     ```
 
 - 最後のコミット状態まで(ファイルの内容も)戻す
+
     ```
     git reset --head HEAD
     ```
