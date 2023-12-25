@@ -13,14 +13,19 @@ export class Scraper {
 
 	public init = async(): Promise<void> => {
 		// CSSセレクタ
-		const gakujoHomeSel: string = '#home.new' // 学情のホーム画面検出
-		const msLoginSel: string = '#i0116' // ログイン画面検出
+		const gakujoHomeSelId: string = 'home'
+		const msLoginSelId: string = 'i0116'
+		const gakujoSsoSelClass: string = 'button--full'
+
+		const gakujoHomeSel: string = `#${gakujoHomeSelId}.new` // 学情のホーム画面検出
+		const msLoginSel: string = `#${msLoginSelId}` // ログイン画面検出
+		const gakujoSsoSel: string = `.${gakujoSsoSelClass}[name="_eventId_proceed"]` // 送信属性の選択画面検出
 
 		const appBrowser = new AppBrowser()
 		let elmId: string = ''
 
-		// 学情のホームに辿りつくまで試行
-		while(elmId == '' || gakujoHomeSel.indexOf(elmId) == -1) {
+		// 学情のホームに辿りつくまで試行(Cookieが無くて/期限切れでログインできなかったときやり直す)
+		while(elmId != gakujoHomeSelId) {
 			// 保存されたcookieを取得
 			let cookieStr: string = await FileUtil.read(FileUtil.LOGIN_COOKIE)
 			while(cookieStr == '') {
@@ -46,16 +51,29 @@ export class Scraper {
 			const loginBtn = await this.page.$(loginBtnSel)
 			await loginBtn.evaluate(btn => btn.click())
 
-			// トップページかログイン画面が読みこまれるのを待つ
-			const elmHandle = await this.page.waitForSelector([gakujoHomeSel, msLoginSel].join(','), {
-				timeout: 0
-			})
-			elmId = '#' + (await elmHandle.evaluate(elm => elm.id))
+			// トップページかログイン画面か送信属性選択画面が読みこまれるのを待つ
+			const selStr = [
+				gakujoHomeSel, gakujoSsoSel, msLoginSel
+			].join(',')
+			const elmHandle = await this.page.waitForSelector(selStr)
 
-			if(elmId == msLoginSel) {
+			elmId = await elmHandle.evaluate(elm => elm.id)
+			const elmClass = await elmHandle.evaluate(elm => elm.className)
+
+			if(elmId == msLoginSelId) {
 				// 自動ログインできなかったときログイン画面を表示
 				await this.browser.close()
 				await appBrowser.login()
+			} else if(elmClass == gakujoSsoSelClass) {
+				// 送信属性の選択画面が出たら同意ボタンを押す
+				await elmHandle.click()
+				elmId = await (
+					await this.page.waitForSelector(gakujoHomeSel)
+					).evaluate(elm => elm.id)
+			} else if(elmId != gakujoHomeSelId) {
+				// 例外のとき閉じてやり直す
+				// TODO: 例外処理をちゃんとする
+				await this.browser.close()
 			}
 		}
 
