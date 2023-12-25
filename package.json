@@ -26,6 +26,7 @@
 		"vite": "^4.5.0"
 	},
 	"dependencies": {
+		"pinia": "^2.1.7",
 		"puppeteer": "^21.6.1",
 		"vue": "^3.3.8",
 		"vue-router": "^4.2.5",
