@@ -92,9 +92,9 @@
 
         package util {
             class DataUtil {
-                {static} +toContactList(table: object): Promise<ContactData[]>
-                {static} +toExamList(table: object): Promise<ExpireData[]>
-                {static} +toReportList(table: object): Promise<ReportData[]>
+                {static} +toContactList(table: object): ContactData[]
+                {static} +toExamList(table: object): ExpireData[]
+                {static} +toReportList(table: object): ReportData[]
             }
 
             class StringUtil {
