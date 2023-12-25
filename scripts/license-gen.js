@@ -63,9 +63,33 @@ checker.init(
 
 			output.sort((a, b) => (a.license < b.license ? -1 : 1))
 
+			let outputArray = [
+				'NOTICES',
+				'',
+				'This application contains following third party softwares:',
+				'',
+			]
+
+			for(const license of output) {
+				outputArray.push('-'.repeat(60))
+				outputArray.push('')
+				outputArray.push(license.license)
+				outputArray.push('')
+				outputArray = outputArray.concat(
+					license.packages.map(pack => `${pack[0]} (${pack[1]})`)
+				)
+				outputArray.push('')
+				outputArray.push(license.licenseText)
+			}
+
 			writeFileSync(
 				path.join(__dirname, '..', 'src', 'renderer', 'assets', 'license.json'),
 				JSON.stringify(output)
+			)
+
+			writeFileSync(
+				path.join(__dirname, '..', 'ThirdPartyLicense.txt'),
+				outputArray.join('\n')
 			)
 		}
 	}
