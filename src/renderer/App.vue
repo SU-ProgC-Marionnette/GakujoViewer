@@ -1,6 +1,10 @@
 <template>
 	<v-app>
-		<v-navigation-drawer permanent absolute>
+		<v-footer app elevation="4">
+			{{ apiStatus }}
+		</v-footer>
+
+		<v-navigation-drawer app permanent elevation="2">
 			<v-list>
 				<v-list-item
 					v-for="(view, i) in views"
@@ -19,33 +23,36 @@
 	</v-app>
 </template>
 
-<script>
-window.electronAPI.initApi()
+<script setup>
+import { computed } from "vue"
+import { useApiStore } from "./stores/apistore"
 
-export default {
-	data: () => ({
-		views: [
-			{
-				text: "ホーム",
-				to: "/",
-			},
-			{
-				text: "レポート一覧",
-				to: "/report",
-			},
-			{
-				text: "設定",
-				to: "/setting",
-			},
-			{
-				text: "このアプリについて",
-				to: "/about",
-			},
-			{
-				text: "テストページ",
-				to: "/test",
-			},
-		],
-	}),
-}
+const apiStore = useApiStore()
+
+const apiStatus = computed(() => apiStore.status)
+
+apiStore.init()
+
+const views = [
+	{
+		text: "ホーム",
+		to: "/",
+	},
+	{
+		text: "レポート一覧",
+		to: "/report",
+	},
+	{
+		text: "設定",
+		to: "/setting",
+	},
+	{
+		text: "このアプリについて",
+		to: "/about",
+	},
+	{
+		text: "テストページ",
+		to: "/test",
+	},
+]
 </script>
