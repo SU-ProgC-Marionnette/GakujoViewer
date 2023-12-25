@@ -13,8 +13,12 @@
 	</v-container>
 </template>
 
-<script>
+<script setup>
 import { StringUtil } from "../../main/util/stringutil"
+import { computed } from "vue"
+import { useApiStore } from "../stores/apistore"
+
+const apiStore = useApiStore()
 
 const strUtil = new StringUtil()
 let testVars = {}
@@ -23,19 +27,5 @@ let testVars = {}
 testVars.testInput = "sample input"
 testVars.foo = "foo string"
 
-const getTitle = async () => {
-	testVars.title = await window.electronAPI.getTitle()
-
-	if (testVars.title == null) {
-		setTimeout(getTitle, 1000)
-	}
-}
-
-await getTitle()
-
-export default {
-	data: () => ({
-		testVars: testVars,
-	}),
-}
+testVars.title = computed(() => apiStore.title)
 </script>
