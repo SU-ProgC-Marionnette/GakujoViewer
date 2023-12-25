@@ -215,40 +215,40 @@
 
 #### クラス
 
-- ViewController
+- GakujoApi
   - フロントエンドとバックエンドの橋渡し
-  - DataProcessorを用いてデータを取得
+  - フロントエンドからデータをリクエストされたらとりあえずキャッシュを渡す
+  - Scraperを用いてデータを取得
+  - Scraperから得たデータをDataUtilで整形
+  - DataUtilから得たデータをCacheUtilに渡してキャッシュ
+  - 新しくなったデータをフロントエンドに渡す(Electronの`webContents.send`で新しくなったことを通知する)
 - Scraper
-  - 直接学務情報システムにアクセスする唯一のクラス
-  - JsonUtilでログイン情報(メール、パスワード)を取得する
-  - busy: 処理中
-  - logged: ログイン済み
-  - error: アクセス不可
-  - page: 現在のページ
+  - FileUtilでログイン情報(Cookie)を取得する
+  - init(): ログインからトップページまでの遷移をする
   - movePage(page): pageに移動、成功したか返す
   - getTable(): 現在のページにある表をオブジェクトとして返す。失敗したらnull
-- DataProcessor
-  - JsonUtilを使ってキャッシュする
-  - 各メソッド: ScraperのgetTableで取ってきたオブジェクトを解析してDataの配列に変換する
-- StringProcessor
+- AppBrowser
+  - login(): ログインを手動でやらせてCookieをFileUtilで保存
+- CacheUtil
+  - FileUtilを使ってキャッシュする
+- DataUtil
+  - StringUtilを使ってobjectデータをxxDataクラスインスタンスの配列に整形する
+- StringUtil
   - toDateList(str): strに含まれる日付を全部抽出して配列にして返す
   - getBody(str): strから【重要】や（未読）みたいな付加情報を消したものを返す
   - isRead(str): strに（未読）が含まれているか
   - isImportant(str): strに【重要】が含まれているか
-- JsonUtil
-  - JSONファイルの読み書き
-
-#### インタフェース
-
+- FileUtil
+  - ファイルの保存と読み出しをする
 - ListData
-  - 教科名とタイトルのみのデータ
+  - 教科名とタイトルのみのデータクラス
   - たぶん直接は使わない
 - ContactData
-  - 授業連絡データ
+  - 授業連絡データクラス
 - ExpireData
-  - 小テストみたいな期限があるデータ
+  - 小テストみたいな期限があるデータクラス
 - ReportData
-  - ExpireDataのとくにレポート用
+  - ExpireDataのとくにレポート用のデータクラス
 
 #### Enum
 
