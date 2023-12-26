@@ -1,4 +1,9 @@
 export class ListData{
-    subject: string | null = null;
-    title: string | null = null;
+    subject: string;
+    title: string;
+
+    constructor(subject: string, title: string){
+        this.subject= subject;
+        this.title= title;
+    }
 }

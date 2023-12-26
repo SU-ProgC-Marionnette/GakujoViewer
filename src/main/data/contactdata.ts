@@ -2,10 +2,21 @@ import { ListData } from "./listdata";
 import { ContactType } from "./contacttype";
 
 export class ContactData extends ListData{
-    staff: string | null = null;
-    type: ContactType | null = null;
-    date: Date | null = null;
-    targetDate:Date | null = null;
-    read: boolean | null = null;
-    important: boolean | null = null;
+    staff: string;
+    type: ContactType;
+    date: Date;
+    targetDate:Date;
+    read: boolean;
+    important: boolean;
+
+    constructor(subject:string, title: string,
+        staff: string, type: ContactType, date: Date, targetDate: Date,read: boolean, important: boolean){
+        super(subject, title);
+        this.staff=staff;
+        this.type= type;
+        this.date= date;
+        this.targetDate= targetDate;
+        this.read= read;
+        this.important= important;
+    }
 }
