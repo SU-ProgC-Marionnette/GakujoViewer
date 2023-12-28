@@ -1,6 +1,16 @@
 <template>
 	<v-app>
-		<v-footer app elevation="4">
+		<v-footer app elevation="2">
+			<v-btn
+				v-if="apiStatus == 'API未接続'"
+				class="mr-4"
+				density="comfortable"
+				color="warning"
+				prepend-icon="mdi-reload"
+				@click="apiStore.init()"
+			>
+				接続する
+			</v-btn>
 			{{ apiStatus }}
 		</v-footer>
 
