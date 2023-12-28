@@ -31,7 +31,9 @@ const apiStore = useApiStore()
 
 const apiStatus = computed(() => apiStore.status)
 
-apiStore.init()
+if (window.electronAPI.nodeEnv != "development") {
+	apiStore.init()
+}
 
 const views = [
 	{
