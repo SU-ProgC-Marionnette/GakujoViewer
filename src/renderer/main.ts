@@ -1,4 +1,5 @@
 import { createApp } from 'vue'
+import { createI18n } from 'vue-i18n'
 import { createRouter, createWebHistory } from 'vue-router'
 import { createPinia } from 'pinia'
 
@@ -38,6 +39,8 @@ const routes = [
 	}
 ]
 
+const i18n = createI18n({})
+
 const router = createRouter({
 	history: createWebHistory(),
 	routes
@@ -55,6 +58,7 @@ const vuetify = createVuetify({
 
 const app = createApp(App)
 
+app.use(i18n)
 app.use(router)
 app.use(pinia)
 app.use(vuetify)
