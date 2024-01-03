@@ -9,7 +9,7 @@
 				prepend-icon="mdi-reload"
 				@click="apiStore.init()"
 			>
-				接続する
+				{{ $t("app.connect") }}
 			</v-btn>
 			{{ apiStatus }}
 		</v-footer>
@@ -35,7 +35,10 @@
 
 <script setup>
 import { computed } from "vue"
+import { useI18n } from "vue-i18n"
 import { useApiStore } from "./stores/apistore"
+
+const { t } = useI18n()
 
 const apiStore = useApiStore()
 
@@ -47,23 +50,23 @@ if (window.electronAPI.nodeEnv != "development") {
 
 const views = [
 	{
-		text: "ホーム",
+		text: t("app.home"),
 		to: "/",
 	},
 	{
-		text: "レポート一覧",
+		text: t("app.reports"),
 		to: "/report",
 	},
 	{
-		text: "設定",
+		text: t("app.settings"),
 		to: "/setting",
 	},
 	{
-		text: "このアプリについて",
+		text: t("app.about"),
 		to: "/about",
 	},
 	{
-		text: "テストページ",
+		text: t("app.testpage"),
 		to: "/test",
 	},
 ]

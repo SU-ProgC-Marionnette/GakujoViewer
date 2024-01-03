@@ -16,6 +16,8 @@ import Setting from './views/Setting.vue'
 import About from './views/About.vue'
 import Test from './views/Test.vue'
 
+import LangJa from './langs/ja'
+
 const routes = [
 	{
 		path: '/',
@@ -39,7 +41,13 @@ const routes = [
 	}
 ]
 
-const i18n = createI18n({})
+const i18n = createI18n({
+	legacy: false,
+	locale: 'ja',
+	messages: {
+		ja: LangJa
+	}
+})
 
 const router = createRouter({
 	history: createWebHistory(),
