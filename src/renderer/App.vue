@@ -2,16 +2,16 @@
 	<v-app>
 		<v-footer app elevation="2">
 			<v-btn
-				v-if="apiStatus == 'API未接続'"
+				v-if="apiStatus == apiStore.statuses.UNCONNECTED"
 				class="mr-4"
 				density="comfortable"
 				color="warning"
 				prepend-icon="mdi-reload"
 				@click="apiStore.init()"
 			>
-				接続する
+				{{ $t("app.connect") }}
 			</v-btn>
-			{{ apiStatus }}
+			{{ apiStatusStr }}
 		</v-footer>
 
 		<v-navigation-drawer app permanent elevation="2">
@@ -35,11 +35,32 @@
 
 <script setup>
 import { computed } from "vue"
+import { useI18n } from "vue-i18n"
 import { useApiStore } from "./stores/apistore"
+
+const { t } = useI18n()
 
 const apiStore = useApiStore()
 
 const apiStatus = computed(() => apiStore.status)
+const apiStatusStr = computed(() => {
+	switch (apiStore.status) {
+		case apiStore.statuses.UNCONNECTED:
+			return t("app.api_unconnected")
+			break
+
+		case apiStore.statuses.CONNECTING:
+			return t("app.api_connecting")
+			break
+
+		case apiStore.statuses.CONNECTED:
+			return t("app.api_connected")
+			break
+
+		default:
+			return t("app.api_unknown")
+	}
+})
 
 if (window.electronAPI.nodeEnv != "development") {
 	apiStore.init()
@@ -47,23 +68,23 @@ if (window.electronAPI.nodeEnv != "development") {
 
 const views = [
 	{
-		text: "ホーム",
+		text: t("app.home"),
 		to: "/",
 	},
 	{
-		text: "レポート一覧",
+		text: t("app.reports"),
 		to: "/report",
 	},
 	{
-		text: "設定",
+		text: t("app.settings"),
 		to: "/setting",
 	},
 	{
-		text: "このアプリについて",
+		text: t("app.about"),
 		to: "/about",
 	},
 	{
-		text: "テストページ",
+		text: t("app.testpage"),
 		to: "/test",
 	},
 ]

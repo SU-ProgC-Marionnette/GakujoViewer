@@ -16,18 +16,22 @@ code {
 
 <template>
 	<v-container>
-		<div class="text-h4">オープンソースライセンス</div>
+		<div class="text-h4">{{ $t("about.oss_license") }}</div>
 		<v-expansion-panels variant="accordion">
 			<v-expansion-panel
 				v-for="(license, index) in licenses"
 				:key="index"
 			>
 				<v-expansion-panel-title>
-					{{ license.license }}
-					({{ license.packages.length }} softwares)
+					{{
+						$t("about.license_title", {
+							name: license.license,
+							num: license.packages.length,
+						})
+					}}
 				</v-expansion-panel-title>
 				<v-expansion-panel-text>
-					このアプリケーションには次のソフトウェアが含まれています:
+					{{ $t("about.this_app_contains") }}
 					<ul class="pl-10">
 						<li v-for="pack in license.packages">
 							{{ pack[0] }}
@@ -35,7 +39,7 @@ code {
 							>)
 						</li>
 					</ul>
-					これらのソフトウェアには次の文書やライセンスが含まれています:
+					{{ $t("about.this_software_contains") }}
 					<code class="ml-4">
 						{{ license.licenseText }}
 					</code>

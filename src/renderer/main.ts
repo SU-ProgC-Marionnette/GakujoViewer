@@ -1,4 +1,5 @@
 import { createApp } from 'vue'
+import { createI18n } from 'vue-i18n'
 import { createRouter, createWebHistory } from 'vue-router'
 import { createPinia } from 'pinia'
 
@@ -14,6 +15,8 @@ import Report from './views/Report.vue'
 import Setting from './views/Setting.vue'
 import About from './views/About.vue'
 import Test from './views/Test.vue'
+
+import LangJa from './langs/ja'
 
 const routes = [
 	{
@@ -38,6 +41,14 @@ const routes = [
 	}
 ]
 
+const i18n = createI18n({
+	legacy: false,
+	locale: 'ja',
+	messages: {
+		ja: LangJa
+	}
+})
+
 const router = createRouter({
 	history: createWebHistory(),
 	routes
@@ -55,6 +66,7 @@ const vuetify = createVuetify({
 
 const app = createApp(App)
 
+app.use(i18n)
 app.use(router)
 app.use(pinia)
 app.use(vuetify)
