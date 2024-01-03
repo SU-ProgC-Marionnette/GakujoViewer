@@ -2,7 +2,7 @@
 	<v-app>
 		<v-footer app elevation="2">
 			<v-btn
-				v-if="apiStatus == 'API未接続'"
+				v-if="apiStatus == apiStore.statuses.UNCONNECTED"
 				class="mr-4"
 				density="comfortable"
 				color="warning"
@@ -11,7 +11,7 @@
 			>
 				{{ $t("app.connect") }}
 			</v-btn>
-			{{ apiStatus }}
+			{{ apiStatusStr }}
 		</v-footer>
 
 		<v-navigation-drawer app permanent elevation="2">
@@ -43,6 +43,24 @@ const { t } = useI18n()
 const apiStore = useApiStore()
 
 const apiStatus = computed(() => apiStore.status)
+const apiStatusStr = computed(() => {
+	switch (apiStore.status) {
+		case apiStore.statuses.UNCONNECTED:
+			return t("app.api_unconnected")
+			break
+
+		case apiStore.statuses.CONNECTING:
+			return t("app.api_connecting")
+			break
+
+		case apiStore.statuses.CONNECTED:
+			return t("app.api_connected")
+			break
+
+		default:
+			return t("app.api_unknown")
+	}
+})
 
 if (window.electronAPI.nodeEnv != "development") {
 	apiStore.init()

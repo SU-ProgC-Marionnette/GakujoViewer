@@ -5,7 +5,11 @@ export default {
 		reports: "レポート一覧",
 		settings: "設定",
 		about: "このアプリについて",
-		testpage: "テストページ"
+		testpage: "テストページ",
+		api_unconnected: "API未接続",
+		api_connecting: "API接続中",
+		api_connected: "API接続完了",
+		api_unknown: "不明なAPIエラー"
 	},
 	about: {
 		oss_license: "オープンソースライセンス",

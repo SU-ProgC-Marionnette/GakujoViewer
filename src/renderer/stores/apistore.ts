@@ -1,15 +1,22 @@
 import { defineStore } from 'pinia'
 
+const statuses = { // enum
+	UNCONNECTED: 0,
+	CONNECTING: 1,
+	CONNECTED: 2
+}
+
 export const useApiStore = defineStore('api', {
 	state: () => ({
-		status: 'API未接続',
+		statuses: statuses,
+		status: statuses.UNCONNECTED,
 		title: null
 	}),
 	actions: {
 		async init() {
-			this.status = 'APIに接続中'
+			this.status = this.statuses.CONNECTING
 			await window.electronAPI.initApi()
-			this.status = 'API接続完了'
+			this.status = this.statuses.CONNECTED
 
 			this.updateTitle()
 		},
