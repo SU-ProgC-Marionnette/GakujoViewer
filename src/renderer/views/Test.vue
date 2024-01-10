@@ -10,6 +10,13 @@
 				</template>
 			</v-list-item>
 		</v-list>
+		<v-list>
+			<v-list-item v-for="(data, key) in testButtons">
+				<v-btn class="text-none" @click="call(data.fn, data.args)">
+					{{ key }}
+				</v-btn>
+			</v-list-item>
+		</v-list>
 	</v-container>
 </template>
 
@@ -17,15 +24,38 @@
 import { StringUtil } from "../../main/util/stringutil"
 import { computed } from "vue"
 import { useApiStore } from "../stores/apistore"
+import { Pages } from "../../main/data/pages"
 
 const apiStore = useApiStore()
 
 const strUtil = new StringUtil()
 let testVars = {}
+let testButtons = {}
 
 // testVars.[任意の名前]に代入することで表示される
 testVars.testInput = "sample input"
 testVars.foo = "foo string"
 
 testVars.title = computed(() => apiStore.title)
+
+function call(method, args) {
+	this[method](...args)
+}
+
+function movePageWrap(page) {
+	apiStore.movePage(page)
+}
+
+testButtons.movePageToReport = {
+	fn: "movePageWrap",
+	args: [Pages.Report],
+}
+testButtons.movePageToContact = {
+	fn: "movePageWrap",
+	args: [Pages.Contact],
+}
+testButtons.movePageToExam = {
+	fn: "movePageWrap",
+	args: [Pages.Exam],
+}
 </script>
