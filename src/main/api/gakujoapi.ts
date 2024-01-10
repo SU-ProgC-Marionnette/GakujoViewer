@@ -1,4 +1,5 @@
 import { Scraper } from "../scraper/scraper"
+import { Pages } from "../data/pages"
 
 export class GakujoApi {
 	private scraper: Scraper = new Scraper()
@@ -19,6 +20,14 @@ export class GakujoApi {
 		}
 
 		return await this.scraper.getTitle()
+	}
+
+	public movePage = async(page: Pages): Promise<boolean> => {
+		if(!this.ready) {
+			return false
+		}
+
+		return await this.scraper.movePage(page)
 	}
 
 	public get ready(): boolean {
