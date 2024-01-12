@@ -16,5 +16,22 @@ export default {
 		license_title: "{name} ({num} softwares)",
 		this_app_contains: "このアプリケーションには次のソフトウェアが含まれています:",
 		this_software_contains: "これらのソフトウェアには次の文書やライセンスが含まれています:"
+	},
+	table: {
+		subject: "教科",
+		title: "タイトル",
+		status: "状態",
+		start: "開始",
+		expire: "期限",
+		type: "種別",
+		submit_date: "提出日"
+	},
+	expire_status: {
+		accepting: "受付中",
+		submitted: "提出済",
+		closed: "締切"
+	},
+	submit_type: {
+		web: "Web"
 	}
 }
