@@ -46,6 +46,10 @@ function movePageWrap(page) {
 	apiStore.movePage(page)
 }
 
+async function printTable() {
+	console.log(await apiStore.getTable())
+}
+
 testButtons.movePageToReport = {
 	fn: "movePageWrap",
 	args: [Pages.Report],
@@ -57,5 +61,9 @@ testButtons.movePageToContact = {
 testButtons.movePageToExam = {
 	fn: "movePageWrap",
 	args: [Pages.Exam],
+}
+testButtons.printTable = {
+	fn: "printTable",
+	args: [],
 }
 </script>
