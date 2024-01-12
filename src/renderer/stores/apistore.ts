@@ -1,4 +1,11 @@
 import { defineStore } from 'pinia'
+
+/*
+import { ReportData } from '../../main/data/reportdata'
+import { ContactData } from '../../main/data/contactdata'
+import { ExamData } from '../../main/data/examdata'
+*/
+
 import { Pages } from '../../main/data/pages'
 
 const statuses = { // enum
@@ -11,7 +18,10 @@ export const useApiStore = defineStore('api', {
 	state: () => ({
 		statuses: statuses,
 		status: statuses.UNCONNECTED,
-		title: null
+		title: null,
+		reportList: [],
+		contactList: [],
+		examList: []
 	}),
 	actions: {
 		async init() {
@@ -31,6 +41,21 @@ export const useApiStore = defineStore('api', {
 		},
 		async getTable(): Promise<string[][]> {
 			return await window.electronAPI.getTable()
-		}
+		},
+		async updateReportList() {
+			await this.movePage(Pages.Report)
+			this.reportList = await window.electronAPI.getTableData()
+			console.log(this.reportList)
+		},
+		async updateContactList() {
+			await this.movePage(Pages.Contact)
+			this.contactList = await window.electronAPI.getTableData()
+			console.log(this.contactList)
+		},
+		async updateExamList() {
+			await this.movePage(Pages.Exam)
+			this.examList = await window.electronAPI.getTableData()
+			console.log(this.examList)
+		},
 	}
 })
