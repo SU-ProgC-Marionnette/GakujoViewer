@@ -4,6 +4,7 @@ export default {
 		home: "ホーム",
 		reports: "レポート一覧",
 		contacts: "授業連絡",
+		exams: "小テスト",
 		settings: "設定",
 		about: "このアプリについて",
 		testpage: "テストページ",
@@ -28,12 +29,17 @@ export default {
 		submit_date: "提出日",
 		staff: "教員",
 		date: "日時",
-		target_date: "対象日時"
+		target_date: "対象日時",
+		submit: "提出状況"
 	},
 	expire_status: {
 		accepting: "受付中",
 		submitted: "提出済",
 		closed: "締切"
+	},
+	submit_status: {
+		submitted: "提出済",
+		not_submitted: "未提出"
 	},
 	submit_type: {
 		web: "Web"
