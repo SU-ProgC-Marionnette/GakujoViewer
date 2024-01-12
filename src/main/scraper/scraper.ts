@@ -171,6 +171,30 @@ export class Scraper {
 		}
 	}
 
+	public getTable = async(): Promise<string[][]> => {
+		const searchListSelector = '#searchList'
+		const tableSelector = '#tbl_A01_01'
+		const selectors = [
+			searchListSelector,
+			tableSelector
+		].join(',')
+
+		try {
+			return await (
+				await this.page.waitForSelector(selectors)
+			).evaluate(elm =>
+				// テーブルをHTMLTableElementからarrayに変換
+				Array.from(elm.rows).map((row: any) => // anyにしないと動かない
+					Array.from(row.cells).map((cell: any) =>
+						cell.innerText
+					)
+				)
+			)
+		} catch(e) {
+			return []
+		}
+	}
+
 	public get currentPage(): Pages {
 		return this._currentPage
 	}
