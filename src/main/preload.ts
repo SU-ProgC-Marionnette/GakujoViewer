@@ -6,5 +6,6 @@ contextBridge.exposeInMainWorld('electronAPI', {
   nodeEnv: process.env.NODE_ENV,
   initApi: () => ipcRenderer.invoke('initApi'),
   getTitle: () => ipcRenderer.invoke('getTitle'),
-  movePage: (page: Pages) => ipcRenderer.invoke('movePage', page)
+  movePage: (page: Pages) => ipcRenderer.invoke('movePage', page),
+  getTable: () => ipcRenderer.invoke('getTable')
 })
