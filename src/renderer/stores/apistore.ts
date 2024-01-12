@@ -28,6 +28,9 @@ export const useApiStore = defineStore('api', {
 			const result = await window.electronAPI.movePage(page)
 			this.updateTitle()
 			return result
+		},
+		async getTable(): Promise<string[][]> {
+			return await window.electronAPI.getTable()
 		}
 	}
 })
