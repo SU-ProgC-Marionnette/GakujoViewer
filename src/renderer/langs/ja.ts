@@ -3,6 +3,7 @@ export default {
 		connect: "接続する",
 		home: "ホーム",
 		reports: "レポート一覧",
+		contacts: "授業連絡",
 		settings: "設定",
 		about: "このアプリについて",
 		testpage: "テストページ",
@@ -24,7 +25,10 @@ export default {
 		start: "開始",
 		expire: "期限",
 		type: "種別",
-		submit_date: "提出日"
+		submit_date: "提出日",
+		staff: "教員",
+		date: "日時",
+		target_date: "対象日時"
 	},
 	expire_status: {
 		accepting: "受付中",
@@ -33,5 +37,8 @@ export default {
 	},
 	submit_type: {
 		web: "Web"
+	},
+	contact_type: {
+		staff: "教員連絡"
 	}
 }
