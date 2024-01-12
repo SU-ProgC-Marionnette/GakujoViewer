@@ -50,6 +50,18 @@ async function printTable() {
 	console.log(await apiStore.getTable())
 }
 
+function updateReportList() {
+	apiStore.updateReportList()
+}
+
+function updateContactList() {
+	apiStore.updateContactList()
+}
+
+function updateExamList() {
+	apiStore.updateExamList()
+}
+
 testButtons.movePageToReport = {
 	fn: "movePageWrap",
 	args: [Pages.Report],
@@ -64,6 +76,18 @@ testButtons.movePageToExam = {
 }
 testButtons.printTable = {
 	fn: "printTable",
+	args: [],
+}
+testButtons.updateReportList = {
+	fn: "updateReportList",
+	args: [],
+}
+testButtons.updateContactList = {
+	fn: "updateContactList",
+	args: [],
+}
+testButtons.updateExamList = {
+	fn: "updateExamList",
 	args: [],
 }
 </script>
