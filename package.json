@@ -30,6 +30,7 @@
 	},
 	"dependencies": {
 		"pinia": "^2.1.7",
+		"pinia-plugin-persistedstate": "^3.2.1",
 		"puppeteer": "^21.6.1",
 		"vue": "^3.3.8",
 		"vue-i18n": "^9.8.0",
