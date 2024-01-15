@@ -179,17 +179,36 @@ export class Scraper {
 			tableSelector
 		].join(',')
 
+		const nextBtnSelector = '#searchList_next'
+
 		try {
-			return await (
-				await this.page.waitForSelector(selectors)
-			).evaluate(elm =>
-				// テーブルをHTMLTableElementからarrayに変換
-				Array.from(elm.rows).map((row: any) => // anyにしないと動かない
-					Array.from(row.cells).map((cell: any) =>
-						cell.innerText
+			let result = []
+
+			// 次へボタンが押せなくなるまで繰り返す
+			while(true) {
+				result = result.concat(await (
+					await this.page.waitForSelector(selectors)
+				).evaluate(elm =>
+					// テーブルをHTMLTableElementからarrayに変換
+					Array.from(elm.rows).map((row: any) => // anyにしないと動かない
+						Array.from(row.cells).map((cell: any) =>
+							cell.innerText
+						)
 					)
-				)
-			)
+				))
+
+				// 次ページへ
+				const nextElmHandle = await this.page.waitForSelector(nextBtnSelector)
+				const nextDisabled = await nextElmHandle.evaluate(elm => elm.classList.contains('ui-state-disabled'))
+
+				if(nextDisabled) {
+					break
+				}
+
+				await nextElmHandle.evaluate(elm => elm.click())
+			}
+
+			return result
 		} catch(e) {
 			return []
 		}

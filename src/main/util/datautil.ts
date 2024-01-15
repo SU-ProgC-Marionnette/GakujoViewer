@@ -29,7 +29,9 @@ export class DataUtil {
 
 	private static toReportList(table: string[][]): ReportData[] {
 		const result: ReportData[] = []
-		const data: string[][] = table.slice(1) // ヘッダを除く
+		const data: string[][] = table.filter(
+			datum => datum[0] != '授業科目\n学期/曜日時限'
+		) // ヘッダを除く
 
 		for(const datum of data) {
 			const expireArr = StringUtil.toDateArray(datum[3])
@@ -64,7 +66,9 @@ export class DataUtil {
 
 	private static toContactList(table: string[][]): ContactData[] {
 		const result: ContactData[] = []
-		const data: string[][] = table.slice(1) // ヘッダを除く
+		const data: string[][] = table.filter(
+			datum => datum[0] != '授業科目\n学期/曜日時限'
+		) // ヘッダを除く
 
 		for(const datum of data) {
 			const dateArr = StringUtil.toDateArray(datum[5])
@@ -98,7 +102,9 @@ export class DataUtil {
 
 	private static toExamList(table: string[][]): ExamData[] {
 		const result: ExamData[] = []
-		const data: string[][] = table.slice(1) // ヘッダを除く
+		const data: string[][] = table.filter(
+			datum => datum[0] != '授業科目\n学期/曜日時限'
+		) // ヘッダを除く
 
 		for(const datum of data) {
 			const expireArr = StringUtil.toDateArray(datum[3])
