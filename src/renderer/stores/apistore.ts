@@ -57,5 +57,12 @@ export const useApiStore = defineStore('api', {
 			this.examList = await window.electronAPI.getTableData()
 			console.log(this.examList)
 		},
+	},
+	persist: {
+		paths: [
+			'reportList',
+			'contactList',
+			'examList'
+		]
 	}
 })

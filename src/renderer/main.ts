@@ -2,6 +2,7 @@ import { createApp } from 'vue'
 import { createI18n } from 'vue-i18n'
 import { createRouter, createWebHistory } from 'vue-router'
 import { createPinia } from 'pinia'
+import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
 
 import 'vuetify/styles'
 import { createVuetify } from 'vuetify'
@@ -65,6 +66,8 @@ const router = createRouter({
 })
 
 const pinia = createPinia()
+
+pinia.use(piniaPluginPersistedstate)
 
 const vuetify = createVuetify({
 	components,
