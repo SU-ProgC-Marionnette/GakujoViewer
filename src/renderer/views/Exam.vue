@@ -13,6 +13,7 @@ import { useI18n } from "vue-i18n"
 
 import { useApiStore } from "../stores/apistore"
 import { ExpireStatus } from "../../main/data/expirestatus"
+import { SubmitStatus } from "../../main/data/submitstatus"
 import { SubmitType } from "../../main/data/submittype"
 
 const { t } = useI18n()
@@ -25,11 +26,11 @@ const columns = [
 	t("table.start"),
 	t("table.expire"),
 	t("table.type"),
-	t("table.submit_date"),
+	t("table.submit")
 ]
 
 const table = computed(() =>
-	apiStore.reportList.map((row) => {
+	apiStore.examList.map((row) => {
 		let status = ""
 		switch (row.status) {
 			case ExpireStatus.Accepting:
@@ -42,6 +43,17 @@ const table = computed(() =>
 
 			case ExpireStatus.Closed:
 				status = t("expire_status.closed")
+				break
+		}
+
+		let submit = ""
+		switch (row.submit) {
+			case SubmitStatus.Submitted:
+				submit = t("submit_status.submitted")
+				break
+
+			case SubmitStatus.NotSubmitted:
+				submit = t("submit_status.not_submitted")
 				break
 		}
 
@@ -62,11 +74,6 @@ const table = computed(() =>
 			expireStr = row.expire.toLocaleString()
 		}
 
-		let submitStr = ""
-		if (row.submit != null) {
-			submitStr = row.submit.toLocaleString()
-		}
-
 		return [
 			row.subject,
 			row.title,
@@ -74,14 +81,14 @@ const table = computed(() =>
 			startStr,
 			expireStr,
 			type,
-			submitStr,
+			submit
 		]
 	}),
 )
 
 const latestUpdate = computed(() =>
-	apiStore.reportListDate != null ?
-		apiStore.reportListDate.toLocaleString() :
+	apiStore.examListDate != null ?
+		apiStore.examListDate.toLocaleString() :
 		t('table.no_data')
 )
 </script>

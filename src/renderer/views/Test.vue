@@ -24,7 +24,7 @@
 import { StringUtil } from "../../main/util/stringutil"
 import { computed } from "vue"
 import { useApiStore } from "../stores/apistore"
-import { Pages } from '../../main/data/pages'
+import { Pages } from "../../main/data/pages"
 
 const apiStore = useApiStore()
 
@@ -46,6 +46,22 @@ function movePageWrap(page) {
 	apiStore.movePage(page)
 }
 
+async function printTable() {
+	console.log(await apiStore.getTable())
+}
+
+function updateReportList() {
+	apiStore.updateReportList()
+}
+
+function updateContactList() {
+	apiStore.updateContactList()
+}
+
+function updateExamList() {
+	apiStore.updateExamList()
+}
+
 testButtons.movePageToReport = {
 	fn: "movePageWrap",
 	args: [Pages.Report],
@@ -58,5 +74,21 @@ testButtons.movePageToExam = {
 	fn: "movePageWrap",
 	args: [Pages.Exam],
 }
-
+testButtons.printTable = {
+	fn: "printTable",
+	args: [],
+}
+testButtons.updateReportList = {
+	fn: "updateReportList",
+	args: [],
+}
+testButtons.updateContactList = {
+	fn: "updateContactList",
+	args: [],
+}
+testButtons.updateExamList = {
+	fn: "updateExamList",
+	args: [],
+}
 </script>
+

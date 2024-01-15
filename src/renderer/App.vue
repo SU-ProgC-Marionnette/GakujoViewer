@@ -76,6 +76,14 @@ const views = [
 		to: "/report",
 	},
 	{
+		text: t("app.contacts"),
+		to: "/contact",
+	},
+	{
+		text: t("app.exams"),
+		to: "/exam",
+	},
+	{
 		text: t("app.settings"),
 		to: "/setting",
 	},

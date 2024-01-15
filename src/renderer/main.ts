@@ -2,6 +2,7 @@ import { createApp } from 'vue'
 import { createI18n } from 'vue-i18n'
 import { createRouter, createWebHistory } from 'vue-router'
 import { createPinia } from 'pinia'
+import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
 
 import 'vuetify/styles'
 import { createVuetify } from 'vuetify'
@@ -12,6 +13,8 @@ import '@mdi/font/css/materialdesignicons.css'
 import App from './App.vue'
 import Top from './views/Top.vue'
 import Report from './views/Report.vue'
+import Contact from './views/Contact.vue'
+import Exam from './views/Exam.vue'
 import Setting from './views/Setting.vue'
 import About from './views/About.vue'
 import Test from './views/Test.vue'
@@ -26,6 +29,14 @@ const routes = [
 	{
 		path: '/report',
 		component: Report
+	},
+	{
+		path: '/contact',
+		component: Contact
+	},
+	{
+		path: '/exam',
+		component: Exam
 	},
 	{
 		path: '/setting',
@@ -55,6 +66,8 @@ const router = createRouter({
 })
 
 const pinia = createPinia()
+
+pinia.use(piniaPluginPersistedstate)
 
 const vuetify = createVuetify({
 	components,

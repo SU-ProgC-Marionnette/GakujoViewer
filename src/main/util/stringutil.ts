@@ -1,5 +1,5 @@
 export class StringUtil {
-	toDateArray(str: string): Date[] | null{
+	static toDateArray(str: string): Date[] | null{
 		//strに含まれる日付を全部抽出して配列に返す
 		const dateArray = str.match(/\d{4}\/\d{1,2}\/\d{1,2} \d{2}:\d{2}/g);
 		
@@ -21,7 +21,7 @@ export class StringUtil {
 		return null;
 	}
 
-	getBody(str: string): string{
+	static getBody(str: string): string{
 		//strから[重要]な(未読)みたいな付加情報を消したものを返す
 		/*
 		if(this.isImportant(str)){
@@ -36,7 +36,7 @@ export class StringUtil {
 		return str;
 	}
 
-	isRead(str: string):boolean{
+	static isRead(str: string):boolean{
 		//strが(未読)で終わるか
 		/*
 		let unRead: string ="（未読）";
@@ -57,7 +57,7 @@ export class StringUtil {
 		return /^.*(?<=（未読）)$/.test(str);
 	}
 
-	isImportant(str: string):boolean{
+	static isImportant(str: string):boolean{
 		//strが[重要]で始まるか
 		/*
 		let important="【重要】";

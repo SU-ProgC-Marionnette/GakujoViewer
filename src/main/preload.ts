@@ -1,5 +1,5 @@
 import {contextBridge, ipcRenderer} from 'electron';
-import { Pages } from './data/pages'
+import {Pages} from './data/pages';
 
 contextBridge.exposeInMainWorld('electronAPI', {
   sendMessage: (message: string) => ipcRenderer.send('message', message),
@@ -7,4 +7,6 @@ contextBridge.exposeInMainWorld('electronAPI', {
   initApi: () => ipcRenderer.invoke('initApi'),
   getTitle: () => ipcRenderer.invoke('getTitle'),
   movePage: (page: Pages) => ipcRenderer.invoke('movePage', page),
+  getTable: () => ipcRenderer.invoke('getTable'),
+  getTableData: () => ipcRenderer.invoke('getTableData')
 })

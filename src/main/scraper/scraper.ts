@@ -4,10 +4,14 @@ import { FileUtil } from '../util/fileutil'
 import { AppBrowser } from './appbrowser'
 import { Pages } from '../data/pages'
 
+// 学務情報の軽微な仕様変更(ID, Class名の変更)にも柔軟に対応できるよう
+// CSSセレクタやswitchによる分岐などをあえて冗長にしておく
 export class Scraper {
 	private url = 'https://gakujo.shizuoka.ac.jp/portal/'
 	private browser
 	private page
+
+	private _currentPage: Pages = Pages.Gakujo
 
 	constructor() {
 	}
@@ -96,6 +100,8 @@ export class Scraper {
 			}
 		}
 
+		this._currentPage = Pages.Top
+
 		return
 	}
 
@@ -153,5 +159,52 @@ export class Scraper {
 	// test method
 	public getTitle = async(): Promise<string> => {
 		return await this.page.title()
+	}
+
+	public getTable = async(): Promise<string[][]> => {
+		const searchListSelector = '#searchList'
+		const tableSelector = '#tbl_A01_01'
+		const selectors = [
+			searchListSelector,
+			tableSelector
+		].join(',')
+
+		const nextBtnSelector = '#searchList_next,#tbl_A01_01_next'
+
+		try {
+			let result = []
+
+			// 次へボタンが押せなくなるまで繰り返す
+			while(true) {
+				result = result.concat(await (
+					await this.page.waitForSelector(selectors)
+				).evaluate(elm =>
+					// テーブルをHTMLTableElementからarrayに変換
+					Array.from(elm.rows).map((row: any) => // anyにしないと動かない
+						Array.from(row.cells).map((cell: any) =>
+							cell.innerText
+						)
+					)
+				))
+
+				// 次ページへ
+				const nextElmHandle = await this.page.waitForSelector(nextBtnSelector)
+				const nextDisabled = await nextElmHandle.evaluate(elm => elm.classList.contains('ui-state-disabled'))
+
+				if(nextDisabled) {
+					break
+				}
+
+				await nextElmHandle.evaluate(elm => elm.click())
+			}
+
+			return result
+		} catch(e) {
+			return []
+		}
+	}
+
+	public get currentPage(): Pages {
+		return this._currentPage
 	}
 }
