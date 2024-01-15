@@ -179,7 +179,7 @@ export class Scraper {
 			tableSelector
 		].join(',')
 
-		const nextBtnSelector = '#searchList_next'
+		const nextBtnSelector = '#searchList_next,#tbl_A01_01_next'
 
 		try {
 			let result = []
