@@ -20,6 +20,7 @@ export default {
 		this_software_contains: "これらのソフトウェアには次の文書やライセンスが含まれています:"
 	},
 	table: {
+		latest_update: "最終更新日時",
 		subject: "教科",
 		title: "タイトル",
 		status: "状態",

@@ -21,7 +21,10 @@ export const useApiStore = defineStore('api', {
 		title: null,
 		reportList: [],
 		contactList: [],
-		examList: []
+		examList: [],
+		reportListDate: null as Date | null,
+		contactListDate: null as Date | null,
+		examListDate: null as Date | null
 	}),
 	actions: {
 		async init() {
@@ -45,17 +48,17 @@ export const useApiStore = defineStore('api', {
 		async updateReportList() {
 			await this.movePage(Pages.Report)
 			this.reportList = await window.electronAPI.getTableData()
-			console.log(this.reportList)
+			this.reportListDate = new Date()
 		},
 		async updateContactList() {
 			await this.movePage(Pages.Contact)
 			this.contactList = await window.electronAPI.getTableData()
-			console.log(this.contactList)
+			this.contactListDate = new Date()
 		},
 		async updateExamList() {
 			await this.movePage(Pages.Exam)
 			this.examList = await window.electronAPI.getTableData()
-			console.log(this.examList)
+			this.examListDate = new Date()
 		},
 	},
 	persist: {
