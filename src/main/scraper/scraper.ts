@@ -2,6 +2,7 @@ import puppeteer from 'puppeteer'
 
 import { FileUtil } from '../util/fileutil'
 import { AppBrowser } from './appbrowser'
+import { Pages } from '../data/pages'
 
 export class Scraper {
 	private url = 'https://gakujo.shizuoka.ac.jp/portal/'
@@ -96,6 +97,57 @@ export class Scraper {
 		}
 
 		return
+	}
+
+	// movePage作成
+	public movePage = async (page: Pages): Promise<boolean> => {
+		// CSSセレクタ
+		const toClassSupportOnClick = 'classSupport' // 授業サポートページに飛ぶボタンに付いているonclick属性に含まれる文字列
+		const toReportOnClick = 'A02'
+		const toContactOnClick = 'A01'
+		const toExamOnClick = 'A03'
+
+		const toClassSupportSelector = `#header-menu-sub a[onclick*="${toClassSupportOnClick}"]` // 授業サポートページに飛ぶセレクタ
+		const toReportSelector = `#gnav-menu a[onclick*="${toReportOnClick}"]`
+		const toContactSelector = `#gnav-menu a[onclick*="${toContactOnClick}"]`
+		const toExamSelector = `#gnav-menu a[onclick*="${toExamOnClick}"]`
+
+		const linkSelectors = [
+			toClassSupportSelector,
+			toReportSelector,
+			toContactSelector,
+			toExamSelector
+		].join(',')
+
+
+		const elmHandle = await this.page.waitForSelector(linkSelectors)
+		const elmOnClickStr = await elmHandle.evaluate(elm => elm.getAttribute('onclick'))
+		
+		switch(page) {
+			case Pages.Contact:
+			case Pages.Report:
+			case Pages.Exam:
+				if(elmOnClickStr.indexOf(toClassSupportOnClick) != -1) {
+					// 「ホーム」ページにいるので授業サポートページに
+					// 飛んでほかのリンクをクリックできるようにする
+					await elmHandle.evaluate(elm => elm.click())
+				}
+				switch(page) {
+					case Pages.Contact:
+						await(await this.page.waitForSelector(toContactSelector)).evaluate(elm => elm.click())
+						break
+					case Pages.Report:
+						await(await this.page.waitForSelector(toReportSelector)).evaluate(elm => elm.click())
+						break
+					case Pages.Exam:
+						await(await this.page.waitForSelector(toExamSelector)).evaluate(elm => elm.click())
+						break
+				}
+			await this.page.waitForNavigation()
+			return true
+			default:
+				return false
+		}
 	}
 
 	// test method

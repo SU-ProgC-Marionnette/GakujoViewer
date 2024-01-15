@@ -1,4 +1,5 @@
 import { defineStore } from 'pinia'
+import { Pages } from '../../main/data/pages'
 
 const statuses = { // enum
 	UNCONNECTED: 0,
@@ -22,6 +23,11 @@ export const useApiStore = defineStore('api', {
 		},
 		async updateTitle() {
 			this.title = await window.electronAPI.getTitle()
-		}
+		},
+		async movePage(page: Pages): Promise<boolean> {
+			const result = await window.electronAPI.movePage(page)
+			this.updateTitle()
+			return result
+		},
 	}
 })
