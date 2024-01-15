@@ -1,4 +1,5 @@
 import { defineStore } from 'pinia'
+import { Pages } from '../../main/data/pages'
 
 /*
 import { ReportData } from '../../main/data/reportdata'
