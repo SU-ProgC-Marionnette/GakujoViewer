@@ -65,7 +65,10 @@ export const useApiStore = defineStore('api', {
 		paths: [
 			'reportList',
 			'contactList',
-			'examList'
+			'examList',
+			'reportListDate',
+			'contactListDate',
+			'examListDate'
 		]
 	}
 })
