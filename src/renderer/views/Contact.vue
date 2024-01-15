@@ -1,5 +1,6 @@
 <template>
 	<v-container>
+		<div>{{ $t('table.latest_update', { date: latestUpdate }) }}</div>
 		<Table :columns="columns" :data="table" />
 	</v-container>
 </template>
@@ -47,4 +48,11 @@ const table = computed(() =>
 		return [row.subject, row.title, row.staff, type, dateStr, targetDateStr]
 	}),
 )
+
+const latestUpdate = computed(() =>
+	apiStore.contactListDate != null ?
+		apiStore.contactListDate.toLocaleString() :
+		t('table.no_data')
+)
 </script>
+

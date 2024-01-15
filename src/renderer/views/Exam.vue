@@ -1,5 +1,6 @@
 <template>
 	<v-container>
+		<div>{{ $t('table.latest_update', { date: latestUpdate }) }}</div>
 		<Table :columns="columns" :data="table" />
 	</v-container>
 </template>
@@ -46,7 +47,7 @@ const table = computed(() =>
 		}
 
 		let submit = ""
-		switch(row.submit) {
+		switch (row.submit) {
 			case SubmitStatus.Submitted:
 				submit = t("submit_status.submitted")
 				break
@@ -84,4 +85,11 @@ const table = computed(() =>
 		]
 	}),
 )
+
+const latestUpdate = computed(() =>
+	apiStore.examListDate != null ?
+		apiStore.examListDate.toLocaleString() :
+		t('table.no_data')
+)
 </script>
+
