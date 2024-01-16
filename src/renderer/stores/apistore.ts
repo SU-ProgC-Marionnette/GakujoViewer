@@ -31,9 +31,17 @@ export const useApiStore = defineStore('api', {
 		async init() {
 			this.status = this.statuses.CONNECTING
 			await window.electronAPI.initApi()
-			this.status = this.statuses.CONNECTED
+			this.updateStatus()
+		},
+		async updateStatus() {
+			const isReady = await window.electronAPI.isReady()
 
-			this.updateTitle()
+			if(isReady) {
+				this.status = this.statuses.CONNECTED
+				this.updateTitle()
+			} else {
+				this.status = statuses.UNCONNECTED
+			}
 		},
 		async updateTitle() {
 			this.title = await window.electronAPI.getTitle()
@@ -41,25 +49,32 @@ export const useApiStore = defineStore('api', {
 		async movePage(page: Pages): Promise<boolean> {
 			const result = await window.electronAPI.movePage(page)
 			this.updateTitle()
+			this.updateStatus()
 			return result
 		},
 		async getTable(): Promise<string[][]> {
 			return await window.electronAPI.getTable()
 		},
 		async updateReportList() {
-			await this.movePage(Pages.Report)
-			this.reportList = await window.electronAPI.getTableData()
-			this.reportListDate = new Date()
+			if(await this.movePage(Pages.Report)) {
+				this.reportList = await window.electronAPI.getTableData()
+				this.reportListDate = new Date()
+			}
+			this.updateStatus()
 		},
 		async updateContactList() {
-			await this.movePage(Pages.Contact)
-			this.contactList = await window.electronAPI.getTableData()
-			this.contactListDate = new Date()
+			if(await this.movePage(Pages.Contact)) {
+				this.contactList = await window.electronAPI.getTableData()
+				this.contactListDate = new Date()
+			}
+			this.updateStatus()
 		},
 		async updateExamList() {
-			await this.movePage(Pages.Exam)
-			this.examList = await window.electronAPI.getTableData()
-			this.examListDate = new Date()
+			if(await this.movePage(Pages.Exam)) {
+				this.examList = await window.electronAPI.getTableData()
+				this.examListDate = new Date()
+			}
+			this.updateStatus()
 		},
 	},
 	persist: {
