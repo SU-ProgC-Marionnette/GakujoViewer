@@ -14,28 +14,28 @@
 	"repository": "https://github.com/SU-ProgC-Marionnette/GakujoViewer",
 	"license": "MIT",
 	"devDependencies": {
-		"@mdi/font": "^7.3.67",
-		"@typescript-eslint/eslint-plugin": "^6.15.0",
-		"@typescript-eslint/parser": "^6.15.0",
-		"@vitejs/plugin-vue": "^4.4.1",
+		"@mdi/font": "^7.4.47",
+		"@typescript-eslint/eslint-plugin": "^6.19.0",
+		"@typescript-eslint/parser": "^6.19.0",
+		"@vitejs/plugin-vue": "^4.6.2",
 		"chalk": "^4.1.2",
 		"chokidar": "^3.5.3",
-		"electron": "^27.1.0",
-		"electron-builder": "^24.2.1",
+		"electron": "^27.2.2",
+		"electron-builder": "^24.11.0",
 		"eslint": "^8.56.0",
-		"eslint-plugin-vue": "^9.19.2",
+		"eslint-plugin-vue": "^9.20.1",
 		"license-checker": "^25.0.1",
-		"typescript": "^5.2.2",
-		"vite": "^4.5.0"
+		"typescript": "^5.3.3",
+		"vite": "^4.5.1"
 	},
 	"dependencies": {
 		"pinia": "^2.1.7",
 		"pinia-plugin-persistedstate": "^3.2.1",
-		"puppeteer": "^21.6.1",
-		"vue": "^3.3.8",
-		"vue-i18n": "^9.8.0",
+		"puppeteer": "^21.7.0",
+		"vue": "^3.4.14",
+		"vue-i18n": "^9.9.0",
 		"vue-router": "^4.2.5",
-		"vuetify": "^3.4.7"
+		"vuetify": "^3.4.10"
 	},
 	"prettier": {
 		"tabWidth": 4,
