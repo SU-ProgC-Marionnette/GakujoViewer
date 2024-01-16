@@ -1,5 +1,5 @@
 {
-    "appId": "com.electron.app",
+    "appId": "net.yuu_g.gakujoviewer",
     "directories": {
         "buildResources": "src/main/static/resources",
         "output": "dist"
@@ -8,7 +8,7 @@
         "oneClick": false,
         "perMachine": false,
         "allowToChangeInstallationDirectory": true,
-        "shortcutName": "Electron App"
+        "shortcutName": "GakujoViewer"
     },
     "win": {
         "target": "nsis"
