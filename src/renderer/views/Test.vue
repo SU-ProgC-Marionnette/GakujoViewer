@@ -11,8 +11,8 @@
 			</v-list-item>
 		</v-list>
 		<v-list>
-			<v-list-item v-for="(data, key) in testButtons">
-				<v-btn class="text-none" @click="call(data.fn, data.args)">
+			<v-list-item v-for="(fn, key) in testButtons">
+				<v-btn class="text-none" @click="fn">
 					{{ key }}
 				</v-btn>
 			</v-list-item>
@@ -38,57 +38,25 @@ testVars.foo = "foo string"
 
 testVars.title = computed(() => apiStore.title)
 
-function call(method, args) {
-	this[method](...args)
+testButtons.movePageToReport = () => {
+	apiStore.movePage(Pages.Report)
 }
-
-function movePageWrap(page) {
-	apiStore.movePage(page)
+testButtons.movePageToContact = () => {
+	apiStore.movePage(Pages.Contact)
 }
-
-async function printTable() {
+testButtons.movePageToExam = () => {
+	apiStore.movePage(Pages.Exam)
+}
+testButtons.printTable = async () => {
 	console.log(await apiStore.getTable())
 }
-
-function updateReportList() {
+testButtons.updateReportList = () => {
 	apiStore.updateReportList()
 }
-
-function updateContactList() {
+testButtons.updateContactList = () => {
 	apiStore.updateContactList()
 }
-
-function updateExamList() {
+testButtons.updateExamList = () => {
 	apiStore.updateExamList()
 }
-
-testButtons.movePageToReport = {
-	fn: "movePageWrap",
-	args: [Pages.Report],
-}
-testButtons.movePageToContact = {
-	fn: "movePageWrap",
-	args: [Pages.Contact],
-}
-testButtons.movePageToExam = {
-	fn: "movePageWrap",
-	args: [Pages.Exam],
-}
-testButtons.printTable = {
-	fn: "printTable",
-	args: [],
-}
-testButtons.updateReportList = {
-	fn: "updateReportList",
-	args: [],
-}
-testButtons.updateContactList = {
-	fn: "updateContactList",
-	args: [],
-}
-testButtons.updateExamList = {
-	fn: "updateExamList",
-	args: [],
-}
 </script>
-
