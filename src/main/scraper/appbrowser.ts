@@ -12,6 +12,9 @@ export class AppBrowser {
 	}
 
 	public async login(): Promise<void> {
+		// 保存されたcookieを取得
+		const cookieStr: string = await FileUtil.read(FileUtil.LOGIN_COOKIE)
+
 		this.browser = await puppeteer.launch({
 			headless: false,
 			args: ['--app=' + this.url] // アドレスバーを非表示
@@ -19,6 +22,12 @@ export class AppBrowser {
 
 		try {
 			this.page = (await this.browser.pages()).slice(-1)[0]
+
+			// 保存されてたcookieを復元
+			if(cookieStr != '') {
+				const oldCookies = JSON.parse(cookieStr)
+				await this.page.setCookie(...oldCookies)
+			}
 
 			// login
 			const loginBtnSel: string = '.btn_login'
