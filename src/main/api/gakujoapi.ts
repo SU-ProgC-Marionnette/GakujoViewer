@@ -33,7 +33,10 @@ export class GakujoApi {
 			return false
 		}
 
-		return await this.scraper.movePage(page)
+		const status = await this.scraper.movePage(page)
+		this._ready = this.scraper.ready
+
+		return status
 	}
 
 	public getTable = async(): Promise<string[][]> => {
@@ -52,7 +55,12 @@ export class GakujoApi {
 		return DataUtil.toDataList(await this.scraper.getTable())
 	}
 
+	public isReady = (): boolean => {
+		return this.ready
+	}
+
 	public get ready(): boolean {
+		this._ready = this.scraper.ready
 		return this._ready
 	}
 

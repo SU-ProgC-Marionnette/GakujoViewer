@@ -8,5 +8,6 @@ contextBridge.exposeInMainWorld('electronAPI', {
   getTitle: () => ipcRenderer.invoke('getTitle'),
   movePage: (page: Pages) => ipcRenderer.invoke('movePage', page),
   getTable: () => ipcRenderer.invoke('getTable'),
-  getTableData: () => ipcRenderer.invoke('getTableData')
+  getTableData: () => ipcRenderer.invoke('getTableData'),
+  isReady: () => ipcRenderer.invoke('isReady')
 })

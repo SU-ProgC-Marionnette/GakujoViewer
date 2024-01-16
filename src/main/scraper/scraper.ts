@@ -13,6 +13,7 @@ export class Scraper {
 	private page
 
 	private _currentPage: Pages = Pages.Gakujo
+	private _ready; boolean = false
 
 	constructor() {
 	}
@@ -112,6 +113,7 @@ export class Scraper {
 		}
 
 		this._currentPage = Pages.Top
+		this._ready = true
 
 		return true
 	}
@@ -136,34 +138,43 @@ export class Scraper {
 			toExamSelector
 		].join(',')
 
+		try {
+			const elmHandle = await this.page.waitForSelector(linkSelectors)
+			const elmOnClickStr = await elmHandle.evaluate(elm => elm.getAttribute('onclick'))
 
-		const elmHandle = await this.page.waitForSelector(linkSelectors)
-		const elmOnClickStr = await elmHandle.evaluate(elm => elm.getAttribute('onclick'))
-		
-		switch(page) {
-			case Pages.Contact:
-			case Pages.Report:
-			case Pages.Exam:
-				if(elmOnClickStr.indexOf(toClassSupportOnClick) != -1) {
-					// 「ホーム」ページにいるので授業サポートページに
-					// 飛んでほかのリンクをクリックできるようにする
-					await elmHandle.evaluate(elm => elm.click())
-				}
-				switch(page) {
-					case Pages.Contact:
-						await(await this.page.waitForSelector(toContactSelector)).evaluate(elm => elm.click())
-						break
-					case Pages.Report:
-						await(await this.page.waitForSelector(toReportSelector)).evaluate(elm => elm.click())
-						break
-					case Pages.Exam:
-						await(await this.page.waitForSelector(toExamSelector)).evaluate(elm => elm.click())
-						break
-				}
-			await this.page.waitForNavigation()
-			return true
-			default:
-				return false
+			switch(page) {
+				case Pages.Contact:
+				case Pages.Report:
+				case Pages.Exam:
+					if(elmOnClickStr.indexOf(toClassSupportOnClick) != -1) {
+						// 「ホーム」ページにいるので授業サポートページに
+						// 飛んでほかのリンクをクリックできるようにする
+						await elmHandle.evaluate(elm => elm.click())
+					}
+					switch(page) {
+						case Pages.Contact:
+							await(await this.page.waitForSelector(toContactSelector)).evaluate(elm => elm.click())
+							break
+						case Pages.Report:
+							await(await this.page.waitForSelector(toReportSelector)).evaluate(elm => elm.click())
+							break
+						case Pages.Exam:
+							await(await this.page.waitForSelector(toExamSelector)).evaluate(elm => elm.click())
+							break
+					}
+				await this.page.waitForNavigation()
+				return true
+				default:
+					return false
+			}
+		} catch(e) {
+			console.error(e)
+			log.error(e)
+
+			await this.browser.close()
+			this._ready = false
+
+			return false
 		}
 	}
 
@@ -217,5 +228,9 @@ export class Scraper {
 
 	public get currentPage(): Pages {
 		return this._currentPage
+	}
+
+	public get ready(): boolean {
+		return this._ready
 	}
 }
