@@ -1,4 +1,5 @@
 import puppeteer from 'puppeteer'
+import log from 'electron-log/main'
 
 import { FileUtil } from '../util/fileutil'
 
@@ -15,27 +16,33 @@ export class AppBrowser {
 			headless: false,
 			args: ['--app=' + this.url] // アドレスバーを非表示
 		})
-		this.page = (await this.browser.pages()).slice(-1)[0]
 
-		// login
-		const loginBtnSel: string = '.btn_login'
-		await this.page.waitForSelector(loginBtnSel)
-		const loginBtn = await this.page.$(loginBtnSel)
-		await loginBtn.evaluate(btn => btn.click())
+		try {
+			this.page = (await this.browser.pages()).slice(-1)[0]
 
-		// 手動でログインしてもらう
+			// login
+			const loginBtnSel: string = '.btn_login'
+			await this.page.waitForSelector(loginBtnSel)
+			const loginBtn = await this.page.$(loginBtnSel)
+			await loginBtn.evaluate(btn => btn.click())
 
-		// トップページが読みこまれるのを待つ
-		await this.page.waitForSelector('#home.new', {
-			timeout: 0
-		})
+			// 手動でログインしてもらう
 
-		// cookieを保存(3rd party cookieを含む)
-		const client = await this.page.target().createCDPSession()
-		const cookies = (await client.send('Network.getAllCookies')).cookies
-		await FileUtil.write(FileUtil.LOGIN_COOKIE, JSON.stringify(cookies))
+			// トップページが読みこまれるのを待つ
+			await this.page.waitForSelector('#home.new', {
+				timeout: 0
+			})
 
-		await this.browser.close()
+			// cookieを保存(3rd party cookieを含む)
+			const client = await this.page.target().createCDPSession()
+			const cookies = (await client.send('Network.getAllCookies')).cookies
+			await FileUtil.write(FileUtil.LOGIN_COOKIE, JSON.stringify(cookies))
+		} catch(e) {
+			console.error(e)
+			log.error(e)
+		} finally {
+			await this.browser.close()
+		}
 
 		return
 	}
