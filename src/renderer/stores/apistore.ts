@@ -30,10 +30,13 @@ export const useApiStore = defineStore('api', {
 	actions: {
 		async init() {
 			this.status = this.statuses.CONNECTING
-			await window.electronAPI.initApi()
-			this.status = this.statuses.CONNECTED
-
-			this.updateTitle()
+			const isReady = await window.electronAPI.initApi()
+			if(isReady) {
+				this.status = this.statuses.CONNECTED
+				this.updateTitle()
+			} else {
+				this.status = statuses.UNCONNECTED
+			}
 		},
 		async updateTitle() {
 			this.title = await window.electronAPI.getTitle()

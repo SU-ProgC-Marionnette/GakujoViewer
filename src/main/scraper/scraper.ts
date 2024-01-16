@@ -17,7 +17,7 @@ export class Scraper {
 	constructor() {
 	}
 
-	public init = async(): Promise<void> => {
+	public init = async(): Promise<boolean> => {
 		// CSSセレクタ
 		// HTML内のID or class名
 		const gakujoHomeSelId: string = 'home'
@@ -107,12 +107,13 @@ export class Scraper {
 				log.error(e)
 
 				await this.browser.close()
+				return false
 			}
 		}
 
 		this._currentPage = Pages.Top
 
-		return
+		return true
 	}
 
 	// movePage作成

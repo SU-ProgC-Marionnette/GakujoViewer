@@ -14,9 +14,9 @@ export class GakujoApi {
 	constructor() {
 	}
 
-	public init = async(): Promise<void> => {
-		await this.scraper.init()
-		this._ready = true
+	public init = async(): Promise<boolean> => {
+		this._ready = await this.scraper.init()
+		return this.ready
 	}
 
 	// test method
