@@ -1,13 +1,13 @@
 import { defineStore } from 'pinia'
 import { Pages } from '../../main/data/pages'
 
+import { stringify, parse } from './serializer'
+
 /*
 import { ReportData } from '../../main/data/reportdata'
 import { ContactData } from '../../main/data/contactdata'
 import { ExamData } from '../../main/data/examdata'
 */
-
-import { Pages } from '../../main/data/pages'
 
 const statuses = { // enum
 	UNCONNECTED: 0,
@@ -70,6 +70,10 @@ export const useApiStore = defineStore('api', {
 			'reportListDate',
 			'contactListDate',
 			'examListDate'
-		]
+		],
+		serializer: {
+			serialize: stringify,
+			deserialize: parse
+		}
 	}
 })
