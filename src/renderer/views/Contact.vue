@@ -1,7 +1,7 @@
 <template>
 	<v-container>
 		<div>{{ $t('table.latest_update', { date: latestUpdate }) }}</div>
-		<Table :columns="columns" :data="table" />
+		<Table :headers="headers" :data="table" />
 	</v-container>
 </template>
 
@@ -17,13 +17,13 @@ import { ContactType } from "../../main/data/contacttype"
 const { t } = useI18n()
 const apiStore = useApiStore()
 
-const columns = [
-	t("table.subject"),
-	t("table.title"),
-	t("table.staff"),
-	t("table.type"),
-	t("table.date"),
-	t("table.target_date"),
+const headers = [
+	{ title: t("table.subject"), key: "subject" },
+	{ title: t("table.title"), key: "title" },
+	{ title: t("table.staff"), key: "staff" },
+	{ title: t("table.type"), key: "type" },
+	{ title: t("table.date"), key: "date" },
+	{ title: t("table.target_date"), key: "targetDate" },
 ]
 
 const table = computed(() =>
@@ -45,7 +45,15 @@ const table = computed(() =>
 			targetDateStr = row.targetDate.toLocaleString()
 		}
 
-		return [row.subject, row.title, row.staff, type, dateStr, targetDateStr]
+		return {
+			id: row.id,
+			subject: row.subject,
+			title: row.title,
+			staff: row.staff,
+			type: type,
+			date: dateStr,
+			targetDate: targetDateStr
+		}
 	}),
 )
 
@@ -55,4 +63,8 @@ const latestUpdate = computed(() =>
 		t('table.no_data')
 )
 </script>
+
+
+
+
 

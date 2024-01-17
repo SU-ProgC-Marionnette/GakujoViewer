@@ -1,7 +1,7 @@
 <template>
 	<v-container>
 		<div>{{ $t('table.latest_update', { date: latestUpdate }) }}</div>
-		<Table :columns="columns" :data="table" />
+		<Table :headers="headers" :data="table" />
 	</v-container>
 </template>
 
@@ -18,14 +18,14 @@ import { SubmitType } from "../../main/data/submittype"
 const { t } = useI18n()
 const apiStore = useApiStore()
 
-const columns = [
-	t("table.subject"),
-	t("table.title"),
-	t("table.status"),
-	t("table.start"),
-	t("table.expire"),
-	t("table.type"),
-	t("table.submit_date"),
+const headers = [
+	{ title: t("table.subject"), key: "subject" },
+	{ title: t("table.title"), key: "title" },
+	{ title: t("table.status"), key: "status" },
+	{ title: t("table.start"), key: "start" },
+	{ title: t("table.expire"), key: "expire" },
+	{ title: t("table.type"), key: "type" },
+	{ title: t("table.submit_date"), key: "submit" },
 ]
 
 const table = computed(() =>
@@ -67,15 +67,15 @@ const table = computed(() =>
 			submitStr = row.submit.toLocaleString()
 		}
 
-		return [
-			row.subject,
-			row.title,
-			status,
-			startStr,
-			expireStr,
-			type,
-			submitStr,
-		]
+		return {
+			subject: row.subject,
+			title: row.title,
+			status: status,
+			start: startStr,
+			expire: expireStr,
+			type: type,
+			submit: submitStr
+		}
 	}),
 )
 
@@ -85,4 +85,8 @@ const latestUpdate = computed(() =>
 		t('table.no_data')
 )
 </script>
+
+
+
+
 

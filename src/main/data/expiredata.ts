@@ -8,9 +8,9 @@ export class ExpireData extends ListData{
     expire: Date | null;
     type: SubmitType;
 
-    constructor(subject:string, title:string,
+    constructor(id: number, subject:string, title:string,
         status: ExpireStatus, start: Date | null, expire:Date | null, type: SubmitType){
-        super(subject,title);
+        super(id,subject,title);
         this.status= status;
         this.start= start;
         this.expire= expire;

@@ -3,6 +3,7 @@ import { DataUtil } from "../util/datautil"
 
 import { Pages } from "../data/pages"
 
+import { TableData } from '../data/tabledata'
 import { ReportData } from '../data/reportdata'
 import { ContactData } from '../data/contactdata'
 import { ExamData } from '../data/examdata'
@@ -39,7 +40,7 @@ export class GakujoApi {
 		return status
 	}
 
-	public getTable = async(): Promise<string[][]> => {
+	public getTable = async(): Promise<TableData[]> => {
 		if(!this.ready) {
 			return []
 		}
