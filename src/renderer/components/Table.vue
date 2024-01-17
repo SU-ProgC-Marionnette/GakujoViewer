@@ -1,24 +1,16 @@
 <template>
-	<v-table>
-		<thead>
-			<tr>
-				<th v-for="column in columns">{{ column }}</th>
-			</tr>
-		</thead>
-		<tbody>
-			<tr v-for="row in data">
-				<td v-for="item in row">{{ item }}</td>
-			</tr>
-		</tbody>
-	</v-table>
+	<v-data-table-virtual :headers="headers" :items="data"></v-data-table-virtual>
 </template>
 
 <script>
 export default {
 	props: [
-		'columns',
+		'headers',
 		'data'
 	]
 }
 </script>
+
+
+
 
