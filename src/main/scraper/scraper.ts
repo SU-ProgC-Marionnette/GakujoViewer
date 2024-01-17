@@ -4,6 +4,7 @@ import log from 'electron-log/main'
 import { FileUtil } from '../util/fileutil'
 import { AppBrowser } from './appbrowser'
 import { Pages } from '../data/pages'
+import { TableData } from '../data/tabledata'
 
 // 学務情報の軽微な仕様変更(ID, Class名の変更)にも柔軟に対応できるよう
 // CSSセレクタやswitchによる分岐などをあえて冗長にしておく
@@ -183,7 +184,7 @@ export class Scraper {
 		return await this.page.title()
 	}
 
-	public getTable = async(): Promise<string[][]> => {
+	public getTable = async(): Promise<TableData[]> => {
 		const searchListSelector = '#searchList'
 		const tableSelector = '#tbl_A01_01'
 		const selectors = [
@@ -202,11 +203,47 @@ export class Scraper {
 					await this.page.waitForSelector(selectors)
 				).evaluate(elm =>
 					// テーブルをHTMLTableElementからarrayに変換
-					Array.from(elm.rows).map((row: any) => // anyにしないと動かない
-						Array.from(row.cells).map((cell: any) =>
-							cell.innerText
-						)
-					)
+					Array.from(elm.rows).map((row: any) => {// anyにしないと動かない
+						const newCells: TableData = {
+							id: -1,
+							cells: []
+						}
+
+						for(let i = 0; i < row.cells.length; i++) {
+							const cell = row.cells[i]
+							newCells.cells.push(cell.innerText)
+
+							if(i === 1 || i === 2) {
+								const link = cell.querySelector('a')
+								if(link !== null) {
+									const formSubmitKeyword = 'formSubmit'
+									const showContactKeyword = 'showClassContactDetail'
+									const onclickFunc = link.onclick.toString().match(
+										new RegExp(`(${formSubmitKeyword}|${showContactKeyword})\\((.+)\\)`)
+									)
+
+									if(onclickFunc != null) {
+										let argIdx = -1
+										switch(onclickFunc[1]) {
+											case formSubmitKeyword:
+												argIdx = 1
+												break
+
+											case showContactKeyword:
+												argIdx = 0
+												break
+										}
+
+										if(argIdx !== -1) {
+											newCells.id = parseInt(onclickFunc[2].split(',')[argIdx].replace('\'', ''))
+										}
+									}
+								}
+							}
+						}
+
+						return newCells
+					})
 				))
 
 				// 次ページへ

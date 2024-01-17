@@ -9,9 +9,9 @@ export class ContactData extends ListData{
     read: boolean;
     important: boolean;
 
-    constructor(subject:string, title: string,
+    constructor(id:number, subject:string, title: string,
         staff: string, type: ContactType, date: Date | null, targetDate: Date | null,read: boolean, important: boolean){
-        super(subject, title);
+        super(id, subject, title);
         this.staff=staff;
         this.type= type;
         this.date= date;
