@@ -2,9 +2,11 @@ import puppeteer from 'puppeteer'
 import log from 'electron-log/main'
 
 import { FileUtil } from '../util/fileutil'
+import { StringUtil } from '../util/stringutil'
 import { AppBrowser } from './appbrowser'
 import { Pages } from '../data/pages'
 import { TableData } from '../data/tabledata'
+import { ContactDetailData, ExpireDetailData } from '../data/detaildata'
 
 // 学務情報の軽微な仕様変更(ID, Class名の変更)にも柔軟に対応できるよう
 // CSSセレクタやswitchによる分岐などをあえて冗長にしておく
@@ -260,6 +262,121 @@ export class Scraper {
 			return result
 		} catch(e) {
 			return []
+		}
+	}
+
+	public getDetails = async (page: Pages, id: number): Promise<ContactDetailData | ExpireDetailData | null> => {
+		if(!await this.movePage(page)) {
+			return null
+		}
+
+		const searchListSelector = '#searchList'
+		const tableSelector = '#tbl_A01_01'
+		const selectors = [
+			searchListSelector,
+			tableSelector
+		].join(',')
+
+		const detailTableSelector = '.ttb_entry'
+
+		const nextBtnSelector = '#searchList_next,#tbl_A01_01_next'
+
+		try {
+			// リンクを見つける
+			let isFound = false
+			while(true) {
+				isFound = await (
+					await this.page.waitForSelector(selectors)
+				).evaluate(elm => {
+					const row: any = Array.from(elm.rows).find((row: any) =>
+						row.querySelector(`a[onclick*='${id}']`) !== null
+					)
+
+					if(row !== undefined) {
+						row.querySelector('a').click()
+						return true
+					}
+
+					return false
+				})
+
+				if(isFound) {
+					break
+				}
+
+				const nextElmHandle = await this.page.waitForSelector(nextBtnSelector)
+				const nextDisabled = await nextElmHandle.evaluate(elm => elm.classList.contains('ui-state-disabled'))
+
+				if(nextDisabled) {
+					break
+				}
+
+				await nextElmHandle.evaluate(elm => elm.click())
+			}
+
+			if(isFound) {
+				const data = await (
+					await this.page.waitForSelector(detailTableSelector)
+				).evaluate(elm =>
+					Array.from(elm.rows).map((row: any) => {
+						const cell: any = Array.from(row.cells).slice(-1)[0]
+						return cell.innerText
+					})
+				)
+
+				switch(page) {
+					case Pages.Contact:
+						{
+							const dates = StringUtil.toDateArray(data[7])
+							let date: Date | null = null
+							if(dates !== null && dates.length >= 1) {
+								date = dates[0]
+							}
+
+							return new ContactDetailData(
+								data[1],
+								date,
+								data[0],
+								data[3],
+								data[4],
+								data[2],
+								data[5],
+								data[6],
+								data[8]
+							)
+						}
+
+					case Pages.Report:
+					case Pages.Exam:
+						{
+							const dates = StringUtil.toDateArray(data[1])
+							let date: Date | null = null
+							let expireDate: Date | null = null
+							if(dates !== null && dates.length >= 2) {
+								date = dates[0]
+								expireDate = dates[1]
+							}
+
+	//constructor(title: string, date: Date | null, expireDate: Date | null, reviewMethod: string, description: string, reference: string, note: string) {
+							return new ExpireDetailData(
+								data[0],
+								date,
+								expireDate,
+								data[2],
+								data[3],
+								data[4],
+								data[5]
+							)
+						}
+
+					default:
+						return null
+				}
+			} else {
+				return null
+			}
+		} catch(e) {
+			return null
 		}
 	}
 
