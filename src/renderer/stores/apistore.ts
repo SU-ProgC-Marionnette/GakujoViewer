@@ -19,6 +19,8 @@ export const useApiStore = defineStore('api', {
 	state: () => ({
 		statuses: statuses,
 		status: statuses.UNCONNECTED,
+		interval: 120000, // TODO: 設定から読みこむようにする
+		wait: 10000,
 		title: null,
 		reportList: [],
 		contactList: [],
@@ -32,6 +34,21 @@ export const useApiStore = defineStore('api', {
 			this.status = this.statuses.CONNECTING
 			await window.electronAPI.initApi()
 			this.updateStatus()
+			this.loop()
+		},
+		async loop() {
+			await this.updateReportList()
+			await new Promise(resolve => setTimeout(resolve, this.wait))
+
+			await this.updateContactList()
+			await new Promise(resolve => setTimeout(resolve, this.wait))
+
+			await this.updateExamList()
+			await new Promise(resolve => setTimeout(resolve, this.wait))
+
+			if(this.status === this.statuses.CONNECTED) {
+				setTimeout(this.loop, this.interval)
+			}
 		},
 		async updateStatus() {
 			const isReady = await window.electronAPI.isReady()
