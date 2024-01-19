@@ -1,5 +1,5 @@
 <template>
-	<v-btn block rounded="0" @click="$router.back()">{{
+	<v-btn block rounded="0" @click="router.back()">{{
 		$t("detail.back")
 	}}</v-btn>
 	<v-table v-if="data !== false">
@@ -18,6 +18,7 @@
 <script setup>
 import { computed } from "vue"
 import { useI18n } from "vue-i18n"
+import { useRouter } from "vue-router"
 
 import { useApiStore } from "../stores/apistore"
 
@@ -25,6 +26,7 @@ import { Pages } from "../../main/data/pages"
 
 const { t } = useI18n()
 const apiStore = useApiStore()
+const router = useRouter()
 
 const data = computed(() => {
 	const page = apiStore.showingDetailPage

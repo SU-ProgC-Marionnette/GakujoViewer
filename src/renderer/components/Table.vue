@@ -1,9 +1,13 @@
 <template>
 	<v-data-table-virtual :headers="props.headers" :items="props.data">
 		<template v-slot:[`item.title`]="{ item }">
-			<router-link to="/detail" @click="(e) => props.onclick(item.id)">
+			<span
+				class="text-none text-decoration-underline"
+				style="cursor: pointer"
+				@click="(e) => props.onclick(item.id)"
+			>
 				{{ item.title }}
-			</router-link>
+			</span>
 		</template>
 	</v-data-table-virtual>
 </template>

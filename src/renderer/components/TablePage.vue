@@ -10,17 +10,21 @@
 </template>
 
 <script setup>
-import { computed } from "vue"
+import { useRouter } from "vue-router"
 
 import Table from "./Table.vue"
 import { useApiStore } from "../stores/apistore"
 
 const apiStore = useApiStore()
+const router = useRouter()
 
 const props = defineProps(["latestUpdate", "headers", "table", "page"])
 
 function clickHandler(id) {
-	apiStore.updateDetails(props.page, id)
-	apiStore.changeDetail(props.page, id)
+	if (apiStore.status === apiStore.statuses.CONNECTED) {
+		apiStore.updateDetails(props.page, id)
+		apiStore.changeDetail(props.page, id)
+		router.push("/detail")
+	}
 }
 </script>
