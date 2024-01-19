@@ -40,6 +40,7 @@ export default {
 	table: {
 		latest_update: "最終更新日時: {date}",
 		no_data: "データなし",
+		api_not_ready: "APIは処理中です。しばらくお待ちください。",
 		subject: "教科",
 		title: "タイトル",
 		status: "状態",

@@ -95,6 +95,25 @@ export const useApiStore = defineStore('api', {
 			this.updateStatus()
 		},
 		async updateDetails(page: Pages, id: number) {
+			switch(page) {
+				case Pages.Report:
+					if(this.reportDetails[id] !== undefined) {
+						return this.reportDetails[id]
+					}
+					break
+
+				case Pages.Contact:
+					if(this.contactDetails[id] !== undefined) {
+						return this.contactDetails[id]
+					}
+					break
+
+				case Pages.Exam:
+					if(this.examDetails[id] !== undefined) {
+						return this.examDetails[id]
+					}
+			}
+
 			const data = await window.electronAPI.getDetails(page, id)
 			this.updateStatus()
 
@@ -124,7 +143,10 @@ export const useApiStore = defineStore('api', {
 			'examList',
 			'reportListDate',
 			'contactListDate',
-			'examListDate'
+			'examListDate',
+			'reportDetails',
+			'contactDetails',
+			'examDetails'
 		],
 		serializer: {
 			serialize: stringify,
