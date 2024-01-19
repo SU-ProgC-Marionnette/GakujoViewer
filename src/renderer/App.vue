@@ -79,10 +79,12 @@ let views = [
 		text: t("app.exams"),
 		to: "/exam",
 	},
+	/*
 	{
 		text: t("app.settings"),
 		to: "/setting",
 	},
+	*/
 	{
 		text: t("app.about"),
 		to: "/about",
