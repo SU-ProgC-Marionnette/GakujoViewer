@@ -124,7 +124,10 @@ export const useApiStore = defineStore('api', {
 			'examList',
 			'reportListDate',
 			'contactListDate',
-			'examListDate'
+			'examListDate',
+			'reportDetails',
+			'contactDetails',
+			'examDetails'
 		],
 		serializer: {
 			serialize: stringify,
