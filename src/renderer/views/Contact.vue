@@ -1,12 +1,15 @@
 <template>
-	<v-container>
-		<div>{{ $t("table.latest_update", { date: latestUpdate }) }}</div>
-		<Table :headers="headers" :data="table" :onclick="clickHandler" />
-	</v-container>
+	<TablePage
+		:latestUpdate="latestUpdate"
+		:headers="headers"
+		:table="table"
+		:page="Pages.Contact"
+	/>
 </template>
 
 <script setup>
 import Table from "../components/Table.vue"
+import TablePage from "../components/TablePage.vue"
 
 import { computed } from "vue"
 import { useI18n } from "vue-i18n"
@@ -64,9 +67,4 @@ const latestUpdate = computed(() =>
 		? apiStore.contactListDate.toLocaleString()
 		: t("table.no_data"),
 )
-
-function clickHandler(id) {
-	apiStore.updateDetails(Pages.Contact, id)
-	apiStore.changeDetail(Pages.Contact, id)
-}
 </script>
