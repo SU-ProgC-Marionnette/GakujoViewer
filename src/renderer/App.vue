@@ -62,11 +62,7 @@ const apiStatusStr = computed(() => {
 	}
 })
 
-if (window.electronAPI.nodeEnv != "development") {
-	apiStore.init()
-}
-
-const views = [
+let views = [
 	{
 		text: t("app.home"),
 		to: "/",
@@ -83,17 +79,24 @@ const views = [
 		text: t("app.exams"),
 		to: "/exam",
 	},
+	/*
 	{
 		text: t("app.settings"),
 		to: "/setting",
 	},
+	*/
 	{
 		text: t("app.about"),
 		to: "/about",
 	},
-	{
+]
+
+if (window.electronAPI.nodeEnv != "development") {
+	apiStore.init()
+} else {
+	views.push({
 		text: t("app.testpage"),
 		to: "/test",
-	},
-]
+	})
+}
 </script>
