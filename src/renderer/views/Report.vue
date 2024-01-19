@@ -1,7 +1,7 @@
 <template>
 	<v-container>
-		<div>{{ $t('table.latest_update', { date: latestUpdate }) }}</div>
-		<Table :headers="headers" :data="table" />
+		<div>{{ $t("table.latest_update", { date: latestUpdate }) }}</div>
+		<Table :headers="headers" :data="table" :onclick="clickHandler" />
 	</v-container>
 </template>
 
@@ -14,6 +14,7 @@ import { useI18n } from "vue-i18n"
 import { useApiStore } from "../stores/apistore"
 import { ExpireStatus } from "../../main/data/expirestatus"
 import { SubmitType } from "../../main/data/submittype"
+import { Pages } from "../../main/data/pages"
 
 const { t } = useI18n()
 const apiStore = useApiStore()
@@ -68,25 +69,26 @@ const table = computed(() =>
 		}
 
 		return {
+			id: row.id,
 			subject: row.subject,
 			title: row.title,
 			status: status,
 			start: startStr,
 			expire: expireStr,
 			type: type,
-			submit: submitStr
+			submit: submitStr,
 		}
 	}),
 )
 
 const latestUpdate = computed(() =>
-	apiStore.reportListDate != null ?
-		apiStore.reportListDate.toLocaleString() :
-		t('table.no_data')
+	apiStore.reportListDate != null
+		? apiStore.reportListDate.toLocaleString()
+		: t("table.no_data"),
 )
+
+function clickHandler(id) {
+	apiStore.updateDetails(Pages.Report, id)
+	apiStore.changeDetail(Pages.Report, id)
+}
 </script>
-
-
-
-
-

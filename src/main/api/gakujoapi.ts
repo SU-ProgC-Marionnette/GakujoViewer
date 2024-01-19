@@ -7,6 +7,7 @@ import { TableData } from '../data/tabledata'
 import { ReportData } from '../data/reportdata'
 import { ContactData } from '../data/contactdata'
 import { ExamData } from '../data/examdata'
+import { ContactDetailData, ExpireDetailData } from '../data/detaildata'
 
 export class GakujoApi {
 	private scraper: Scraper = new Scraper()
@@ -54,6 +55,14 @@ export class GakujoApi {
 		}
 
 		return DataUtil.toDataList(await this.scraper.getTable())
+	}
+
+	public getDetails = async(page: Pages, id: number): Promise<ContactDetailData | ExpireDetailData | null> => {
+		if(!this.ready) {
+			return null
+		}
+
+		return await this.scraper.getDetails(page, id)
 	}
 
 	public isReady = (): boolean => {

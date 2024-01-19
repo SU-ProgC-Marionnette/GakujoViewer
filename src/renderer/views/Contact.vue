@@ -1,7 +1,7 @@
 <template>
 	<v-container>
-		<div>{{ $t('table.latest_update', { date: latestUpdate }) }}</div>
-		<Table :headers="headers" :data="table" />
+		<div>{{ $t("table.latest_update", { date: latestUpdate }) }}</div>
+		<Table :headers="headers" :data="table" :onclick="clickHandler" />
 	</v-container>
 </template>
 
@@ -12,7 +12,9 @@ import { computed } from "vue"
 import { useI18n } from "vue-i18n"
 
 import { useApiStore } from "../stores/apistore"
+
 import { ContactType } from "../../main/data/contacttype"
+import { Pages } from "../../main/data/pages"
 
 const { t } = useI18n()
 const apiStore = useApiStore()
@@ -52,19 +54,19 @@ const table = computed(() =>
 			staff: row.staff,
 			type: type,
 			date: dateStr,
-			targetDate: targetDateStr
+			targetDate: targetDateStr,
 		}
 	}),
 )
 
 const latestUpdate = computed(() =>
-	apiStore.contactListDate != null ?
-		apiStore.contactListDate.toLocaleString() :
-		t('table.no_data')
+	apiStore.contactListDate != null
+		? apiStore.contactListDate.toLocaleString()
+		: t("table.no_data"),
 )
+
+function clickHandler(id) {
+	apiStore.updateDetails(Pages.Contact, id)
+	apiStore.changeDetail(Pages.Contact, id)
+}
 </script>
-
-
-
-
-

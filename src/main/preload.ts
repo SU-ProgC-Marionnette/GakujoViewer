@@ -9,5 +9,6 @@ contextBridge.exposeInMainWorld('electronAPI', {
   movePage: (page: Pages) => ipcRenderer.invoke('movePage', page),
   getTable: () => ipcRenderer.invoke('getTable'),
   getTableData: () => ipcRenderer.invoke('getTableData'),
+  getDetails: (page: Pages, id: number) => ipcRenderer.invoke('getDetails', page, id),
   isReady: () => ipcRenderer.invoke('isReady')
 })
