@@ -1,7 +1,7 @@
 <template>
 	<v-container>
-		<div>{{ $t('table.latest_update', { date: latestUpdate }) }}</div>
-		<Table :headers="headers" :data="table" />
+		<div>{{ $t("table.latest_update", { date: latestUpdate }) }}</div>
+		<Table :headers="headers" :data="table" :onclick="clickHandler" />
 	</v-container>
 </template>
 
@@ -15,6 +15,7 @@ import { useApiStore } from "../stores/apistore"
 import { ExpireStatus } from "../../main/data/expirestatus"
 import { SubmitStatus } from "../../main/data/submitstatus"
 import { SubmitType } from "../../main/data/submittype"
+import { Pages } from "../../main/data/pages"
 
 const { t } = useI18n()
 const apiStore = useApiStore()
@@ -75,23 +76,26 @@ const table = computed(() =>
 		}
 
 		return {
+			id: row.id,
 			subject: row.subject,
 			title: row.title,
 			status: status,
 			start: startStr,
 			expire: expireStr,
 			type: type,
-			submit: submit
+			submit: submit,
 		}
 	}),
 )
 
 const latestUpdate = computed(() =>
-	apiStore.examListDate != null ?
-		apiStore.examListDate.toLocaleString() :
-		t('table.no_data')
+	apiStore.examListDate != null
+		? apiStore.examListDate.toLocaleString()
+		: t("table.no_data"),
 )
+
+function clickHandler(id) {
+	apiStore.updateDetails(Pages.Exam, id)
+	apiStore.changeDetail(Pages.Exam, id)
+}
 </script>
-
-
-

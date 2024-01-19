@@ -15,6 +15,7 @@ import Top from './views/Top.vue'
 import Report from './views/Report.vue'
 import Contact from './views/Contact.vue'
 import Exam from './views/Exam.vue'
+import Detail from './views/Detail.vue'
 import Setting from './views/Setting.vue'
 import About from './views/About.vue'
 import Test from './views/Test.vue'
@@ -37,6 +38,10 @@ const routes = [
 	{
 		path: '/exam',
 		component: Exam
+	},
+	{
+		path: '/detail',
+		component: Detail
 	},
 	{
 		path: '/setting',

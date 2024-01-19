@@ -1,16 +1,13 @@
 <template>
-	<v-data-table-virtual :headers="headers" :items="data"></v-data-table-virtual>
+	<v-data-table-virtual :headers="props.headers" :items="props.data">
+		<template v-slot:[`item.title`]="{ item }">
+			<router-link to="/detail" @click="(e) => props.onclick(item.id)">
+				{{ item.title }}
+			</router-link>
+		</template>
+	</v-data-table-virtual>
 </template>
 
-<script>
-export default {
-	props: [
-		'headers',
-		'data'
-	]
-}
+<script setup>
+const props = defineProps(["headers", "data", "onclick"])
 </script>
-
-
-
-

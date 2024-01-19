@@ -287,9 +287,9 @@ export class Scraper {
 			while(true) {
 				isFound = await (
 					await this.page.waitForSelector(selectors)
-				).evaluate(elm => {
+				).evaluate((elm, id) => {
 					const row: any = Array.from(elm.rows).find((row: any) =>
-						row.querySelector(`a[onclick*='${id}']`) !== null
+						row.querySelector(`a[onclick*="${id}"]`) !== null
 					)
 
 					if(row !== undefined) {
@@ -298,7 +298,7 @@ export class Scraper {
 					}
 
 					return false
-				})
+				}, id)
 
 				if(isFound) {
 					break
@@ -376,6 +376,7 @@ export class Scraper {
 				return null
 			}
 		} catch(e) {
+			console.error(e)
 			return null
 		}
 	}

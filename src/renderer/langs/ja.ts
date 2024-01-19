@@ -19,6 +19,24 @@ export default {
 		this_app_contains: "このアプリケーションには次のソフトウェアが含まれています:",
 		this_software_contains: "これらのソフトウェアには次の文書やライセンスが含まれています:"
 	},
+	detail: {
+		back: "戻る",
+		fetching: "データ取得中...",
+		title: "タイトル",
+		date: "日時",
+		submit_period: "提出期間",
+		description: "説明",
+		review_method: "評価方法",
+		reference: "参考資料",
+		note: "伝達事項",
+		type: "連絡種別",
+		content: "内容",
+		file: "ファイル",
+		file_link_pub: "ファイルリンク公開",
+		reference_url: "参考URL",
+		importance: "重要度",
+		want_reply: "返信要求"
+	},
 	table: {
 		latest_update: "最終更新日時: {date}",
 		no_data: "データなし",

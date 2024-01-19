@@ -3,11 +3,7 @@ import { Pages } from '../../main/data/pages'
 
 import { stringify, parse } from './serializer'
 
-/*
-import { ReportData } from '../../main/data/reportdata'
-import { ContactData } from '../../main/data/contactdata'
-import { ExamData } from '../../main/data/examdata'
-*/
+import { ContactDetailData, ExpireDetailData } from '../../main/data/detaildata'
 
 const statuses = { // enum
 	UNCONNECTED: 0,
@@ -27,7 +23,12 @@ export const useApiStore = defineStore('api', {
 		examList: [],
 		reportListDate: null as Date | null,
 		contactListDate: null as Date | null,
-		examListDate: null as Date | null
+		examListDate: null as Date | null,
+		reportDetails: {} as { [id: number]: ExpireDetailData },
+		contactDetails: {} as { [id: number]: ContactDetailData },
+		examDetails: {} as { [id: number]: ExpireDetailData },
+		showingDetailPage: null as Pages | null,
+		showingDetailId: null as number | null,
 	}),
 	actions: {
 		async init() {
@@ -93,6 +94,28 @@ export const useApiStore = defineStore('api', {
 			}
 			this.updateStatus()
 		},
+		async updateDetails(page: Pages, id: number) {
+			const data = await window.electronAPI.getDetails(page, id)
+			this.updateStatus()
+
+			switch(page) {
+				case Pages.Report:
+					this.reportDetails[id] = data
+					break
+				case Pages.Contact:
+					this.contactDetails[id] = data
+					break
+				case Pages.Exam:
+					this.examDetails[id] = data
+					break
+			}
+
+			return data
+		},
+		async changeDetail(page: Pages, id: number) {
+			this.showingDetailPage = page
+			this.showingDetailId = id
+		}
 	},
 	persist: {
 		paths: [
