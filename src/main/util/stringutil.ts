@@ -13,7 +13,7 @@ export class StringUtil {
 					const day   :number = Number(detailArray[2]);
 					const hour  :number = Number(detailArray[3]);
 					const minute:number = Number(detailArray[4]);
-					resultArray[i] = new Date(year,month,day,hour,minute);
+					resultArray[i] = new Date(year,month - 1,day,hour,minute);
 				}
 			}
 			return resultArray;
