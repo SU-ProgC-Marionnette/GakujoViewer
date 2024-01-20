@@ -19,7 +19,8 @@ const config = defineConfig({
 	},
 	plugins: [vuePlugin()],
 	define: {
-		__INTLIFY_JIT_COMPILATION__: true
+		__INTLIFY_JIT_COMPILATION__: true,
+		APP_VERSION: JSON.stringify(process.env.npm_package_version)
 	}
 });
 

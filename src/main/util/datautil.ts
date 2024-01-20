@@ -95,7 +95,7 @@ export class DataUtil {
 					date,
 					targetDate,
 					StringUtil.isRead(datum.cells[2]),
-					StringUtil.isImportant(datum.cells[3])
+					StringUtil.isImportant(datum.cells[2])
 				)
 			)
 		}

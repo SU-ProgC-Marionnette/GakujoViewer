@@ -13,6 +13,14 @@ export default {
 		api_connected: "API接続完了",
 		api_unknown: "不明なAPIエラー"
 	},
+	top: {
+		task_accepting: "受付中の課題",
+		task_expired: "期限切れの課題",
+		unread_contact: "未読の連絡",
+		report: "レポート",
+		exam: "小テスト",
+		item: "項目",
+	},
 	about: {
 		oss_license: "オープンソースライセンス",
 		license_title: "{name} ({num} softwares)",

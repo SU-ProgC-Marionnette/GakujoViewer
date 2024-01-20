@@ -14,6 +14,9 @@ import { useRouter } from "vue-router"
 
 import Table from "./Table.vue"
 import { useApiStore } from "../stores/apistore"
+import { tableClickHandler } from "./script/tableclickhandler"
+
+import { Pages } from "../../main/data/pages"
 
 const apiStore = useApiStore()
 const router = useRouter()
@@ -21,10 +24,6 @@ const router = useRouter()
 const props = defineProps(["latestUpdate", "headers", "table", "page"])
 
 function clickHandler(id) {
-	if (apiStore.status === apiStore.statuses.CONNECTED) {
-		apiStore.updateDetails(props.page, id)
-		apiStore.changeDetail(props.page, id)
-		router.push("/detail")
-	}
+	tableClickHandler(props.page, id, apiStore, router)
 }
 </script>
