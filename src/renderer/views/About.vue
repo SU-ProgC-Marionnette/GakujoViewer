@@ -16,33 +16,57 @@ code {
 
 <template>
 	<v-container>
-		<div class="text-h4">{{ $t("about.oss_license") }}</div>
-		<v-expansion-panels variant="accordion">
+		<v-row>
+			<v-col cols="4">
+				<v-img src="../assets/icon.png"></v-img>
+			</v-col>
+			<v-col>
+				<div class="text-h4">GakujoViewer</div>
+				<div class="ml-5">
+					<div class="text-h6">v{{ version }}</div>
+					<div class="mt-5">2024 (C) SU-ProgC-Marionnette</div>
+					<div class="ml-5">
+						https://github.com/SU-ProgC-Marionnette/GakujoViewer
+					</div>
+				</div>
+			</v-col>
+		</v-row>
+		<v-expansion-panels>
 			<v-expansion-panel
-				v-for="(license, index) in licenses"
-				:key="index"
+				:title="$t('about.oss_license')"
+				class="mt-5"
+				variant="accordion"
 			>
-				<v-expansion-panel-title>
-					{{
-						$t("about.license_title", {
-							name: license.license,
-							num: license.packages.length,
-						})
-					}}
-				</v-expansion-panel-title>
 				<v-expansion-panel-text>
-					{{ $t("about.this_app_contains") }}
-					<ul class="pl-10">
-						<li v-for="pack in license.packages">
-							{{ pack[0] }}
-							(<a :href="pack[1]">{{ pack[1] }}</a
-							>)
-						</li>
-					</ul>
-					{{ $t("about.this_software_contains") }}
-					<code class="ml-4">
-						{{ license.licenseText }}
-					</code>
+					<v-expansion-panels variant="accordion">
+						<v-expansion-panel
+							v-for="(license, index) in licenses"
+							:key="index"
+						>
+							<v-expansion-panel-title>
+								{{
+									$t("about.license_title", {
+										name: license.license,
+										num: license.packages.length,
+									})
+								}}
+							</v-expansion-panel-title>
+							<v-expansion-panel-text>
+								{{ $t("about.this_app_contains") }}
+								<ul class="pl-10">
+									<li v-for="pack in license.packages">
+										{{ pack[0] }}
+										(<a :href="pack[1]">{{ pack[1] }}</a
+										>)
+									</li>
+								</ul>
+								{{ $t("about.this_software_contains") }}
+								<code class="ml-4">
+									{{ license.licenseText }}
+								</code>
+							</v-expansion-panel-text>
+						</v-expansion-panel>
+					</v-expansion-panels>
 				</v-expansion-panel-text>
 			</v-expansion-panel>
 		</v-expansion-panels>
@@ -51,4 +75,6 @@ code {
 
 <script setup>
 import licenses from "../assets/license.json"
+
+const version = APP_VERSION
 </script>
