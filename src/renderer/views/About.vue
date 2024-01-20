@@ -18,7 +18,7 @@ code {
 	<v-container>
 		<v-row>
 			<v-col cols="4">
-				<v-img src="../assets/icon.png"></v-img>
+				<v-img :src="icon"></v-img>
 			</v-col>
 			<v-col>
 				<div class="text-h4">GakujoViewer</div>
@@ -75,6 +75,7 @@ code {
 
 <script setup>
 import licenses from "../assets/license.json"
+import icon from "../../main/static/resources/icon.png"
 
 const version = APP_VERSION
 </script>
