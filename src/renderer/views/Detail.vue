@@ -6,7 +6,9 @@
 		<tbody>
 			<tr v-for="datum in data">
 				<td>{{ datum.label }}</td>
-				<td style="white-space: pre">{{ datum.value }}</td>
+				<td style="white-space: pre-wrap; overflow-wrap: anywhere">
+					{{ datum.value }}
+				</td>
 			</tr>
 		</tbody>
 	</v-table>
