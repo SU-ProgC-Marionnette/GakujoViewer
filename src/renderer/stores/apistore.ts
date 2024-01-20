@@ -15,8 +15,8 @@ export const useApiStore = defineStore('api', {
 	state: () => ({
 		statuses: statuses,
 		status: statuses.UNCONNECTED,
-		interval: 120000, // TODO: 設定から読みこむようにする
-		wait: 10000,
+		interval: 600e3, // TODO: 設定から読みこむようにする
+		wait: 5e3,
 		title: null,
 		reportList: [],
 		contactList: [],
