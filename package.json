@@ -9,7 +9,12 @@
 		"build:win": "node scripts/build.js && electron-builder --win",
 		"build:mac": "node scripts/build.js && electron-builder --mac",
 		"build:linux": "node scripts/build.js && electron-builder --linux",
-		"license": "node scripts/license-gen.js"
+		"license": "node scripts/license-gen.js",
+		"marp:p": "marp docs/present/present.md -p",
+		"marp": "npm run marp:pdf && npm run marp:pptx && npm run marp:html",
+		"marp:pdf": "marp docs/present/present.md --allow-local-files -o docs/present/present.pdf",
+		"marp:pptx": "marp docs/present/present.md --allow-local-files -o docs/present/present.pptx",
+		"marp:html": "marp docs/present/present.md --allow-local-files -o docs/present/present.html"
 	},
 	"repository": "https://github.com/SU-ProgC-Marionnette/GakujoViewer",
 	"license": "MIT",
