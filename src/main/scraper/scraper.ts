@@ -28,15 +28,18 @@ export class Scraper {
 		const msLoginSelId: string = 'i0116'
 		const msOtpSelId: string = 'idTxtBx_SAOTCC_OTC'
 		const gakujoSsoSelClass: string = 'button--full'
+		const gakujoInputEnvName: string = 'accessEnvName'
 
 		// セレクタ文字列を定義
 		const gakujoHomeSel: string = `#${gakujoHomeSelId}.new` // 学情のホーム画面検出
 		const msLoginSel: string = `#${msLoginSelId}` // ログイン画面検出
 		const msOtpSel: string = `#${msOtpSelId}` // ワンタイムパスワード入力画面検出
 		const gakujoSsoSel: string = `.${gakujoSsoSelClass}[name="_eventId_proceed"]` // 送信属性の選択画面検出
+		const gakujoInputEnvSel: string = `input[name="${gakujoInputEnvName}"]` // 学情の環境選択画面検出
+		const gakujoEnvToHomeSel: string = `.btn_large` // 学情のアクセス環境登録のホームボタン
 		const loginBtnSel: string = '.btn_login' // トップページのログインボタン
 		const selStr = [
-			gakujoHomeSel, gakujoSsoSel, msLoginSel, msOtpSel
+			gakujoHomeSel, gakujoSsoSel, msLoginSel, msOtpSel, gakujoInputEnvSel
 		].join(',') // トップページのログインボタンを押したあとに遷移する可能性のあるページを検出するセレクタを列挙
 
 		// ログインCookieを取ってくる用のAppBrowserのインスタンスを用意しておく(この時点ではまだ開かない)
@@ -57,7 +60,7 @@ export class Scraper {
 
 			// Puppeteerの内部ブラウザ(画面上に表示されない、ユーザが操作できない)を開く
 			this.browser = await puppeteer.launch({
-				headless: 'new'
+				headless: false
 			})
 
 			try {
@@ -87,6 +90,7 @@ export class Scraper {
 				// 上で検出した要素のIDとclassを取得
 				elmId = await elmHandle.evaluate(elm => elm.id)
 				const elmClass = await elmHandle.evaluate(elm => elm.className)
+				const elmName = await elmHandle.evaluate(elm => elm.name)
 
 				// IDかclass名で処理を分岐
 				if(elmClass == gakujoSsoSelClass) {
@@ -95,6 +99,16 @@ export class Scraper {
 
 					// 遷移先は学情のホームなのでそれを読みこむのを待ちつつ、
 					// このwhileを抜けるためにIDを取得する
+					elmId = await (
+						await this.page.waitForSelector(gakujoHomeSel)
+					).evaluate(elm => elm.id)
+				} else if(elmName == gakujoInputEnvName) {
+					await elmHandle.evaluate(elm => elm.value = '')
+					await elmHandle.type(`GakujoViewer ${new Date().toISOString()}`)
+					await (
+						await this.page.waitForSelector(gakujoEnvToHomeSel)
+					).evaluate(elm => elm.click())
+
 					elmId = await (
 						await this.page.waitForSelector(gakujoHomeSel)
 					).evaluate(elm => elm.id)
