@@ -60,7 +60,7 @@ export class Scraper {
 
 			// Puppeteerの内部ブラウザ(画面上に表示されない、ユーザが操作できない)を開く
 			this.browser = await puppeteer.launch({
-				headless: "new"
+				headless: 'new'
 			})
 
 			try {
@@ -85,40 +85,46 @@ export class Scraper {
 				await loginBtn.evaluate(btn => btn.click())
 
 				// トップページかログイン画面か送信属性選択画面が読みこまれるのを待つ
-				const elmHandle = await this.page.waitForSelector(selStr)
+				let elmHandle = await this.page.waitForSelector(selStr)
 
 				// 上で検出した要素のIDとclassを取得
 				elmId = await elmHandle.evaluate(elm => elm.id)
 				const elmClass = await elmHandle.evaluate(elm => elm.className)
-				const elmName = await elmHandle.evaluate(elm => elm.name)
+				let elmName = await elmHandle.evaluate(elm => elm.name)
 
 				// IDかclass名で処理を分岐
+				if(elmId == msLoginSelId || elmId == msOtpSelId) {
+					// 自動ログインできなかったときログイン画面を表示
+					await this.browser.close() // 同時に開くとバグる可能性があるので内部ブラウザを閉じる
+					await appBrowser.login()
+
+					continue
+				}
+
 				if(elmClass == gakujoSsoSelClass) {
 					// 送信属性の選択画面の同意ボタンが出たならそれを押す
 					await elmHandle.click()
 
-					// 遷移先は学情のホームなのでそれを読みこむのを待ちつつ、
-					// このwhileを抜けるためにIDを取得する
-					elmId = await (
-						await this.page.waitForSelector(gakujoHomeSel)
-					).evaluate(elm => elm.id)
-				} else if(elmName == gakujoInputEnvName) {
+					elmHandle = await (await this.page.waitForSelector([gakujoHomeSel, gakujoInputEnvSel].join(',')))
+					elmName = await elmHandle.evaluate(elm => elm.name)
+				}
+
+				if(elmName == gakujoInputEnvName) {
 					await elmHandle.evaluate(elm => elm.value = '')
 					await elmHandle.type(`GakujoViewer ${new Date().toISOString()}`)
 					await (
 						await this.page.waitForSelector(gakujoEnvToHomeSel)
 					).evaluate(elm => elm.click())
+				}
 
-					elmId = await (
-						await this.page.waitForSelector(gakujoHomeSel)
-					).evaluate(elm => elm.id)
-				} else if(elmId == msLoginSelId || elmId == msOtpSelId) {
-					// 自動ログインできなかったときログイン画面を表示
-					await this.browser.close() // 同時に開くとバグる可能性があるので内部ブラウザを閉じる
-					await appBrowser.login()
-				} else if(elmId != gakujoHomeSelId) {
+				elmId = await (
+					await this.page.waitForSelector(gakujoHomeSel)
+				).evaluate(elm => elm.id)
+
+				if(elmId != gakujoHomeSelId) {
 					// 例外のとき次のwhileループに備えて内部ブラウザを閉じる
 					await this.browser.close()
+					continue
 				}
 			} catch(e) {
 				console.error(e)
