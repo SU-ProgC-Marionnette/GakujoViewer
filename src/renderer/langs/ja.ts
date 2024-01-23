@@ -1,6 +1,5 @@
 export default {
 	app: {
-		connect: "接続する",
 		home: "ホーム",
 		reports: "レポート一覧",
 		contacts: "授業連絡",
@@ -8,10 +7,6 @@ export default {
 		settings: "設定",
 		about: "このアプリについて",
 		testpage: "テストページ",
-		api_unconnected: "API未接続",
-		api_connecting: "API接続中",
-		api_connected: "API接続完了",
-		api_unknown: "不明なAPIエラー"
 	},
 	top: {
 		task_accepting: "受付中の課題",
@@ -44,6 +39,14 @@ export default {
 		reference_url: "参考URL",
 		importance: "重要度",
 		want_reply: "返信要求"
+	},
+	status: {
+		connect: "接続する",
+		api_unconnected: "API未接続",
+		api_connecting: "API接続中",
+		api_connected: "API接続完了",
+		api_unknown: "不明なAPIエラー",
+		auto_update: "自動更新",
 	},
 	table: {
 		latest_update: "最終更新日時: {date}",
