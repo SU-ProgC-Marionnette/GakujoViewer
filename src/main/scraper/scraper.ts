@@ -60,7 +60,7 @@ export class Scraper {
 
 			// Puppeteerの内部ブラウザ(画面上に表示されない、ユーザが操作できない)を開く
 			this.browser = await puppeteer.launch({
-				headless: false
+				headless: "new"
 			})
 
 			try {
