@@ -1,32 +1,7 @@
 <template>
 	<v-app>
-		<v-footer app elevation="2">
-			<v-btn
-				v-if="apiStatus == apiStore.statuses.UNCONNECTED"
-				class="mr-4"
-				density="comfortable"
-				color="warning"
-				prepend-icon="mdi-reload"
-				@click="apiStore.init()"
-			>
-				{{ $t("app.connect") }}
-			</v-btn>
-			{{ apiStatusStr }}
-		</v-footer>
-
-		<v-navigation-drawer app permanent elevation="2">
-			<v-list>
-				<v-list-item
-					v-for="(view, i) in views"
-					:key="i"
-					:value="view"
-					:to="view.to"
-				>
-					<v-list-item-title v-text="view.text"></v-list-item-title>
-				</v-list-item>
-			</v-list>
-		</v-navigation-drawer>
-
+		<StatusBar />
+		<NavDrawer />
 		<v-main>
 			<router-view></router-view>
 		</v-main>
@@ -38,65 +13,14 @@ import { computed } from "vue"
 import { useI18n } from "vue-i18n"
 import { useApiStore } from "./stores/apistore"
 
+import StatusBar from "./components/StatusBar.vue"
+import NavDrawer from "./components/NavDrawer.vue"
+
 const { t } = useI18n()
 
 const apiStore = useApiStore()
 
-const apiStatus = computed(() => apiStore.status)
-const apiStatusStr = computed(() => {
-	switch (apiStore.status) {
-		case apiStore.statuses.UNCONNECTED:
-			return t("app.api_unconnected")
-			break
-
-		case apiStore.statuses.CONNECTING:
-			return t("app.api_connecting")
-			break
-
-		case apiStore.statuses.CONNECTED:
-			return t("app.api_connected")
-			break
-
-		default:
-			return t("app.api_unknown")
-	}
-})
-
-let views = [
-	{
-		text: t("app.home"),
-		to: "/",
-	},
-	{
-		text: t("app.reports"),
-		to: "/report",
-	},
-	{
-		text: t("app.contacts"),
-		to: "/contact",
-	},
-	{
-		text: t("app.exams"),
-		to: "/exam",
-	},
-	/*
-	{
-		text: t("app.settings"),
-		to: "/setting",
-	},
-	*/
-	{
-		text: t("app.about"),
-		to: "/about",
-	},
-]
-
 if (window.electronAPI.nodeEnv != "development") {
 	apiStore.init()
-} else {
-	views.push({
-		text: t("app.testpage"),
-		to: "/test",
-	})
 }
 </script>

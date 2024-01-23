@@ -1,9 +1,11 @@
 import { defineStore } from 'pinia'
-import { Pages } from '../../main/data/pages'
 
 import { stringify, parse } from './serializer'
 
 import { ContactDetailData, ExpireDetailData } from '../../main/data/detaildata'
+import { Pages } from '../../main/data/pages'
+
+const progressUpdateInterval = 1000
 
 const statuses = { // enum
 	UNCONNECTED: 0,
@@ -17,6 +19,10 @@ export const useApiStore = defineStore('api', {
 		status: statuses.UNCONNECTED,
 		interval: 600e3, // TODO: 設定から読みこむようにする
 		wait: 5e3,
+		intervalProgress: 0,
+		autoUpdateRunning: false,
+		autoUpdateLooping: false,
+		progresUpdaterId: null as number | null,
 		title: null,
 		reportList: [],
 		contactList: [],
@@ -36,8 +42,12 @@ export const useApiStore = defineStore('api', {
 			await window.electronAPI.initApi()
 			this.updateStatus()
 			this.loop()
+			this.progresUpdaterId = setInterval(this.updateProgress, progressUpdateInterval)
 		},
 		async loop() {
+			this.autoUpdateRunning = true
+			this.autoUpdateLooping = true
+
 			await this.updateReportList()
 			await new Promise(resolve => setTimeout(resolve, this.wait))
 
@@ -47,8 +57,23 @@ export const useApiStore = defineStore('api', {
 			await this.updateExamList()
 			await new Promise(resolve => setTimeout(resolve, this.wait))
 
+			this.autoUpdateRunning = false
+
 			if(this.status === this.statuses.CONNECTED) {
+				this.intervalProgress = 0
 				setTimeout(this.loop, this.interval)
+			} else {
+				this.autoUpdateLooping = false
+				this.intervalProgress = 0
+			}
+		},
+		async updateProgress() {
+			if(!this.autoUpdateRunning) {
+				if(this.autoUpdateLooping) {
+					this.intervalProgress += progressUpdateInterval
+				}
+			} else {
+				this.intervalProgress = 0
 			}
 		},
 		async updateStatus() {
@@ -59,6 +84,8 @@ export const useApiStore = defineStore('api', {
 				this.updateTitle()
 			} else {
 				this.status = statuses.UNCONNECTED
+				this.autoUpdateRunning = true
+				this.autoUpdateLooping = false
 			}
 		},
 		async updateTitle() {
