@@ -12,6 +12,10 @@ import { SubmitType } from '../data/submittype'
 
 export class DataUtil {
 	public static toDataList(table: TableData[]): ReportData[] | ContactData[] | ExamData[] {
+		if (table.length == 0) {
+			return []
+		}
+
 		const reportKeyword = '最終提出'
 		const contactKeyword = '連絡'
 		const examKeyword = '提出状況'
