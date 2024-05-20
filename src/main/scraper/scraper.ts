@@ -216,13 +216,20 @@ export class Scraper {
 
 		const nextBtnSelector = '#searchList_next,#tbl_A01_01_next'
 
+		const timeout = 1000
+
 		try {
 			let result = []
 
 			// 次へボタンが押せなくなるまで繰り返す
 			while(true) {
+				this.page.waitForNavigation()
+
 				result = result.concat(await (
-					await this.page.waitForSelector(selectors)
+					await this.page.waitForSelector(
+						selectors,
+						{timeout: timeout}
+					)
 				).evaluate(elm =>
 					// テーブルをHTMLTableElementからarrayに変換
 					Array.from(elm.rows).map((row: any) => {// anyにしないと動かない
