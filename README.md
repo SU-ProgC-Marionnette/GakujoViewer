@@ -2,7 +2,15 @@
 
 [静岡大学の学務情報システム](https://gakujo.shizuoka.ac.jp)用の非公式クライアント
 
+## 新システム対応について
+
+現時点では新システム(LiveCampusU)には**対応していません**。
+
+今後の対応(更新 or 開発終了)は新システムの利用開始後の判断となります。
+
 ## インストール
+
+現時点では新システム(LiveCampusU)には**対応していません**。
 
 [ダウンロードページ](https://github.com/SU-ProgC-Marionnette/GakujoViewer/releases)からインストーラかzipファイルをダウンロードしてインストールする
 
