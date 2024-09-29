@@ -1,9 +1,8 @@
 export default {
 	app: {
 		home: "ホーム",
-		reports: "レポート一覧",
-		contacts: "授業連絡",
-		exams: "小テスト",
+		subjects: "課題",
+		contacts: "連絡",
 		settings: "設定",
 		about: "このアプリについて",
 		testpage: "テストページ",
@@ -12,8 +11,7 @@ export default {
 		task_accepting: "受付中の課題",
 		task_expired: "期限切れの課題",
 		unread_contact: "未読の連絡",
-		report: "レポート",
-		exam: "小テスト",
+		subject: "課題",
 		item: "項目",
 	},
 	about: {

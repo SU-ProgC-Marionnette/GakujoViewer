@@ -1,45 +1,44 @@
 import { StringUtil } from './stringutil'
 
 import { TableData } from '../data/tabledata'
-import { ReportData } from '../data/reportdata'
+import { SubjectData } from '../data/subjectdata'
 import { ContactData } from '../data/contactdata'
-import { ExamData } from '../data/examdata'
 
 import { ExpireStatus } from '../data/expirestatus'
 import { SubmitStatus } from '../data/submitstatus'
 import { ContactType } from '../data/contacttype'
-import { SubmitType } from '../data/submittype'
+import { SubjectType } from '../data/subjecttype'
 
 export class DataUtil {
-	public static toDataList(table: TableData[]): ReportData[] | ContactData[] | ExamData[] {
+	public static toDataList(table: TableData[]): SubjectData[] | ContactData[] {
 		if (table.length == 0) {
 			return []
 		}
 
-		const reportKeyword = '最終提出'
+		const noDataKeyword = '表示する情報はありません。'
+		const subjectKeyword = '提出物種別'
 		const contactKeyword = '連絡'
-		const examKeyword = '提出状況'
 
 		// ヘッダでtableを判別
-		if(DataUtil.hasKeyword(table[0].cells, reportKeyword)) {
-			return DataUtil.toReportList(table)
+		if(table.length > 1 && DataUtil.hasKeyword(table[1].cells, noDataKeyword)) {
+			return []
+		} else if(DataUtil.hasKeyword(table[0].cells, subjectKeyword)) {
+			return DataUtil.toSubjectList(table)
 		} else if(DataUtil.hasKeyword(table[0].cells, contactKeyword)) {
 			return DataUtil.toContactList(table)
-		} else if(DataUtil.hasKeyword(table[0].cells, examKeyword)) {
-			return DataUtil.toExamList(table)
 		} else {
 			return []
 		}
 	}
 
-	private static toReportList(table: TableData[]): ReportData[] {
-		const result: ReportData[] = []
+	private static toSubjectList(table: TableData[]): SubjectData[] {
+		const result: SubjectData[] = []
 		const data: TableData[] = table.filter(
-			datum => datum.cells[0] != '授業科目\n学期/曜日時限'
+			datum => datum.cells[0] != '提出物種別'
 		) // ヘッダを除く
 
 		for(const datum of data) {
-			const expireArr = StringUtil.toDateArray(datum.cells[3])
+			const expireArr = StringUtil.toDateArray(datum.cells[4])
 			let startDate: Date | null = null
 			let expireDate: Date | null = null
 			if(expireArr != null && expireArr.length == 2) {
@@ -47,22 +46,16 @@ export class DataUtil {
 				expireDate = expireArr[1]
 			}
 
-			const submitDateArr = StringUtil.toDateArray(datum.cells[4])
-			let submitDate: Date | null = null
-			if(submitDateArr != null) {
-				submitDate = submitDateArr[0]
-			}
-
 			result.push(
-				new ReportData(
+				new SubjectData(
 					datum.id,
-					datum.cells[0],
 					datum.cells[1],
-					DataUtil.toExpireStatus(datum.cells[2]),
+					datum.cells[2],
+					DataUtil.toExpireStatus(datum.cells[3]),
 					startDate,
 					expireDate,
-					DataUtil.toSubmitType(datum.cells[5]),
-					submitDate
+					DataUtil.toSubmitStatus(datum.cells[5]),
+					DataUtil.toSubjectType(datum.cells[0])
 				)
 			)
 		}
@@ -73,17 +66,17 @@ export class DataUtil {
 	private static toContactList(table: TableData[]): ContactData[] {
 		const result: ContactData[] = []
 		const data: TableData[] = table.filter(
-			datum => datum.cells[0] != '授業科目\n学期/曜日時限'
+			datum => datum.cells[1] != '連絡種別（カテゴリ）'
 		) // ヘッダを除く
 
 		for(const datum of data) {
-			const dateArr = StringUtil.toDateArray(datum.cells[5])
+			const dateArr = StringUtil.toDateArray(datum.cells[6])
 			let date: Date | null = null
 			if(dateArr != null) {
 				date = dateArr[0]
 			}
 
-			const targetDateArr = StringUtil.toDateArray(datum.cells[4])
+			const targetDateArr = StringUtil.toDateArray(datum.cells[5])
 			let targetDate: Date | null = null
 			if(targetDateArr != null) {
 				targetDate = targetDateArr[0]
@@ -92,47 +85,13 @@ export class DataUtil {
 			result.push(
 				new ContactData(
 					datum.id,
-					datum.cells[0],
-					StringUtil.getBody(datum.cells[2]),
-					datum.cells[1],
-					DataUtil.toContactType(datum.cells[3]),
+					datum.cells[3],
+					datum.cells[2],
+					DataUtil.toContactType(datum.cells[1]),
 					date,
 					targetDate,
-					StringUtil.isRead(datum.cells[2]),
-					StringUtil.isImportant(datum.cells[2])
-				)
-			)
-		}
-
-		return result
-	}
-
-	private static toExamList(table: TableData[]): ExamData[] {
-		const result: ExamData[] = []
-		const data: TableData[] = table.filter(
-			datum => datum.cells[0] != '授業科目\n学期/曜日時限'
-		) // ヘッダを除く
-
-		for(const datum of data) {
-			const expireArr = StringUtil.toDateArray(datum.cells[3])
-			let startDate: Date | null = null
-			let expireDate: Date | null = null
-			if(expireArr != null && expireArr.length == 2) {
-				startDate = expireArr[0]
-				expireDate = expireArr[1]
-			}
-
-
-			result.push(
-				new ExamData(
-					datum.id,
-					datum.cells[0],
-					datum.cells[1],
-					DataUtil.toExpireStatus(datum.cells[2]),
-					startDate,
-					expireDate,
-					DataUtil.toSubmitType(datum.cells[5]),
-					DataUtil.toSubmitStatus(datum.cells[4])
+					false,
+					false
 				)
 			)
 		}
@@ -143,20 +102,13 @@ export class DataUtil {
 	private static toContactType(str: string): ContactType {
 		switch(str) {
 			case '教員連絡':
-				return ContactType.staff
+				return ContactType.Staff
+
+			case '学内連絡(共通)':
+				return ContactType.Common
 
 			default:
-				return ContactType.other
-		}
-	}
-
-	private static toSubmitType(str: string): SubmitType {
-		switch(str) {
-			case 'Web':
-				return SubmitType.Web
-
-			default:
-				return SubmitType.other
+				return ContactType.Other
 		}
 	}
 
@@ -187,7 +139,29 @@ export class DataUtil {
 				return ExpireStatus.Submitted
 
 			default:
-				return ExpireStatus.other
+				return ExpireStatus.Other
+		}
+	}
+
+	private static toSubjectType(str: string): SubjectType {
+		switch(str) {
+			case '小テスト':
+				return SubjectType.Exam
+
+			case 'レポート':
+				return SubjectType.Report
+
+			case '授業アンケート':
+				return SubjectType.SubjectSurvey
+
+			case '学内アンケート':
+				return SubjectType.SchoolSurvey
+
+			case '授業評価アンケート':
+				return SubjectType.SubjectReview
+
+			default:
+				return SubjectType.Other
 		}
 	}
 

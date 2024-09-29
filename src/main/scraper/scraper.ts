@@ -7,11 +7,12 @@ import { AppBrowser } from './appbrowser'
 import { Pages } from '../data/pages'
 import { TableData } from '../data/tabledata'
 import { ContactDetailData, ExpireDetailData } from '../data/detaildata'
+import { Selectors } from '../data/selectors'
 
 // 学務情報の軽微な仕様変更(ID, Class名の変更)にも柔軟に対応できるよう
 // CSSセレクタやswitchによる分岐などをあえて冗長にしておく
 export class Scraper {
-	private url = 'https://gakujo.shizuoka.ac.jp/portal/'
+	private url = 'https://gakujo.shizuoka.ac.jp/'
 	private browser
 	private page
 
@@ -22,26 +23,6 @@ export class Scraper {
 	}
 
 	public init = async(): Promise<boolean> => {
-		// CSSセレクタ
-		// HTML内のID or class名
-		const gakujoHomeSelId: string = 'home'
-		const msLoginSelId: string = 'i0116'
-		const msOtpSelId: string = 'idTxtBx_SAOTCC_OTC'
-		const gakujoSsoSelClass: string = 'button--full'
-		const gakujoInputEnvName: string = 'accessEnvName'
-
-		// セレクタ文字列を定義
-		const gakujoHomeSel: string = `#${gakujoHomeSelId}.new` // 学情のホーム画面検出
-		const msLoginSel: string = `#${msLoginSelId}` // ログイン画面検出
-		const msOtpSel: string = `#${msOtpSelId}` // ワンタイムパスワード入力画面検出
-		const gakujoSsoSel: string = `.${gakujoSsoSelClass}[name="_eventId_proceed"]` // 送信属性の選択画面検出
-		const gakujoInputEnvSel: string = `input[name="${gakujoInputEnvName}"]` // 学情の環境選択画面検出
-		const gakujoEnvToHomeSel: string = `.btn_large` // 学情のアクセス環境登録のホームボタン
-		const loginBtnSel: string = '.btn_login' // トップページのログインボタン
-		const selStr = [
-			gakujoHomeSel, gakujoSsoSel, msLoginSel, msOtpSel, gakujoInputEnvSel
-		].join(',') // トップページのログインボタンを押したあとに遷移する可能性のあるページを検出するセレクタを列挙
-
 		// ログインCookieを取ってくる用のAppBrowserのインスタンスを用意しておく(この時点ではまだ開かない)
 		const appBrowser = new AppBrowser()
 
@@ -49,7 +30,7 @@ export class Scraper {
 		let elmId: string = ''
 
 		// 学情のホームに辿りつくまで試行(Cookieが無くて or 期限切れなどでログインできなかったときやり直す)
-		while(elmId != gakujoHomeSelId) {
+		while(elmId != Selectors.topPageId) {
 			// 保存されたcookieを取得
 			let cookieStr: string = await FileUtil.read(FileUtil.LOGIN_COOKIE)
 			while(cookieStr == '') {
@@ -60,7 +41,8 @@ export class Scraper {
 
 			// Puppeteerの内部ブラウザ(画面上に表示されない、ユーザが操作できない)を開く
 			this.browser = await puppeteer.launch({
-				headless: 'new'
+				// headless: 'new'
+				headless: false
 			})
 
 			try {
@@ -75,25 +57,29 @@ export class Scraper {
 
 				// login
 				// 学情トップの「ログイン」ボタンが表示されるまで待つ
-				await this.page.waitForSelector(loginBtnSel)
+				await this.page.waitForSelector(Selectors.loginBtn)
 				// 「ログイン」ボタンをクリック
 				// 通常は `page.click(CSSセレクタ)` でクリックできるがこのページでは失敗することがあるので代替
 				// 参考: https://qiita.com/kurokawa516/items/31d039736a470b259667
 				// ログインボタンのElementHandle(PuppeteerでDOMを扱うときの型)を取得
-				const loginBtn = await this.page.$(loginBtnSel)
+				const loginBtn = await this.page.$(Selectors.loginBtn)
 				// 内部ブラウザ側のJavaScriptでボタンをクリックするコードを実行
 				await loginBtn.evaluate(btn => btn.click())
 
 				// トップページかログイン画面か送信属性選択画面が読みこまれるのを待つ
-				let elmHandle = await this.page.waitForSelector(selStr)
+				const elmHandle = await this.page.waitForSelector([
+					Selectors.topPage,
+					Selectors.msLoginPage,
+					Selectors.msOtpPage,
+					Selectors.suSSOPage
+				].join(','))
 
-				// 上で検出した要素のIDとclassを取得
+				// 上で検出した要素のIDを取得
 				elmId = await elmHandle.evaluate(elm => elm.id)
 				const elmClass = await elmHandle.evaluate(elm => elm.className)
-				let elmName = await elmHandle.evaluate(elm => elm.name)
 
 				// IDかclass名で処理を分岐
-				if(elmId == msLoginSelId || elmId == msOtpSelId) {
+				if(elmId == Selectors.msLoginPageId || elmId == Selectors.msOtpPageId) {
 					// 自動ログインできなかったときログイン画面を表示
 					await this.browser.close() // 同時に開くとバグる可能性があるので内部ブラウザを閉じる
 					await appBrowser.login()
@@ -101,27 +87,16 @@ export class Scraper {
 					continue
 				}
 
-				if(elmClass == gakujoSsoSelClass) {
+				if(elmClass == Selectors.suSSOPageClass) {
 					// 送信属性の選択画面の同意ボタンが出たならそれを押す
 					await elmHandle.click()
-
-					elmHandle = await (await this.page.waitForSelector([gakujoHomeSel, gakujoInputEnvSel].join(',')))
-					elmName = await elmHandle.evaluate(elm => elm.name)
-				}
-
-				if(elmName == gakujoInputEnvName) {
-					await elmHandle.evaluate(elm => elm.value = '')
-					await elmHandle.type(`GakujoViewer ${new Date().toISOString()}`)
-					await (
-						await this.page.waitForSelector(gakujoEnvToHomeSel)
-					).evaluate(elm => elm.click())
 				}
 
 				elmId = await (
-					await this.page.waitForSelector(gakujoHomeSel)
+					await this.page.waitForSelector(Selectors.topPage)
 				).evaluate(elm => elm.id)
 
-				if(elmId != gakujoHomeSelId) {
+				if(elmId != Selectors.topPageId) {
 					// 例外のとき次のwhileループに備えて内部ブラウザを閉じる
 					await this.browser.close()
 					continue
@@ -141,55 +116,29 @@ export class Scraper {
 		return true
 	}
 
-	// movePage作成
 	public movePage = async (page: Pages): Promise<boolean> => {
-		// CSSセレクタ
-		const toClassSupportOnClick = 'classSupport' // 授業サポートページに飛ぶボタンに付いているonclick属性に含まれる文字列
-		const toReportOnClick = 'A02'
-		const toContactOnClick = 'A01'
-		const toExamOnClick = 'A03'
-
-		const toClassSupportSelector = `#header-menu-sub a[onclick*="${toClassSupportOnClick}"]` // 授業サポートページに飛ぶセレクタ
-		const toReportSelector = `#gnav-menu a[onclick*="${toReportOnClick}"]`
-		const toContactSelector = `#gnav-menu a[onclick*="${toContactOnClick}"]`
-		const toExamSelector = `#gnav-menu a[onclick*="${toExamOnClick}"]`
-
-		const linkSelectors = [
-			toClassSupportSelector,
-			toReportSelector,
-			toContactSelector,
-			toExamSelector
-		].join(',')
-
 		try {
-			const elmHandle = await this.page.waitForSelector(linkSelectors)
-			const elmOnClickStr = await elmHandle.evaluate(elm => elm.getAttribute('onclick'))
+			// メニューを開く
+			await (await this.page.waitForSelector(Selectors.menuBtn)).click()
 
 			switch(page) {
+				case Pages.Top:
+					await this.page.goto(this.url)
+					break
+
 				case Pages.Contact:
-				case Pages.Report:
-				case Pages.Exam:
-					if(elmOnClickStr.indexOf(toClassSupportOnClick) != -1) {
-						// 「ホーム」ページにいるので授業サポートページに
-						// 飛んでほかのリンクをクリックできるようにする
-						await elmHandle.evaluate(elm => elm.click())
-					}
-					switch(page) {
-						case Pages.Contact:
-							await(await this.page.waitForSelector(toContactSelector)).evaluate(elm => elm.click())
-							break
-						case Pages.Report:
-							await(await this.page.waitForSelector(toReportSelector)).evaluate(elm => elm.click())
-							break
-						case Pages.Exam:
-							await(await this.page.waitForSelector(toExamSelector)).evaluate(elm => elm.click())
-							break
-					}
-				await this.page.waitForNavigation()
-				return true
-				default:
-					return false
+					await (await this.page.waitForSelector(Selectors.menuContactLink)).click()
+					break
+
+				case Pages.Subject:
+					await (await this.page.waitForSelector(Selectors.menuSubjectLink)).click()
+					await (await this.page.waitForSelector(Selectors.menuSubjectListLink)).click()
+					break
 			}
+
+			await this.page.waitForNavigation()
+
+			return true
 		} catch(e) {
 			console.error(e)
 			log.error(e)
@@ -201,21 +150,7 @@ export class Scraper {
 		}
 	}
 
-	// test method
-	public getTitle = async(): Promise<string> => {
-		return await this.page.title()
-	}
-
 	public getTable = async(): Promise<TableData[]> => {
-		const searchListSelector = '#searchList'
-		const tableSelector = '#tbl_A01_01'
-		const selectors = [
-			searchListSelector,
-			tableSelector
-		].join(',')
-
-		const nextBtnSelector = '#searchList_next,#tbl_A01_01_next'
-
 		const timeout = 1000
 
 		try {
@@ -223,11 +158,9 @@ export class Scraper {
 
 			// 次へボタンが押せなくなるまで繰り返す
 			while(true) {
-				this.page.waitForNavigation()
-
 				result = result.concat(await (
 					await this.page.waitForSelector(
-						selectors,
+						Selectors.dataTable,
 						{timeout: timeout}
 					)
 				).evaluate(elm =>
@@ -238,37 +171,16 @@ export class Scraper {
 							cells: []
 						}
 
+						// データのインデックスを取得
+						const idStr = row.getAttribute('_index')
+						if(idStr !== null) {
+								newCells.id = parseInt(idStr)
+						}
+
 						for(let i = 0; i < row.cells.length; i++) {
 							const cell = row.cells[i]
+
 							newCells.cells.push(cell.innerText)
-
-							if(i === 1 || i === 2) {
-								const link = cell.querySelector('a')
-								if(link !== null) {
-									const formSubmitKeyword = 'formSubmit'
-									const showContactKeyword = 'showClassContactDetail'
-									const onclickFunc = link.onclick.toString().match(
-										new RegExp(`(${formSubmitKeyword}|${showContactKeyword})\\((.+)\\)`)
-									)
-
-									if(onclickFunc != null) {
-										let argIdx = -1
-										switch(onclickFunc[1]) {
-											case formSubmitKeyword:
-												argIdx = 1
-												break
-
-											case showContactKeyword:
-												argIdx = 0
-												break
-										}
-
-										if(argIdx !== -1) {
-											newCells.id = parseInt(onclickFunc[2].split(',')[argIdx].replace('\'', ''))
-										}
-									}
-								}
-							}
 						}
 
 						return newCells
@@ -276,10 +188,13 @@ export class Scraper {
 				))
 
 				// 次ページへ
-				const nextElmHandle = await this.page.waitForSelector(nextBtnSelector)
-				const nextDisabled = await nextElmHandle.evaluate(elm => elm.classList.contains('ui-state-disabled'))
+				const nextElmHandle = await this.page.waitForSelector(Selectors.dataTableNextBtn)
+				const nextDisabled = await nextElmHandle.evaluate(elm => elm.classList.contains('disabled'))
 
-				if(nextDisabled) {
+				const tableBodyElmHandle = await this.page.waitForSelector(Selectors.dataTable + ' > tbody')
+				const tableBodyText = await tableBodyElmHandle.evaluate(elm => elm.innerText)
+
+				if(nextDisabled || tableBodyText === '表示する情報はありません。') {
 					break
 				}
 
@@ -297,30 +212,21 @@ export class Scraper {
 			return null
 		}
 
-		const searchListSelector = '#searchList'
-		const tableSelector = '#tbl_A01_01'
-		const selectors = [
-			searchListSelector,
-			tableSelector
-		].join(',')
-
-		const detailTableSelector = '.ttb_entry'
-
-		const nextBtnSelector = '#searchList_next,#tbl_A01_01_next'
+		console.log(id)
 
 		try {
 			// リンクを見つける
 			let isFound = false
 			while(true) {
 				isFound = await (
-					await this.page.waitForSelector(selectors)
+					await this.page.waitForSelector(Selectors.dataTable)
 				).evaluate((elm, id) => {
 					const row: any = Array.from(elm.rows).find((row: any) =>
-						row.querySelector(`a[onclick*="${id}"]`) !== null
+						row.querySelector(`tr[_index="${id}"]`) !== null
 					)
 
 					if(row !== undefined) {
-						row.querySelector('a').click()
+						row.click()
 						return true
 					}
 
@@ -331,8 +237,8 @@ export class Scraper {
 					break
 				}
 
-				const nextElmHandle = await this.page.waitForSelector(nextBtnSelector)
-				const nextDisabled = await nextElmHandle.evaluate(elm => elm.classList.contains('ui-state-disabled'))
+				const nextElmHandle = await this.page.waitForSelector(Selectors.dataTableNextBtn)
+				const nextDisabled = await nextElmHandle.evaluate(elm => elm.classList.contains('disabled'))
 
 				if(nextDisabled) {
 					break
@@ -342,57 +248,99 @@ export class Scraper {
 			}
 
 			if(isFound) {
+				// データをObjectに変換
 				const data = await (
-					await this.page.waitForSelector(detailTableSelector)
-				).evaluate(elm =>
-					Array.from(elm.rows).map((row: any) => {
-						const cell: any = Array.from(row.cells).slice(-1)[0]
-						return cell.innerText
-					})
-				)
+					await this.page.waitForSelector(Selectors.lineTable)
+				).evaluate(elm => Object.fromEntries(
+					Array.from(elm.rows).map((row: any) =>
+						Array.from(row.cells).map((cell: any) =>
+							cell.innerText
+						)
+					)
+				))
 
 				switch(page) {
 					case Pages.Contact:
 						{
-							const dates = StringUtil.toDateArray(data[7])
+							// タイトル, 種別, カテゴリを取得
+							const title = await(
+								await this.page.waitForSelector(Selectors.contactTitle)
+							).evaluate(elm =>
+								elm.innerText
+							)
+
+							const type = await(
+								await this.page.waitForSelector(Selectors.contactType)
+							).evaluate(elm =>
+								elm.innerText
+							)
+
+							const category = await(
+								await this.page.waitForSelector(Selectors.contactCategory)
+							).evaluate(elm =>
+								elm.innerText
+							)
+
+							const dates = StringUtil.toDateArray(data.連絡日時)
 							let date: Date | null = null
 							if(dates !== null && dates.length >= 1) {
 								date = dates[0]
 							}
 
 							return new ContactDetailData(
-								data[1],
+								title,
 								date,
-								data[0],
-								data[3],
-								data[4],
-								data[2],
-								data[5],
-								data[6],
-								data[8]
+								type,
+								data.ファイル,
+								'',
+								data.内容,
+								'',
+								data.重要度,
+								''
 							)
 						}
 
-					case Pages.Report:
-					case Pages.Exam:
+					case Pages.Subject:
 						{
-							const dates = StringUtil.toDateArray(data[1])
+							// タイトル, 評価方法, 期限を取得
+							const title = await(
+								await this.page.waitForSelector(Selectors.subjectTitle)
+							).evaluate(elm =>
+								elm.innerText
+							)
+
+							const reviewMethod = await(
+								await this.page.waitForSelector(Selectors.subjectReviewMethod)
+							).evaluate(elm =>
+								elm.innerText
+							)
+
+							const expireDateStr = await(
+								await this.page.waitForSelector(Selectors.subjectExpireDate)
+							).evaluate(elm =>
+								elm.innerText
+							)
+
+							const description = await(
+								await this.page.waitForSelector(Selectors.subjectDescription)
+							).evaluate(elm =>
+								elm.innerText
+							)
+
+							const dates = StringUtil.toDateArray(expireDateStr)
 							let date: Date | null = null
-							let expireDate: Date | null = null
-							if(dates !== null && dates.length >= 2) {
+							if(dates !== null) {
 								date = dates[0]
-								expireDate = dates[1]
 							}
 
-	//constructor(title: string, date: Date | null, expireDate: Date | null, reviewMethod: string, description: string, reference: string, note: string) {
 							return new ExpireDetailData(
-								data[0],
+								title,
+								null,
 								date,
-								expireDate,
-								data[2],
-								data[3],
-								data[4],
-								data[5]
+								reviewMethod,
+								description,
+								'',
+								''
 							)
 						}
 

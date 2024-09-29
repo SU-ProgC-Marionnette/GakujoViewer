@@ -39,21 +39,10 @@ const data = computed(() => {
 	}
 
 	switch (page) {
-		case Pages.Report:
-		case Pages.Exam: {
+		case Pages.Subject: {
 			let detail = null
-			switch (page) {
-				case Pages.Report:
-					if (apiStore.reportDetails[id] !== undefined) {
-						detail = apiStore.reportDetails[id]
-					}
-					break
-
-				case Pages.Exam:
-					if (apiStore.examDetails[id] !== undefined) {
-						detail = apiStore.examDetails[id]
-					}
-					break
+			if (apiStore.subjectDetails[id] !== undefined) {
+				detail = apiStore.subjectDetails[id]
 			}
 
 			if (detail === null) {

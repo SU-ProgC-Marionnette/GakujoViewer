@@ -1,4 +1,5 @@
 export enum ContactType{
-    staff,
-    other,
-};
+    Common,
+    Staff,
+    Other,
+}

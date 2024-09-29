@@ -3,7 +3,7 @@
 		:latestUpdate="latestUpdate"
 		:headers="headers"
 		:table="table"
-		:page="Pages.Exam"
+		:page="Pages.Report"
 	/>
 </template>
 
@@ -16,8 +16,6 @@ import { useI18n } from "vue-i18n"
 
 import { useApiStore } from "../stores/apistore"
 import { ExpireStatus } from "../../main/data/expirestatus"
-import { SubmitStatus } from "../../main/data/submitstatus"
-import { SubmitType } from "../../main/data/submittype"
 import { Pages } from "../../main/data/pages"
 
 const { t } = useI18n()
@@ -30,11 +28,11 @@ const headers = [
 	{ title: t("table.start"), key: "start" },
 	{ title: t("table.expire"), key: "expire" },
 	{ title: t("table.type"), key: "type" },
-	{ title: t("table.submit"), key: "submit" },
+	{ title: t("table.submit_date"), key: "submit" },
 ]
 
 const table = computed(() =>
-	apiStore.examList.map((row) => {
+	apiStore.subjectList.map((row) => {
 		let status = ""
 		switch (row.status) {
 			case ExpireStatus.Accepting:
@@ -47,17 +45,6 @@ const table = computed(() =>
 
 			case ExpireStatus.Closed:
 				status = t("expire_status.closed")
-				break
-		}
-
-		let submit = ""
-		switch (row.submit) {
-			case SubmitStatus.Submitted:
-				submit = t("submit_status.submitted")
-				break
-
-			case SubmitStatus.NotSubmitted:
-				submit = t("submit_status.not_submitted")
 				break
 		}
 
@@ -78,6 +65,11 @@ const table = computed(() =>
 			expireStr = row.expire.toLocaleString()
 		}
 
+		let submitStr = ""
+		if (row.submit != null) {
+			submitStr = row.submit.toLocaleString()
+		}
+
 		return {
 			id: row.id,
 			subject: row.subject,
@@ -86,19 +78,19 @@ const table = computed(() =>
 			start: startStr,
 			expire: expireStr,
 			type: type,
-			submit: submit,
+			submit: submitStr,
 		}
 	}),
 )
 
 const latestUpdate = computed(() =>
-	apiStore.examListDate != null
-		? apiStore.examListDate.toLocaleString()
+	apiStore.subjectListDate != null
+		? apiStore.subjectListDate.toLocaleString()
 		: t("table.no_data"),
 )
 
 function clickHandler(id) {
-	apiStore.updateDetails(Pages.Exam, id)
-	apiStore.changeDetail(Pages.Exam, id)
+	apiStore.updateDetails(Pages.Subject, id)
+	apiStore.changeDetail(Pages.Subject, id)
 }
 </script>

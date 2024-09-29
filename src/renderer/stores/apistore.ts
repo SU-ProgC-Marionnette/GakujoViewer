@@ -24,15 +24,12 @@ export const useApiStore = defineStore('api', {
 		autoUpdateLooping: false,
 		progresUpdaterId: null as number | null,
 		title: null,
-		reportList: [],
+		subjectList: [],
 		contactList: [],
-		examList: [],
-		reportListDate: null as Date | null,
+		subjectListDate: null as Date | null,
 		contactListDate: null as Date | null,
-		examListDate: null as Date | null,
-		reportDetails: {} as { [id: number]: ExpireDetailData },
+		subjectDetails: {} as { [id: number]: ExpireDetailData },
 		contactDetails: {} as { [id: number]: ContactDetailData },
-		examDetails: {} as { [id: number]: ExpireDetailData },
 		showingDetailPage: null as Pages | null,
 		showingDetailId: null as number | null,
 	}),
@@ -40,7 +37,7 @@ export const useApiStore = defineStore('api', {
 		async init() {
 			this.status = this.statuses.CONNECTING
 			await window.electronAPI.initApi()
-			this.updateStatus()
+			await this.updateStatus()
 			this.loop()
 			this.progresUpdaterId = setInterval(this.updateProgress, progressUpdateInterval)
 		},
@@ -48,13 +45,10 @@ export const useApiStore = defineStore('api', {
 			this.autoUpdateRunning = true
 			this.autoUpdateLooping = true
 
-			await this.updateReportList()
+			await this.updateSubjectList()
 			await new Promise(resolve => setTimeout(resolve, this.wait))
 
 			await this.updateContactList()
-			await new Promise(resolve => setTimeout(resolve, this.wait))
-
-			await this.updateExamList()
 			await new Promise(resolve => setTimeout(resolve, this.wait))
 
 			this.autoUpdateRunning = false
@@ -81,29 +75,24 @@ export const useApiStore = defineStore('api', {
 
 			if(isReady) {
 				this.status = this.statuses.CONNECTED
-				this.updateTitle()
 			} else {
 				this.status = statuses.UNCONNECTED
 				this.autoUpdateRunning = true
 				this.autoUpdateLooping = false
 			}
 		},
-		async updateTitle() {
-			this.title = await window.electronAPI.getTitle()
-		},
 		async movePage(page: Pages): Promise<boolean> {
 			const result = await window.electronAPI.movePage(page)
-			this.updateTitle()
 			this.updateStatus()
 			return result
 		},
 		async getTable(): Promise<string[][]> {
 			return await window.electronAPI.getTable()
 		},
-		async updateReportList() {
-			if(await this.movePage(Pages.Report)) {
-				this.reportList = await window.electronAPI.getTableData()
-				this.reportListDate = new Date()
+		async updateSubjectList() {
+			if(await this.movePage(Pages.Subject)) {
+				this.subjectList = await window.electronAPI.getTableData()
+				this.subjectListDate = new Date()
 			}
 			this.updateStatus()
 		},
@@ -114,18 +103,11 @@ export const useApiStore = defineStore('api', {
 			}
 			this.updateStatus()
 		},
-		async updateExamList() {
-			if(await this.movePage(Pages.Exam)) {
-				this.examList = await window.electronAPI.getTableData()
-				this.examListDate = new Date()
-			}
-			this.updateStatus()
-		},
 		async updateDetails(page: Pages, id: number) {
 			switch(page) {
-				case Pages.Report:
-					if(this.reportDetails[id] !== undefined) {
-						return this.reportDetails[id]
+				case Pages.Subject:
+					if(this.subjectDetails[id] !== undefined) {
+						return this.subjectDetails[id]
 					}
 					break
 
@@ -134,25 +116,17 @@ export const useApiStore = defineStore('api', {
 						return this.contactDetails[id]
 					}
 					break
-
-				case Pages.Exam:
-					if(this.examDetails[id] !== undefined) {
-						return this.examDetails[id]
-					}
 			}
 
 			const data = await window.electronAPI.getDetails(page, id)
 			this.updateStatus()
 
 			switch(page) {
-				case Pages.Report:
-					this.reportDetails[id] = data
+				case Pages.Subject:
+					this.subjectDetails[id] = data
 					break
 				case Pages.Contact:
 					this.contactDetails[id] = data
-					break
-				case Pages.Exam:
-					this.examDetails[id] = data
 					break
 			}
 
@@ -165,15 +139,12 @@ export const useApiStore = defineStore('api', {
 	},
 	persist: {
 		paths: [
-			'reportList',
+			'subjectList',
 			'contactList',
-			'examList',
-			'reportListDate',
+			'subjectListDate',
 			'contactListDate',
-			'examListDate',
-			'reportDetails',
+			'subjectDetails',
 			'contactDetails',
-			'examDetails'
 		],
 		serializer: {
 			serialize: stringify,
