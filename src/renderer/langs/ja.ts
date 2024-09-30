@@ -1,9 +1,8 @@
 export default {
 	app: {
 		home: "ホーム",
-		reports: "レポート一覧",
-		contacts: "授業連絡",
-		exams: "小テスト",
+		subjects: "課題",
+		contacts: "連絡",
 		settings: "設定",
 		about: "このアプリについて",
 		testpage: "テストページ",
@@ -12,8 +11,7 @@ export default {
 		task_accepting: "受付中の課題",
 		task_expired: "期限切れの課題",
 		unread_contact: "未読の連絡",
-		report: "レポート",
-		exam: "小テスト",
+		subject: "課題",
 		item: "項目",
 	},
 	about: {
@@ -59,6 +57,7 @@ export default {
 		expire: "期限",
 		type: "種別",
 		submit_date: "提出日",
+		submit_status: "提出状況",
 		staff: "教員",
 		date: "日時",
 		target_date: "対象日時",
@@ -67,16 +66,28 @@ export default {
 	expire_status: {
 		accepting: "受付中",
 		submitted: "提出済",
-		closed: "締切"
+		closed: "締切",
+		other: "その他"
 	},
 	submit_status: {
 		submitted: "提出済",
-		not_submitted: "未提出"
+		not_submitted: "未提出",
+		other: "その他"
 	},
 	submit_type: {
 		web: "Web"
 	},
 	contact_type: {
-		staff: "教員連絡"
+		common: "学内連絡(共通)",
+		staff: "教員連絡",
+		other: "その他"
+	},
+	subject_type: {
+		exam: "小テスト",
+		report: "レポート",
+		subject_survey: "授業アンケート",
+		school_survey: "学内アンケート",
+		subject_review: "授業評価アンケート",
+		other: "その他"
 	}
 }

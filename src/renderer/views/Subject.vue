@@ -3,7 +3,7 @@
 		:latestUpdate="latestUpdate"
 		:headers="headers"
 		:table="table"
-		:page="Pages.Exam"
+		:page="Pages.Report"
 	/>
 </template>
 
@@ -16,8 +16,8 @@ import { useI18n } from "vue-i18n"
 
 import { useApiStore } from "../stores/apistore"
 import { ExpireStatus } from "../../main/data/expirestatus"
+import { SubjectType } from "../../main/data/subjecttype"
 import { SubmitStatus } from "../../main/data/submitstatus"
-import { SubmitType } from "../../main/data/submittype"
 import { Pages } from "../../main/data/pages"
 
 const { t } = useI18n()
@@ -30,11 +30,11 @@ const headers = [
 	{ title: t("table.start"), key: "start" },
 	{ title: t("table.expire"), key: "expire" },
 	{ title: t("table.type"), key: "type" },
-	{ title: t("table.submit"), key: "submit" },
+	{ title: t("table.submit_status"), key: "submit" },
 ]
 
 const table = computed(() =>
-	apiStore.examList.map((row) => {
+	apiStore.subjectList.map((row) => {
 		let status = ""
 		switch (row.status) {
 			case ExpireStatus.Accepting:
@@ -48,10 +48,41 @@ const table = computed(() =>
 			case ExpireStatus.Closed:
 				status = t("expire_status.closed")
 				break
+
+			default:
+				status = t("expire_status.other")
+				break
+		}
+
+		let type = ""
+		switch (row.type) {
+			case SubjectType.Exam:
+				type = t("subject_type.exam")
+				break
+
+			case SubjectType.Report:
+				type = t("subject_type.report")
+				break
+
+			case SubjectType.SubjectSurvey:
+				type = t("subject_type.subject_survey")
+				break
+
+			case SubjectType.SchoolSurvey:
+				type = t("subject_type.school_survey")
+				break
+
+			case SubjectType.SubjectReview:
+				type = t("subject_type.subject_review")
+				break
+
+			default:
+				type = t("subject_type.other")
+				break
 		}
 
 		let submit = ""
-		switch (row.submit) {
+		switch(row.submit) {
 			case SubmitStatus.Submitted:
 				submit = t("submit_status.submitted")
 				break
@@ -59,12 +90,9 @@ const table = computed(() =>
 			case SubmitStatus.NotSubmitted:
 				submit = t("submit_status.not_submitted")
 				break
-		}
 
-		let type = ""
-		switch (row.type) {
-			case SubmitType.Web:
-				type = t("submit_type.web")
+			default:
+				submit = t("submit_status.other")
 				break
 		}
 
@@ -92,13 +120,13 @@ const table = computed(() =>
 )
 
 const latestUpdate = computed(() =>
-	apiStore.examListDate != null
-		? apiStore.examListDate.toLocaleString()
+	apiStore.subjectListDate != null
+		? apiStore.subjectListDate.toLocaleString()
 		: t("table.no_data"),
 )
 
 function clickHandler(id) {
-	apiStore.updateDetails(Pages.Exam, id)
-	apiStore.changeDetail(Pages.Exam, id)
+	apiStore.updateDetails(Pages.Subject, id)
+	apiStore.changeDetail(Pages.Subject, id)
 }
 </script>

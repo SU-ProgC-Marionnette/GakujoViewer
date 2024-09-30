@@ -25,7 +25,6 @@ const apiStore = useApiStore()
 const headers = [
 	{ title: t("table.subject"), key: "subject" },
 	{ title: t("table.title"), key: "title" },
-	{ title: t("table.staff"), key: "staff" },
 	{ title: t("table.type"), key: "type" },
 	{ title: t("table.date"), key: "date" },
 	{ title: t("table.target_date"), key: "targetDate" },
@@ -35,8 +34,16 @@ const table = computed(() =>
 	apiStore.contactList.map((row) => {
 		let type = ""
 		switch (row.type) {
-			case ContactType.staff:
+			case ContactType.Common:
+				type = t("contact_type.common")
+				break
+
+			case ContactType.Staff:
 				type = t("contact_type.staff")
+				break
+
+			default:
+				type = t("contact_type.other")
 				break
 		}
 
@@ -54,10 +61,9 @@ const table = computed(() =>
 			id: row.id,
 			subject: row.subject,
 			title: row.title,
-			staff: row.staff,
 			type: type,
 			date: dateStr,
-			targetDate: targetDateStr,
+			targetDate: targetDateStr
 		}
 	}),
 )

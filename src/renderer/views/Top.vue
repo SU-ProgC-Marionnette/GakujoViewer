@@ -102,43 +102,23 @@ const router = useRouter()
 const apiStore = useApiStore()
 
 const lastUpdate = computed(() => {
-	if (apiStore.reportListDate === null && apiStore.examListDate === null) {
+	if (apiStore.subjectListDate === null) {
 		// データがない
 		return t("table.no_data")
-	} else if (
-		apiStore.reportListDate !== null &&
-		apiStore.examListDate !== null
-	) {
-		// 古い方を返す
-		return apiStore.reportListDate < apiStore.examListDate
-			? apiStore.reportListDate.toLocaleString()
-			: apiStore.examListDate.toLocaleString()
 	} else {
-		// nullじゃない方を返す
-		return apiStore.reportListDate !== null
-			? apiStore.reportListDate.toLocaleString()
-			: apiStore.examListDate.toLocaleString()
+		return apiStore.subjectListDate.toLocaleString()
 	}
 })
 
 const taskAccTable = computed(() => {
-	// reportListとexamListから未提出で受付中の課題を抽出
-	let result = apiStore.reportList
-		.filter((row) => row.status === ExpireStatus.Accepting)
-		.map((row) => {
-			row.page = Pages.Report
-			row.name = t("top.report")
-			return row
-		})
-		.concat(
-			apiStore.examList
-				.filter((row) => row.status === ExpireStatus.Accepting)
-				.map((row) => {
-					row.page = Pages.Exam
-					row.name = t("top.exam")
-					return row
-				}),
-		)
+	// 未提出で受付中の課題を抽出
+	let result = apiStore.subjectList.filter((row) =>
+		row.status === ExpireStatus.Accepting
+	).map((row) => {
+		row.page = Pages.Subject
+		row.name = t("top.subject")
+		return row
+	})
 
 	// 期限が近い順にソート
 	result.sort((a, b) => {
@@ -163,30 +143,15 @@ const taskAccTable = computed(() => {
 })
 
 const taskExpTable = computed(() => {
-	// reportListとexamListから期限切れの課題を抽出
+	// 期限切れの課題を抽出
 	const now = new Date()
-	let result = apiStore.reportList
-		.filter(
-			(row) => row.status === ExpireStatus.Closed && row.submit === null,
-		)
-		.map((row) => {
-			row.page = Pages.Report
-			row.name = t("top.report")
-			return row
-		})
-		.concat(
-			apiStore.examList
-				.filter(
-					(row) =>
-						row.status === ExpireStatus.Closed &&
-						row.submit === SubmitStatus.NotSubmitted,
-				)
-				.map((row) => {
-					row.page = Pages.Exam
-					row.name = t("top.exam")
-					return row
-				}),
-		)
+	let result = apiStore.subjectList.filter((row) =>
+		row.status === ExpireStatus.Closed && row.submit === null
+	).map((row) => {
+		row.page = Pages.Subject
+		row.name = t("top.subject")
+		return row
+	})
 
 	// 期限が新しい順にソート
 	result.sort((a, b) => {

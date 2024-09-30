@@ -39,21 +39,10 @@ const data = computed(() => {
 	}
 
 	switch (page) {
-		case Pages.Report:
-		case Pages.Exam: {
+		case Pages.Subject: {
 			let detail = null
-			switch (page) {
-				case Pages.Report:
-					if (apiStore.reportDetails[id] !== undefined) {
-						detail = apiStore.reportDetails[id]
-					}
-					break
-
-				case Pages.Exam:
-					if (apiStore.examDetails[id] !== undefined) {
-						detail = apiStore.examDetails[id]
-					}
-					break
+			if (apiStore.subjectDetails[id] !== undefined && apoiStore.subjectDetails[id] !== null) {
+				detail = apiStore.subjectDetails[id]
 			}
 
 			if (detail === null) {
@@ -77,7 +66,7 @@ const data = computed(() => {
 		}
 
 		case Pages.Contact:
-			if (apiStore.contactDetails[id] !== undefined) {
+			if (apiStore.contactDetails[id] !== undefined && apiStore.contactDetails[id] !== null) {
 				let detail = apiStore.contactDetails[id]
 				return [
 					{ label: t("detail.type"), value: detail.type },

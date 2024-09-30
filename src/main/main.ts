@@ -56,7 +56,6 @@ ipcMain.on('message', (event, message) => {
 const gakujoApi = new GakujoApi()
 
 ipcMain.handle('initApi', gakujoApi.init)
-ipcMain.handle('getTitle', gakujoApi.getTitle)
 ipcMain.handle('movePage', async(event, page) => await gakujoApi.movePage(page))
 ipcMain.handle('getTable', gakujoApi.getTable)
 ipcMain.handle('getTableData', gakujoApi.getTableData)

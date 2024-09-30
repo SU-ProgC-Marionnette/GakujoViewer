@@ -19,16 +19,12 @@ let views = [
 		to: "/",
 	},
 	{
-		text: t("app.reports"),
-		to: "/report",
+		text: t("app.subjects"),
+		to: "/subject",
 	},
 	{
 		text: t("app.contacts"),
 		to: "/contact",
-	},
-	{
-		text: t("app.exams"),
-		to: "/exam",
 	},
 	/*
 	{

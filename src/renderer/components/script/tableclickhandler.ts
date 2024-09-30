@@ -8,14 +8,8 @@ export function tableClickHandler(page: Pages, id: number, apiStore, router): vo
 	} else {
 		let found = false
 		switch (page) {
-			case Pages.Report:
-				if (apiStore.reportDetails[id] !== undefined) {
-					found = true
-				}
-				break
-
-			case Pages.Exam:
-				if (apiStore.examDetails[id] !== undefined) {
+			case Pages.Subject:
+				if (apiStore.subjectDetails[id] !== undefined) {
 					found = true
 				}
 				break

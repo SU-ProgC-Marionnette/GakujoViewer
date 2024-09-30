@@ -2,9 +2,10 @@ import puppeteer from 'puppeteer'
 import log from 'electron-log/main'
 
 import { FileUtil } from '../util/fileutil'
+import { Selectors } from '../data/selectors'
 
 export class AppBrowser {
-	private url = 'https://gakujo.shizuoka.ac.jp/portal/'
+	private url = 'https://gakujo.shizuoka.ac.jp/'
 	private browser
 	private page
 
@@ -30,15 +31,14 @@ export class AppBrowser {
 			}
 
 			// login
-			const loginBtnSel: string = '.btn_login'
-			await this.page.waitForSelector(loginBtnSel)
-			const loginBtn = await this.page.$(loginBtnSel)
+			await this.page.waitForSelector(Selectors.loginBtn)
+			const loginBtn = await this.page.$(Selectors.loginBtn)
 			await loginBtn.evaluate(btn => btn.click())
 
 			// 手動でログインしてもらう
 
 			// トップページが読みこまれるのを待つ
-			await this.page.waitForSelector('#home.new', {
+			await this.page.waitForSelector(Selectors.topPage, {
 				timeout: 0
 			})
 
