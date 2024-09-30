@@ -41,8 +41,7 @@ export class Scraper {
 
 			// Puppeteerの内部ブラウザ(画面上に表示されない、ユーザが操作できない)を開く
 			this.browser = await puppeteer.launch({
-				// headless: 'new'
-				headless: false
+				headless: 'new'
 			})
 
 			try {
@@ -212,8 +211,6 @@ export class Scraper {
 			return null
 		}
 
-		console.log(id)
-
 		try {
 			// リンクを見つける
 			let isFound = false
@@ -221,12 +218,10 @@ export class Scraper {
 				isFound = await (
 					await this.page.waitForSelector(Selectors.dataTable)
 				).evaluate((elm, id) => {
-					const row: any = Array.from(elm.rows).find((row: any) =>
-						row.querySelector(`tr[_index="${id}"]`) !== null
-					)
+					const row: any = elm.querySelector(`tr[_index="${id}"]`)
 
-					if(row !== undefined) {
-						row.click()
+					if(row !== null) {
+						row.cells[1].click()
 						return true
 					}
 

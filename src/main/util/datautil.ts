@@ -129,11 +129,9 @@ export class DataUtil {
 		switch(str) {
 			case '受付中':
 				return ExpireStatus.Accepting
-				break
 
 			case '締切':
 				return ExpireStatus.Closed
-				break
 
 			case '提出済':
 				return ExpireStatus.Submitted

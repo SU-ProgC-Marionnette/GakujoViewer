@@ -41,7 +41,7 @@ const data = computed(() => {
 	switch (page) {
 		case Pages.Subject: {
 			let detail = null
-			if (apiStore.subjectDetails[id] !== undefined) {
+			if (apiStore.subjectDetails[id] !== undefined && apoiStore.subjectDetails[id] !== null) {
 				detail = apiStore.subjectDetails[id]
 			}
 
@@ -66,7 +66,7 @@ const data = computed(() => {
 		}
 
 		case Pages.Contact:
-			if (apiStore.contactDetails[id] !== undefined) {
+			if (apiStore.contactDetails[id] !== undefined && apiStore.contactDetails[id] !== null) {
 				let detail = apiStore.contactDetails[id]
 				return [
 					{ label: t("detail.type"), value: detail.type },

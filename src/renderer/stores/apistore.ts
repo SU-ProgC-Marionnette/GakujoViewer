@@ -106,13 +106,13 @@ export const useApiStore = defineStore('api', {
 		async updateDetails(page: Pages, id: number) {
 			switch(page) {
 				case Pages.Subject:
-					if(this.subjectDetails[id] !== undefined) {
+					if(this.subjectDetails[id] !== undefined && this.subjectDetails[id] !== null) {
 						return this.subjectDetails[id]
 					}
 					break
 
 				case Pages.Contact:
-					if(this.contactDetails[id] !== undefined) {
+					if(this.contactDetails[id] !== undefined && this.contactDetails[id] !== null) {
 						return this.contactDetails[id]
 					}
 					break
