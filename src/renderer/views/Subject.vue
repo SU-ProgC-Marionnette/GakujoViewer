@@ -16,6 +16,8 @@ import { useI18n } from "vue-i18n"
 
 import { useApiStore } from "../stores/apistore"
 import { ExpireStatus } from "../../main/data/expirestatus"
+import { SubjectType } from "../../main/data/subjecttype"
+import { SubmitStatus } from "../../main/data/submitstatus"
 import { Pages } from "../../main/data/pages"
 
 const { t } = useI18n()
@@ -28,7 +30,7 @@ const headers = [
 	{ title: t("table.start"), key: "start" },
 	{ title: t("table.expire"), key: "expire" },
 	{ title: t("table.type"), key: "type" },
-	{ title: t("table.submit_date"), key: "submit" },
+	{ title: t("table.submit_status"), key: "submit" },
 ]
 
 const table = computed(() =>
@@ -46,12 +48,51 @@ const table = computed(() =>
 			case ExpireStatus.Closed:
 				status = t("expire_status.closed")
 				break
+
+			default:
+				status = t("expire_status.other")
+				break
 		}
 
 		let type = ""
 		switch (row.type) {
-			case SubmitType.Web:
-				type = t("submit_type.web")
+			case SubjectType.Exam:
+				type = t("subject_type.exam")
+				break
+
+			case SubjectType.Report:
+				type = t("subject_type.report")
+				break
+
+			case SubjectType.SubjectSurvey:
+				type = t("subject_type.subject_survey")
+				break
+
+			case SubjectType.SchoolSurvey:
+				type = t("subject_type.school_survey")
+				break
+
+			case SubjectType.SubjectReview:
+				type = t("subject_type.subject_review")
+				break
+
+			default:
+				type = t("subject_type.other")
+				break
+		}
+
+		let submit = ""
+		switch(row.submit) {
+			case SubmitStatus.Submitted:
+				submit = t("submit_status.submitted")
+				break
+
+			case SubmitStatus.NotSubmitted:
+				submit = t("submit_status.not_submitted")
+				break
+
+			default:
+				submit = t("submit_status.other")
 				break
 		}
 
@@ -65,11 +106,6 @@ const table = computed(() =>
 			expireStr = row.expire.toLocaleString()
 		}
 
-		let submitStr = ""
-		if (row.submit != null) {
-			submitStr = row.submit.toLocaleString()
-		}
-
 		return {
 			id: row.id,
 			subject: row.subject,
@@ -78,7 +114,7 @@ const table = computed(() =>
 			start: startStr,
 			expire: expireStr,
 			type: type,
-			submit: submitStr,
+			submit: submit,
 		}
 	}),
 )

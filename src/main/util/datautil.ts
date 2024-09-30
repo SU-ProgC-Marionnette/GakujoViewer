@@ -121,7 +121,7 @@ export class DataUtil {
 				return SubmitStatus.NotSubmitted
 
 			default:
-				return SubmitStatus.other
+				return SubmitStatus.Other
 		}
 	}
 
