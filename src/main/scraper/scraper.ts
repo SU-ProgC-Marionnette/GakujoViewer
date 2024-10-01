@@ -66,16 +66,17 @@ export class Scraper {
 				await loginBtn.evaluate(btn => btn.click())
 
 				// トップページかログイン画面か送信属性選択画面が読みこまれるのを待つ
-				const elmHandle = await this.page.waitForSelector([
+				let elmHandle = await this.page.waitForSelector([
 					Selectors.topPage,
 					Selectors.msLoginPage,
 					Selectors.msOtpPage,
-					Selectors.suSSOPage
+					Selectors.suSSOPage,
+					Selectors.dialogCloseBtn
 				].join(','))
 
 				// 上で検出した要素のIDを取得
 				elmId = await elmHandle.evaluate(elm => elm.id)
-				const elmClass = await elmHandle.evaluate(elm => elm.className)
+				let elmClass = await elmHandle.evaluate(elm => elm.className)
 
 				// IDかclass名で処理を分岐
 				if(elmId == Selectors.msLoginPageId || elmId == Selectors.msOtpPageId) {
@@ -89,6 +90,23 @@ export class Scraper {
 				if(elmClass == Selectors.suSSOPageClass) {
 					// 送信属性の選択画面の同意ボタンが出たならそれを押す
 					await elmHandle.click()
+
+					elmHandle = await this.page.waitForSelector([
+						Selectors.topPage,
+						Selectors.dialogCloseBtn
+					].join(','))
+
+					elmClass = await elmHandle.evaluate(elm => elm.className)
+					elmId = await elmHandle.evaluate(elm => elm.id)
+				}
+
+				if(elmClass.indexOf(Selectors.dialogCloseClass) !== -1) {
+					// なにかダイアログが出ているので閉じてトップページへ
+					// 閉じるときにページを離れますか？が出た場合自動で閉じるようにしておく
+					this.page.on('dialog', dialog => dialog.type() === 'beforeunload' && dialog.accept())
+
+					await elmHandle.evaluate(elm => elm.click())
+					await (await this.page.waitForSelector(Selectors.logoBtn)).evaluate(elm => elm.click())
 				}
 
 				elmId = await (
