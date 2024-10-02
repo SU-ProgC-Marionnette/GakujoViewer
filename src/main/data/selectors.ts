@@ -27,6 +27,9 @@ export class Selectors {
     static readonly dataTableNextBtn    = '#dataTable01_next'
     static readonly lineTable           = '.c-contents-body > .c-table-line'
 
+    static readonly statusInfo          = '.c-status-info'
+    static readonly statusNotice        = '.c-status-notice'
+
     static readonly contactTitle        = '.c-fixed-heading-main .c-heading-h3'
     static readonly contactType         = '.c-fixed-heading-submission-row:nth-child(2) .c-form-box'
     static readonly contactCategory     = '.c-fixed-heading-submission-row:nth-child(3) .c-form-box'

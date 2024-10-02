@@ -180,12 +180,14 @@ export class Scraper {
 						Selectors.dataTable,
 						{timeout: timeout}
 					)
-				).evaluate(elm =>
+				).evaluate((elm, statusNotice) =>
 					// テーブルをHTMLTableElementからarrayに変換
 					Array.from(elm.rows).map((row: any) => {// anyにしないと動かない
 						const newCells: TableData = {
 							id: -1,
-							cells: []
+							cells: [],
+							read: false,
+							important: false
 						}
 
 						// データのインデックスを取得
@@ -200,8 +202,19 @@ export class Scraper {
 							newCells.cells.push(cell.innerText)
 						}
 
+						// 重要かどうか
+						if(row.querySelector(statusNotice) !== null) {
+							newCells.important = true
+						}
+
+						// 未読かどうか
+						if(row.getAttribute('style') === null) {
+							newCells.read = true
+						}
+
 						return newCells
-					})
+					}),
+					Selectors.statusNotice
 				))
 
 				// 次ページへ
