@@ -6,7 +6,7 @@ This application contains following third party softwares:
 
 0BSD
 
-tslib@2.6.2 (https://github.com/Microsoft/tslib)
+tslib@2.7.0 (https://github.com/Microsoft/tslib)
 
 Copyright (c) Microsoft Corporation.
 
@@ -24,7 +24,7 @@ PERFORMANCE OF THIS SOFTWARE.
 
 Apache-2.0
 
-@puppeteer/browsers@1.9.1 (https://github.com/puppeteer/puppeteer/tree/main/packages/browsers)
+@puppeteer/browsers@2.4.0 (https://github.com/puppeteer/puppeteer/tree/main/packages/browsers)
 
 # @puppeteer/browsers
 
@@ -38,7 +38,7 @@ Use `npx` to run the CLI:
 npx @puppeteer/browsers --help
 ```
 
-CLI help will provide all documentation you need to use the CLI.
+Built-in per-command `help` will provide all documentation you need to use the CLI.
 
 ```bash
 npx @puppeteer/browsers --help # help for all commands
@@ -46,10 +46,28 @@ npx @puppeteer/browsers install --help # help for the install command
 npx @puppeteer/browsers launch --help # help for the launch command
 ```
 
+Some example to give an idea of what the CLI looks like (use the `--help` command for more examples):
+
+```sh
+# Download the latest available Chrome for Testing binary corresponding to the Stable channel.
+npx @puppeteer/browsers install chrome@stable
+
+# Download a specific Chrome for Testing version.
+npx @puppeteer/browsers install chrome@116.0.5793.0
+
+# Download the latest Chrome for Testing version for the given milestone.
+npx @puppeteer/browsers install chrome@117
+
+# Download the latest available ChromeDriver version corresponding to the Canary channel.
+npx @puppeteer/browsers install chromedriver@canary
+
+# Download a specific ChromeDriver version.
+npx @puppeteer/browsers install chromedriver@116.0.5793.0
+```
+
 ## Known limitations
 
-1. We support installing and running Firefox, Chrome and Chromium. The `latest`, `beta`, `dev`, `canary`, `stable` keywords are only supported for the install command. For the `launch` command you need to specify an exact build ID. The build ID is provided by the `install` command (see `npx @puppeteer/browsers install --help` for the format).
-2. Launching the system browsers is only possible for Chrome/Chromium.
+1. Launching the system browsers is only possible for Chrome/Chromium.
 
 ## API
 
@@ -59,7 +77,14 @@ The programmatic API allows installing and launching browsers from your code. Se
 
 Apache-2.0
 
-chromium-bidi@0.5.2 (https://github.com/GoogleChromeLabs/chromium-bidi)
+b4a@1.6.7 (https://github.com/holepunchto/b4a)
+bare-events@2.5.0 (https://github.com/holepunchto/bare-events)
+bare-fs@2.3.5 (https://github.com/holepunchto/bare-fs)
+bare-os@2.4.4 (https://github.com/holepunchto/bare-os)
+bare-path@2.1.3 (https://github.com/holepunchto/bare-path)
+bare-stream@2.3.0 (https://github.com/holepunchto/bare-stream)
+chromium-bidi@0.6.5 (https://github.com/GoogleChromeLabs/chromium-bidi)
+text-decoder@1.2.0 (https://github.com/holepunchto/text-decoder)
 
                                  Apache License
                            Version 2.0, January 2004
@@ -267,272 +292,69 @@ chromium-bidi@0.5.2 (https://github.com/GoogleChromeLabs/chromium-bidi)
 
 Apache-2.0
 
-puppeteer-core@21.7.0 (https://github.com/puppeteer/puppeteer/tree/main/packages/puppeteer-core)
-puppeteer@21.7.0 (https://github.com/puppeteer/puppeteer/tree/main/packages/puppeteer)
+puppeteer-core@23.4.1 (https://github.com/puppeteer/puppeteer/tree/main/packages/puppeteer-core)
+puppeteer@23.4.1 (https://github.com/puppeteer/puppeteer/tree/main/packages/puppeteer)
 
 # Puppeteer
 
-[![Build status](https://github.com/puppeteer/puppeteer/workflows/CI/badge.svg)](https://github.com/puppeteer/puppeteer/actions?query=workflow%3ACI)
+[![build](https://github.com/puppeteer/puppeteer/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/puppeteer/puppeteer/actions/workflows/ci.yml)
 [![npm puppeteer package](https://img.shields.io/npm/v/puppeteer.svg)](https://npmjs.org/package/puppeteer)
 
 <img src="https://user-images.githubusercontent.com/10379601/29446482-04f7036a-841f-11e7-9872-91d1fc2ea683.png" height="200" align="right"/>
 
-#### [Guides](https://pptr.dev/category/guides) | [API](https://pptr.dev/api) | [FAQ](https://pptr.dev/faq) | [Contributing](https://pptr.dev/contributing) | [Troubleshooting](https://pptr.dev/troubleshooting)
+> Puppeteer is a JavaScript library which provides a high-level API to control
+> Chrome or Firefox over the
+> [DevTools Protocol](https://chromedevtools.github.io/devtools-protocol/) or [WebDriver BiDi](https://pptr.dev/webdriver-bidi).
+> Puppeteer runs in the headless (no visible UI) by default
 
-> Puppeteer is a Node.js library which provides a high-level API to control
-> Chrome/Chromium over the
-> [DevTools Protocol](https://chromedevtools.github.io/devtools-protocol/).
-> Puppeteer runs in
-> [headless](https://developer.chrome.com/articles/new-headless/)
-> mode by default, but can be configured to run in full ("headful")
-> Chrome/Chromium.
+## [Get started](https://pptr.dev/docs) | [API](https://pptr.dev/api) | [FAQ](https://pptr.dev/faq) | [Contributing](https://pptr.dev/contributing) | [Troubleshooting](https://pptr.dev/troubleshooting)
 
-#### What can I do?
+## Installation
 
-Most things that you can do manually in the browser can be done using Puppeteer!
-Here are a few examples to get you started:
-
-- Generate screenshots and PDFs of pages.
-- Crawl a SPA (Single-Page Application) and generate pre-rendered content (i.e.
-  "SSR" (Server-Side Rendering)).
-- Automate form submission, UI testing, keyboard input, etc.
-- Create an automated testing environment using the latest JavaScript and
-  browser features.
-- Capture a
-  [timeline trace](https://developers.google.com/web/tools/chrome-devtools/evaluate-performance/reference)
-  of your site to help diagnose performance issues.
-- [Test Chrome Extensions](https://pptr.dev/guides/chrome-extensions).
-
-## Getting Started
-
-### Installation
-
-To use Puppeteer in your project, run:
-
-```bash
-npm i puppeteer
-# or using yarn
-yarn add puppeteer
-# or using pnpm
-pnpm i puppeteer
+```bash npm2yarn
+npm i puppeteer # Downloads compatible Chrome during installation.
+npm i puppeteer-core # Alternatively, install as a library, without downloading Chrome.
 ```
 
-When you install Puppeteer, it automatically downloads a recent version of
-[Chrome for Testing](https://developer.chrome.com/blog/chrome-for-testing/) (~170MB macOS, ~282MB Linux, ~280MB Windows) that is [guaranteed to
-work](https://pptr.dev/faq#q-why-doesnt-puppeteer-vxxx-work-with-chromium-vyyy)
-with Puppeteer. The browser is downloaded to the `$HOME/.cache/puppeteer` folder
-by default (starting with Puppeteer v19.0.0).
-
-If you deploy a project using Puppeteer to a hosting provider, such as Render or
-Heroku, you might need to reconfigure the location of the cache to be within
-your project folder (see an example below) because not all hosting providers
-include `$HOME/.cache` into the project's deployment.
-
-For a version of Puppeteer without the browser installation, see
-[`puppeteer-core`](#puppeteer-core).
-
-If used with TypeScript, the minimum supported TypeScript version is `4.7.4`.
-
-#### Configuration
-
-Puppeteer uses several defaults that can be customized through configuration
-files.
-
-For example, to change the default cache directory Puppeteer uses to install
-browsers, you can add a `.puppeteerrc.cjs` (or `puppeteer.config.cjs`) at the
-root of your application with the contents
-
-```js
-const {join} = require('path');
-
-/**
- * @type {import("puppeteer").Configuration}
- */
-module.exports = {
-  // Changes the cache location for Puppeteer.
-  cacheDirectory: join(__dirname, '.cache', 'puppeteer'),
-};
-```
-
-After adding the configuration file, you will need to remove and reinstall
-`puppeteer` for it to take effect.
-
-See the [configuration guide](https://pptr.dev/guides/configuration) for more
-information.
-
-#### `puppeteer-core`
-
-For every release since v1.7.0 we publish two packages:
-
-- [`puppeteer`](https://www.npmjs.com/package/puppeteer)
-- [`puppeteer-core`](https://www.npmjs.com/package/puppeteer-core)
-
-`puppeteer` is a _product_ for browser automation. When installed, it downloads
-a version of Chrome, which it then drives using `puppeteer-core`. Being an
-end-user product, `puppeteer` automates several workflows using reasonable
-defaults [that can be customized](https://pptr.dev/guides/configuration).
-
-`puppeteer-core` is a _library_ to help drive anything that supports DevTools
-protocol. Being a library, `puppeteer-core` is fully driven through its
-programmatic interface implying no defaults are assumed and `puppeteer-core`
-will not download Chrome when installed.
-
-You should use `puppeteer-core` if you are
-[connecting to a remote browser](https://pptr.dev/api/puppeteer.puppeteer.connect)
-or [managing browsers yourself](https://pptr.dev/browsers-api/).
-If you are managing browsers yourself, you will need to call
-[`puppeteer.launch`](https://pptr.dev/api/puppeteer.puppeteernode.launch) with
-an explicit
-[`executablePath`](https://pptr.dev/api/puppeteer.launchoptions)
-(or [`channel`](https://pptr.dev/api/puppeteer.launchoptions) if it's
-installed in a standard location).
-
-When using `puppeteer-core`, remember to change the import:
-
-```ts
-import puppeteer from 'puppeteer-core';
-```
-
-### Usage
-
-Puppeteer follows the latest
-[maintenance LTS](https://github.com/nodejs/Release#release-schedule) version of
-Node.
-
-Puppeteer will be familiar to people using other browser testing frameworks. You
-[launch](https://pptr.dev/api/puppeteer.puppeteernode.launch)/[connect](https://pptr.dev/api/puppeteer.puppeteernode.connect)
-a [browser](https://pptr.dev/api/puppeteer.browser),
-[create](https://pptr.dev/api/puppeteer.browser.newpage) some
-[pages](https://pptr.dev/api/puppeteer.page), and then manipulate them with
-[Puppeteer's API](https://pptr.dev/api).
-
-For more in-depth usage, check our [guides](https://pptr.dev/category/guides)
-and [examples](https://github.com/puppeteer/puppeteer/tree/main/examples).
-
-#### Example
-
-The following example searches [developer.chrome.com](https://developer.chrome.com/) for blog posts with text "automate beyond recorder", click on the first result and print the full title of the blog post.
+## Example
 
 ```ts
 import puppeteer from 'puppeteer';
+// Or import puppeteer from 'puppeteer-core';
 
-(async () => {
-  // Launch the browser and open a new blank page
-  const browser = await puppeteer.launch();
-  const page = await browser.newPage();
-
-  // Navigate the page to a URL
-  await page.goto('https://developer.chrome.com/');
-
-  // Set screen size
-  await page.setViewport({width: 1080, height: 1024});
-
-  // Type into search box
-  await page.type('.search-box__input', 'automate beyond recorder');
-
-  // Wait and click on first result
-  const searchResultSelector = '.search-box__link';
-  await page.waitForSelector(searchResultSelector);
-  await page.click(searchResultSelector);
-
-  // Locate the full title with a unique string
-  const textSelector = await page.waitForSelector(
-    'text/Customize and automate'
-  );
-  const fullTitle = await textSelector?.evaluate(el => el.textContent);
-
-  // Print the full title
-  console.log('The title of this blog post is "%s".', fullTitle);
-
-  await browser.close();
-})();
-```
-
-### Default runtime settings
-
-**1. Uses Headless mode**
-
-By default Puppeteer launches Chrome in
-[old Headless mode](https://developer.chrome.com/articles/new-headless/).
-
-```ts
+// Launch the browser and open a new blank page
 const browser = await puppeteer.launch();
-// Equivalent to
-const browser = await puppeteer.launch({headless: true});
+const page = await browser.newPage();
+
+// Navigate the page to a URL.
+await page.goto('https://developer.chrome.com/');
+
+// Set screen size.
+await page.setViewport({width: 1080, height: 1024});
+
+// Type into search box.
+await page.locator('.devsite-search-field').fill('automate beyond recorder');
+
+// Wait and click on first result.
+await page.locator('.devsite-result-item-link').click();
+
+// Locate the full title with a unique string.
+const textSelector = await page
+  .locator('text/Customize and automate')
+  .waitHandle();
+const fullTitle = await textSelector?.evaluate(el => el.textContent);
+
+// Print the full title.
+console.log('The title of this blog post is "%s".', fullTitle);
+
+await browser.close();
 ```
-
-[Chrome 112 launched a new Headless mode](https://developer.chrome.com/articles/new-headless/) that might cause some differences in behavior compared to the old Headless implementation.
-In the future Puppeteer will start defaulting to new implementation.
-We recommend you try it out before the switch:
-
-```ts
-const browser = await puppeteer.launch({headless: 'new'});
-```
-
-To launch a "headful" version of Chrome, set the
-[`headless`](https://pptr.dev/api/puppeteer.browserlaunchargumentoptions) to `false`
-option when launching a browser:
-
-```ts
-const browser = await puppeteer.launch({headless: false});
-```
-
-**2. Runs a bundled version of Chrome**
-
-By default, Puppeteer downloads and uses a specific version of Chrome so its
-API is guaranteed to work out of the box. To use Puppeteer with a different
-version of Chrome or Chromium, pass in the executable's path when creating a
-`Browser` instance:
-
-```ts
-const browser = await puppeteer.launch({executablePath: '/path/to/Chrome'});
-```
-
-You can also use Puppeteer with Firefox. See
-[status of cross-browser support](https://pptr.dev/faq/#q-what-is-the-status-of-cross-browser-support) for
-more information.
-
-See
-[`this article`](https://www.howtogeek.com/202825/what%E2%80%99s-the-difference-between-chromium-and-chrome/)
-for a description of the differences between Chromium and Chrome.
-[`This article`](https://chromium.googlesource.com/chromium/src/+/refs/heads/main/docs/chromium_browser_vs_google_chrome.md)
-describes some differences for Linux users.
-
-**3. Creates a fresh user profile**
-
-Puppeteer creates its own browser user profile which it **cleans up on every
-run**.
-
-#### Using Docker
-
-See our [Docker guide](https://pptr.dev/guides/docker).
-
-#### Using Chrome Extensions
-
-See our [Chrome extensions guide](https://pptr.dev/guides/chrome-extensions).
-
-## Resources
-
-- [API Documentation](https://pptr.dev/api)
-- [Guides](https://pptr.dev/category/guides)
-- [Examples](https://github.com/puppeteer/puppeteer/tree/main/examples)
-- [Community list of Puppeteer resources](https://github.com/transitive-bullshit/awesome-puppeteer)
-
-## Contributing
-
-Check out our [contributing guide](https://pptr.dev/contributing) to get an
-overview of Puppeteer development.
-
-## FAQ
-
-Our [FAQ](https://pptr.dev/faq) has migrated to
-[our site](https://pptr.dev/faq).
 
 ------------------------------------------------------------
 
 Apache-2.0
 
-typescript@5.3.3 (https://github.com/Microsoft/TypeScript)
+typescript@5.6.2 (https://github.com/microsoft/TypeScript)
 
 Apache License
 
@@ -723,28 +545,9 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 ------------------------------------------------------------
 
-BSD-2-Clause
-
-webidl-conversions@3.0.1 (https://github.com/jsdom/webidl-conversions)
-
-# The BSD 2-Clause License
-
-Copyright (c) 2014, Domenic Denicola
-All rights reserved.
-
-Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
-
-1. Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.
-
-2. Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution.
-
-THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-
-------------------------------------------------------------
-
 BSD-3-Clause
 
-devtools-protocol@0.0.1203626 (https://github.com/ChromeDevTools/devtools-protocol)
+devtools-protocol@0.0.1342118 (https://github.com/ChromeDevTools/devtools-protocol)
 
 // Copyright 2014 The Chromium Authors. All rights reserved.
 //
@@ -796,7 +599,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 
 BSD-3-Clause
 
-source-map-js@1.0.2 (https://github.com/7rulnik/source-map-js)
+source-map-js@1.2.1 (https://github.com/7rulnik/source-map-js)
 source-map@0.6.1 (https://github.com/mozilla/source-map)
 
 
@@ -830,25 +633,34 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 ------------------------------------------------------------
 
-ISC
+BSD-3-Clause
 
-b4a@1.6.4 (https://github.com/holepunchto/b4a)
+sprintf-js@1.1.3 (https://github.com/alexei/sprintf.js)
 
-ISC License
+Copyright (c) 2007-present, Alexandru Mărășteanu <hello@alexei.ro>
+All rights reserved.
 
-Copyright (c) 2021 Contributors
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are met:
+* Redistributions of source code must retain the above copyright
+  notice, this list of conditions and the following disclaimer.
+* Redistributions in binary form must reproduce the above copyright
+  notice, this list of conditions and the following disclaimer in the
+  documentation and/or other materials provided with the distribution.
+* Neither the name of this software nor the names of its contributors may be
+  used to endorse or promote products derived from this software without
+  specific prior written permission.
 
-Permission to use, copy, modify, and/or distribute this software for any
-purpose with or without fee is hereby granted, provided that the above
-copyright notice and this permission notice appear in all copies.
-
-THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH
-REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY
-AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT,
-INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM
-LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR
-OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
-PERFORMANCE OF THIS SOFTWARE.
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+DISCLAIMED. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR
+ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 ------------------------------------------------------------
 
@@ -933,6 +745,7 @@ IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 ISC
 
 once@1.4.0 (https://github.com/isaacs/once)
+semver@7.6.3 (https://github.com/npm/node-semver)
 wrappy@1.0.2 (https://github.com/npm/wrappy)
 
 The ISC License
@@ -955,11 +768,11 @@ IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
 ISC
 
-picocolors@1.0.0 (https://github.com/alexeyraspopov/picocolors)
+picocolors@1.1.0 (https://github.com/alexeyraspopov/picocolors)
 
 ISC License
 
-Copyright (c) 2021 Alexey Raspopov, Kostiantyn Denysov, Anton Verinov
+Copyright (c) 2021-2024 Oleksii Raspopov, Kostiantyn Denysov, Anton Verinov
 
 Permission to use, copy, modify, and/or distribute this software for any
 purpose with or without fee is hereby granted, provided that the above
@@ -1018,9 +831,11 @@ ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
 MIT
 
-@babel/code-frame@7.23.5 (https://github.com/babel/babel)
-@babel/helper-validator-identifier@7.22.20 (https://github.com/babel/babel)
-@babel/highlight@7.23.4 (https://github.com/babel/babel)
+@babel/code-frame@7.24.7 (https://github.com/babel/babel)
+@babel/helper-string-parser@7.24.8 (https://github.com/babel/babel)
+@babel/helper-validator-identifier@7.24.7 (https://github.com/babel/babel)
+@babel/highlight@7.24.7 (https://github.com/babel/babel)
+@babel/types@7.25.6 (https://github.com/babel/babel)
 
 MIT License
 
@@ -1049,7 +864,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 MIT
 
-@babel/parser@7.23.6 (https://github.com/babel/babel)
+@babel/parser@7.25.6 (https://github.com/babel/babel)
 
 Copyright (C) 2012-2014 by various contributors (see AUTHORS)
 
@@ -1075,10 +890,10 @@ THE SOFTWARE.
 
 MIT
 
-@intlify/core-base@9.9.0 (https://github.com/intlify/vue-i18n-next)
-@intlify/message-compiler@9.9.0 (https://github.com/intlify/vue-i18n-next)
-@intlify/shared@9.9.0 (https://github.com/intlify/vue-i18n-next)
-vue-i18n@9.9.0 (https://github.com/intlify/vue-i18n-next)
+@intlify/core-base@9.14.1 (https://github.com/intlify/vue-i18n-next)
+@intlify/message-compiler@9.14.1 (https://github.com/intlify/vue-i18n-next)
+@intlify/shared@9.14.1 (https://github.com/intlify/vue-i18n-next)
+vue-i18n@9.14.1 (https://github.com/intlify/vue-i18n-next)
 
 The MIT License (MIT)
 
@@ -1105,7 +920,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 MIT
 
-@jridgewell/sourcemap-codec@1.4.15 (https://github.com/jridgewell/sourcemap-codec)
+@jridgewell/sourcemap-codec@1.5.0 (https://github.com/jridgewell/sourcemap-codec)
 
 The MIT License
 
@@ -1161,8 +976,8 @@ SOFTWARE.
 
 MIT
 
-@types/node@18.15.11 (https://github.com/DefinitelyTyped/DefinitelyTyped)
-@types/yauzl@2.10.0 (https://github.com/DefinitelyTyped/DefinitelyTyped)
+@types/node@18.19.54 (https://github.com/DefinitelyTyped/DefinitelyTyped)
+@types/yauzl@2.10.3 (https://github.com/DefinitelyTyped/DefinitelyTyped)
 
     MIT License
 
@@ -1190,16 +1005,16 @@ MIT
 
 MIT
 
-@vue/compiler-core@3.4.14 (https://github.com/vuejs/core)
-@vue/compiler-dom@3.4.14 (https://github.com/vuejs/core)
-@vue/compiler-sfc@3.4.14 (https://github.com/vuejs/core)
-@vue/compiler-ssr@3.4.14 (https://github.com/vuejs/core)
-@vue/reactivity@3.4.14 (https://github.com/vuejs/core)
-@vue/runtime-core@3.4.14 (https://github.com/vuejs/core)
-@vue/runtime-dom@3.4.14 (https://github.com/vuejs/core)
-@vue/server-renderer@3.4.14 (https://github.com/vuejs/core)
-@vue/shared@3.4.14 (https://github.com/vuejs/core)
-vue@3.4.14 (https://github.com/vuejs/core)
+@vue/compiler-core@3.5.10 (https://github.com/vuejs/core)
+@vue/compiler-dom@3.5.10 (https://github.com/vuejs/core)
+@vue/compiler-sfc@3.5.10 (https://github.com/vuejs/core)
+@vue/compiler-ssr@3.5.10 (https://github.com/vuejs/core)
+@vue/reactivity@3.5.10 (https://github.com/vuejs/core)
+@vue/runtime-core@3.5.10 (https://github.com/vuejs/core)
+@vue/runtime-dom@3.5.10 (https://github.com/vuejs/core)
+@vue/server-renderer@3.5.10 (https://github.com/vuejs/core)
+@vue/shared@3.5.10 (https://github.com/vuejs/core)
+vue@3.5.10 (https://github.com/vuejs/core)
 
 The MIT License (MIT)
 
@@ -1227,15 +1042,14 @@ THE SOFTWARE.
 
 MIT
 
-@vue/devtools-api@6.5.1 (https://github.com/vuejs/vue-devtools)
-tr46@0.0.3 (https://github.com/Sebmaster/tr46.js)
+@vue/devtools-api@6.6.4 (https://github.com/vuejs/vue-devtools)
 
 
 ------------------------------------------------------------
 
 MIT
 
-GakujoViewer@0.1.2 (https://github.com/SU-ProgC-Marionnette/GakujoViewer)
+GakujoViewer@0.2.0 (https://github.com/SU-ProgC-Marionnette/GakujoViewer)
 
 MIT License
 
@@ -1263,78 +1077,15 @@ SOFTWARE.
 
 MIT
 
-agent-base@7.1.0 (https://github.com/TooTallNate/proxy-agents)
-
-agent-base
-==========
-### Turn a function into an [`http.Agent`][http.Agent] instance
-
-This module is a thin wrapper around the base `http.Agent` class.
-
-It provides an abstract class that must define a `connect()` function,
-which is responsible for creating the underlying socket that the HTTP
-client requests will use.
-
-The `connect()` function may return an arbitrary `Duplex` stream, or
-another `http.Agent` instance to delegate the request to, and may be
-asynchronous (by defining an `async` function).
-
-Instances of this agent can be used with the `http` and `https`
-modules. To differentiate, the options parameter in the `connect()`
-function includes a `secureEndpoint` property, which can be checked
-to determine what type of socket should be returned.
-
-#### Some subclasses:
-
-Here are some more interesting uses of `agent-base`.
-Send a pull request to list yours!
-
- * [`http-proxy-agent`][http-proxy-agent]: An HTTP(s) proxy `http.Agent` implementation for HTTP endpoints
- * [`https-proxy-agent`][https-proxy-agent]: An HTTP(s) proxy `http.Agent` implementation for HTTPS endpoints
- * [`pac-proxy-agent`][pac-proxy-agent]: A PAC file proxy `http.Agent` implementation for HTTP and HTTPS
- * [`socks-proxy-agent`][socks-proxy-agent]: A SOCKS proxy `http.Agent` implementation for HTTP and HTTPS
-
-Example
--------
-
-Here's a minimal example that creates a new `net.Socket` or `tls.Socket`
-based on the `secureEndpoint` property. This agent can be used with both
-the `http` and `https` modules.
-
-```ts
-import * as net from 'net';
-import * as tls from 'tls';
-import * as http from 'http';
-import { Agent } from 'agent-base';
-
-class MyAgent extends Agent {
-  connect(req, opts) {
-    // `secureEndpoint` is true when using the "https" module
-    if (opts.secureEndpoint) {
-      return tls.connect(opts);
-    } else {
-      return net.connect(opts);
-    }
-  }
-});
-
-// Keep alive enabled means that `connect()` will only be
-// invoked when a new connection needs to be created
-const agent = new MyAgent({ keepAlive: true });
-
-// Pass the `agent` option when creating the HTTP request
-http.get('http://nodejs.org/api/', { agent }, (res) => {
-  console.log('"response" event!', res.headers);
-  res.pipe(process.stdout);
-});
-```
-
-License
--------
+agent-base@7.1.1 (https://github.com/TooTallNate/proxy-agents)
+https-proxy-agent@7.0.5 (https://github.com/TooTallNate/proxy-agents)
+pac-resolver@7.0.1 (https://github.com/TooTallNate/proxy-agents)
+proxy-agent@6.4.0 (https://github.com/TooTallNate/proxy-agents)
+socks-proxy-agent@8.0.4 (https://github.com/TooTallNate/proxy-agents)
 
 (The MIT License)
 
-Copyright (c) 2013 Nathan Rajlich &lt;nathan@tootallnate.net&gt;
+Copyright (c) 2013 Nathan Rajlich <nathan@tootallnate.net>
 
 Permission is hereby granted, free of charge, to any person obtaining
 a copy of this software and associated documentation files (the
@@ -1354,13 +1105,6 @@ IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
 CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
 TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
 SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-
-[http-proxy-agent]: ../http-proxy-agent
-[https-proxy-agent]: ../https-proxy-agent
-[pac-proxy-agent]: ../pac-proxy-agent
-[socks-proxy-agent]: ../socks-proxy-agent
-[http.Agent]: https://nodejs.org/api/http.html#http_class_http_agent
-
 ------------------------------------------------------------
 
 MIT
@@ -1370,10 +1114,10 @@ ansi-styles@3.2.1 (https://github.com/chalk/ansi-styles)
 ansi-styles@4.3.0 (https://github.com/chalk/ansi-styles)
 callsites@3.1.0 (https://github.com/sindresorhus/callsites)
 chalk@2.4.2 (https://github.com/chalk/chalk)
+env-paths@2.2.1 (https://github.com/sindresorhus/env-paths)
 has-flag@3.0.0 (https://github.com/sindresorhus/has-flag)
 is-fullwidth-code-point@3.0.0 (https://github.com/sindresorhus/is-fullwidth-code-point)
 parent-module@1.0.1 (https://github.com/sindresorhus/parent-module)
-path-type@4.0.0 (https://github.com/sindresorhus/path-type)
 resolve-from@4.0.0 (https://github.com/sindresorhus/resolve-from)
 string-width@4.2.3 (https://github.com/sindresorhus/string-width)
 strip-ansi@6.0.1 (https://github.com/chalk/strip-ansi)
@@ -1448,7 +1192,7 @@ THE SOFTWARE.
 
 MIT
 
-basic-ftp@5.0.4 (https://github.com/patrickjuchli/basic-ftp)
+basic-ftp@5.0.5 (https://github.com/patrickjuchli/basic-ftp)
 
 Copyright (c) 2019 Patrick Juchli
 
@@ -1571,7 +1315,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 MIT
 
-cosmiconfig@8.3.6 (https://github.com/cosmiconfig/cosmiconfig)
+cosmiconfig@9.0.0 (https://github.com/cosmiconfig/cosmiconfig)
 
 The MIT License (MIT)
 
@@ -1595,34 +1339,6 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
-
-------------------------------------------------------------
-
-MIT
-
-cross-fetch@4.0.0 (https://github.com/lquixada/cross-fetch)
-
-The MIT License (MIT)
-
-Copyright (c) 2017 Leonardo Quixadá
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
 
 ------------------------------------------------------------
 
@@ -1654,8 +1370,8 @@ SOFTWARE.
 
 MIT
 
-data-uri-to-buffer@6.0.1 (https://github.com/TooTallNate/proxy-agents)
-get-uri@6.0.2 (https://github.com/TooTallNate/proxy-agents)
+data-uri-to-buffer@6.0.2 (https://github.com/TooTallNate/proxy-agents)
+get-uri@6.0.3 (https://github.com/TooTallNate/proxy-agents)
 
 (The MIT License)
 
@@ -1683,7 +1399,7 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 MIT
 
-debug@4.3.4 (https://github.com/debug-js/debug)
+debug@4.3.7 (https://github.com/debug-js/debug)
 
 (The MIT License)
 
@@ -1834,7 +1550,7 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 MIT
 
-electron-log@5.0.3 (https://github.com/megahertz/electron-log)
+electron-log@5.2.0 (https://github.com/megahertz/electron-log)
 
 The MIT License (MIT)
 
@@ -1889,9 +1605,9 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 MIT
 
 end-of-stream@1.4.4 (https://github.com/mafintosh/end-of-stream)
-pump@3.0.0 (https://github.com/mafintosh/pump)
-tar-fs@3.0.4 (https://github.com/mafintosh/tar-fs)
-tar-stream@3.1.6 (https://github.com/mafintosh/tar-stream)
+pump@3.0.2 (https://github.com/mafintosh/pump)
+tar-fs@3.0.6 (https://github.com/mafintosh/tar-fs)
+tar-stream@3.1.7 (https://github.com/mafintosh/tar-stream)
 
 The MIT License (MIT)
 
@@ -1947,7 +1663,7 @@ THE SOFTWARE.
 
 MIT
 
-escalade@3.1.1 (https://github.com/lukeed/escalade)
+escalade@3.2.0 (https://github.com/lukeed/escalade)
 
 MIT License
 
@@ -2005,7 +1721,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 MIT
 
 fast-fifo@1.3.2 (https://github.com/mafintosh/fast-fifo)
-streamx@2.15.6 (https://github.com/mafintosh/streamx)
+streamx@2.20.1 (https://github.com/mafintosh/streamx)
 
 The MIT License (MIT)
 
@@ -2061,7 +1777,7 @@ SOFTWARE.
 
 MIT
 
-fs-extra@8.1.0 (https://github.com/jprichardson/node-fs-extra)
+fs-extra@11.2.0 (https://github.com/jprichardson/node-fs-extra)
 
 (The MIT License)
 
@@ -2102,14 +1818,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 MIT
 
-http-proxy-agent@7.0.0 (https://github.com/TooTallNate/proxy-agents)
-
-License
--------
+http-proxy-agent@7.0.2 (https://github.com/TooTallNate/proxy-agents)
 
 (The MIT License)
 
-Copyright (c) 2013 Nathan Rajlich &lt;nathan@tootallnate.net&gt;
+Copyright (c) 2013 Nathan Rajlich <nathan@tootallnate.net>
 
 Permission is hereby granted, free of charge, to any person obtaining
 a copy of this software and associated documentation files (the
@@ -2134,203 +1847,27 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 MIT
 
-https-proxy-agent@7.0.2 (https://github.com/TooTallNate/proxy-agents)
+ip-address@9.0.5 (https://github.com/beaugunderson/ip-address)
 
-https-proxy-agent
-================
-### An HTTP(s) proxy `http.Agent` implementation for HTTPS
+Copyright (C) 2011 by Beau Gunderson
 
-This module provides an `http.Agent` implementation that connects to a specified
-HTTP or HTTPS proxy server, and can be used with the built-in `https` module.
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
 
-Specifically, this `Agent` implementation connects to an intermediary "proxy"
-server and issues the [CONNECT HTTP method][CONNECT], which tells the proxy to
-open a direct TCP connection to the destination server.
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
 
-Since this agent implements the CONNECT HTTP method, it also works with other
-protocols that use this method when connecting over proxies (i.e. WebSockets).
-See the "Examples" section below for more.
-
-Examples
---------
-
-#### `https` module example
-
-```ts
-import * as https from 'https';
-import { HttpsProxyAgent } from 'https-proxy-agent';
-
-const agent = new HttpsProxyAgent('http://168.63.76.32:3128');
-
-https.get('https://example.com', { agent }, (res) => {
-  console.log('"response" event!', res.headers);
-  res.pipe(process.stdout);
-});
-```
-
-#### `ws` WebSocket connection example
-
-```ts
-import WebSocket from 'ws';
-import { HttpsProxyAgent } from 'https-proxy-agent';
-
-const agent = new HttpsProxyAgent('http://168.63.76.32:3128');
-const socket = new WebSocket('ws://echo.websocket.org', { agent });
-
-socket.on('open', function () {
-  console.log('"open" event!');
-  socket.send('hello world');
-});
-
-socket.on('message', function (data, flags) {
-  console.log('"message" event! %j %j', data, flags);
-  socket.close();
-});
-```
-
-API
----
-
-### new HttpsProxyAgent(proxy: string | URL, options?: HttpsProxyAgentOptions)
-
-The `HttpsProxyAgent` class implements an `http.Agent` subclass that connects
-to the specified "HTTP(s) proxy server" in order to proxy HTTPS and/or WebSocket
-requests. This is achieved by using the [HTTP `CONNECT` method][CONNECT].
-
-The `proxy` argument is the URL for the proxy server.
-
-The `options` argument accepts the usual `http.Agent` constructor options, and
-some additional properties:
-
- * `headers` - Object containing additional headers to send to the proxy server
-   in the `CONNECT` request.
-
-
-License
--------
-
-(The MIT License)
-
-Copyright (c) 2013 Nathan Rajlich &lt;nathan@tootallnate.net&gt;
-
-Permission is hereby granted, free of charge, to any person obtaining
-a copy of this software and associated documentation files (the
-'Software'), to deal in the Software without restriction, including
-without limitation the rights to use, copy, modify, merge, publish,
-distribute, sublicense, and/or sell copies of the Software, and to
-permit persons to whom the Software is furnished to do so, subject to
-the following conditions:
-
-The above copyright notice and this permission notice shall be
-included in all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND,
-EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
-IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
-CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
-TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
-SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-
-[CONNECT]: http://en.wikipedia.org/wiki/HTTP_tunnel#HTTP_CONNECT_Tunneling
-
-------------------------------------------------------------
-
-MIT
-
-ip@1.1.8 (https://github.com/indutny/node-ip)
-ip@2.0.0 (https://github.com/indutny/node-ip)
-
-# IP  
-[![](https://badge.fury.io/js/ip.svg)](https://www.npmjs.com/package/ip)  
-
-IP address utilities for node.js
-
-## Installation
-
-###  npm
-```shell
-npm install ip
-```
-
-### git
-
-```shell
-git clone https://github.com/indutny/node-ip.git
-```
-  
-## Usage
-Get your ip address, compare ip addresses, validate ip addresses, etc.
-
-```js
-var ip = require('ip');
-
-ip.address() // my ip address
-ip.isEqual('::1', '::0:1'); // true
-ip.toBuffer('127.0.0.1') // Buffer([127, 0, 0, 1])
-ip.toString(new Buffer([127, 0, 0, 1])) // 127.0.0.1
-ip.fromPrefixLen(24) // 255.255.255.0
-ip.mask('192.168.1.134', '255.255.255.0') // 192.168.1.0
-ip.cidr('192.168.1.134/26') // 192.168.1.128
-ip.not('255.255.255.0') // 0.0.0.255
-ip.or('192.168.1.134', '0.0.0.255') // 192.168.1.255
-ip.isPrivate('127.0.0.1') // true
-ip.isV4Format('127.0.0.1'); // true
-ip.isV6Format('::ffff:127.0.0.1'); // true
-
-// operate on buffers in-place
-var buf = new Buffer(128);
-var offset = 64;
-ip.toBuffer('127.0.0.1', buf, offset);  // [127, 0, 0, 1] at offset 64
-ip.toString(buf, offset, 4);            // '127.0.0.1'
-
-// subnet information
-ip.subnet('192.168.1.134', '255.255.255.192')
-// { networkAddress: '192.168.1.128',
-//   firstAddress: '192.168.1.129',
-//   lastAddress: '192.168.1.190',
-//   broadcastAddress: '192.168.1.191',
-//   subnetMask: '255.255.255.192',
-//   subnetMaskLength: 26,
-//   numHosts: 62,
-//   length: 64,
-//   contains: function(addr){...} }
-ip.cidrSubnet('192.168.1.134/26')
-// Same as previous.
-
-// range checking
-ip.cidrSubnet('192.168.1.134/26').contains('192.168.1.190') // true
-
-
-// ipv4 long conversion
-ip.toLong('127.0.0.1'); // 2130706433
-ip.fromLong(2130706433); // '127.0.0.1'
-```
-
-### License
-
-This software is licensed under the MIT License.
-
-Copyright Fedor Indutny, 2012.
-
-Permission is hereby granted, free of charge, to any person obtaining a
-copy of this software and associated documentation files (the
-"Software"), to deal in the Software without restriction, including
-without limitation the rights to use, copy, modify, merge, publish,
-distribute, sublicense, and/or sell copies of the Software, and to permit
-persons to whom the Software is furnished to do so, subject to the
-following conditions:
-
-The above copyright notice and this permission notice shall be included
-in all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
-OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN
-NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
-DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
-OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
-USE OR OTHER DEALINGS IN THE SOFTWARE.
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
 
 ------------------------------------------------------------
 
@@ -2392,6 +1929,53 @@ THE SOFTWARE.
 
 MIT
 
+jsbn@1.1.0 (https://github.com/andyperlitch/jsbn)
+
+Licensing
+---------
+
+This software is covered under the following copyright:
+
+/*
+ * Copyright (c) 2003-2005  Tom Wu
+ * All Rights Reserved.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining
+ * a copy of this software and associated documentation files (the
+ * "Software"), to deal in the Software without restriction, including
+ * without limitation the rights to use, copy, modify, merge, publish,
+ * distribute, sublicense, and/or sell copies of the Software, and to
+ * permit persons to whom the Software is furnished to do so, subject to
+ * the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be
+ * included in all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS-IS" AND WITHOUT WARRANTY OF ANY KIND, 
+ * EXPRESS, IMPLIED OR OTHERWISE, INCLUDING WITHOUT LIMITATION, ANY 
+ * WARRANTY OF MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE.  
+ *
+ * IN NO EVENT SHALL TOM WU BE LIABLE FOR ANY SPECIAL, INCIDENTAL,
+ * INDIRECT OR CONSEQUENTIAL DAMAGES OF ANY KIND, OR ANY DAMAGES WHATSOEVER
+ * RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER OR NOT ADVISED OF
+ * THE POSSIBILITY OF DAMAGE, AND ON ANY THEORY OF LIABILITY, ARISING OUT
+ * OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+ *
+ * In addition, the following condition applies:
+ *
+ * All redistributions must retain an intact copy of this copyright notice
+ * and disclaimer.
+ */
+
+Address all questions regarding this license to:
+
+  Tom Wu
+  tjw@cs.Stanford.EDU
+
+------------------------------------------------------------
+
+MIT
+
 json-parse-even-better-errors@2.3.1 (https://github.com/npm/json-parse-even-better-errors)
 
 Copyright 2017 Kat Marchán
@@ -2424,7 +2008,7 @@ distributed under the terms of the MIT license above.
 
 MIT
 
-jsonfile@4.0.0 (https://github.com/jprichardson/node-jsonfile)
+jsonfile@6.1.0 (https://github.com/jprichardson/node-jsonfile)
 
 (The MIT License)
 
@@ -2474,7 +2058,7 @@ THE SOFTWARE.
 
 MIT
 
-magic-string@0.30.5 (https://github.com/rich-harris/magic-string)
+magic-string@0.30.11 (https://github.com/rich-harris/magic-string)
 
 Copyright 2018 Rich Harris
 
@@ -2516,39 +2100,11 @@ SOFTWARE.
 
 MIT
 
-mkdirp-classic@0.5.3 (https://github.com/mafintosh/mkdirp-classic)
+ms@2.1.3 (https://github.com/vercel/ms)
 
 The MIT License (MIT)
 
-Copyright (c) 2020 James Halliday (mail@substack.net) and Mathias Buus
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in
-all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-THE SOFTWARE.
-
-------------------------------------------------------------
-
-MIT
-
-ms@2.1.2 (https://github.com/zeit/ms)
-
-The MIT License (MIT)
-
-Copyright (c) 2016 Zeit, Inc.
+Copyright (c) 2020 Vercel, Inc.
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -2691,69 +2247,11 @@ THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 MIT
 
-node-fetch@2.7.0 (https://github.com/bitinn/node-fetch)
-
-The MIT License (MIT)
-
-Copyright (c) 2016 David Frank
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
-
-
-------------------------------------------------------------
-
-MIT
-
-pac-proxy-agent@7.0.1 (https://github.com/TooTallNate/proxy-agents)
-
-pac-proxy-agent
-===============
-### A [PAC file][pac-wikipedia] proxy `http.Agent` implementation for HTTP and HTTPS
-
-This module provides an `http.Agent` implementation that retreives the specified
-[PAC proxy file][pac-wikipedia] and uses it to resolve which HTTP, HTTPS, or
-SOCKS proxy, or if a direct connection should be used to connect to the
-HTTP endpoint.
-
-It is designed to be be used with the built-in `http` and `https` modules.
-
-Example
--------
-
-```ts
-import * as http from 'http';
-import { PacProxyAgent } from 'pac-proxy-agent';
-
-const agent = new PacProxyAgent('pac+https://cloudup.com/ceGH2yZ0Bjp+');
-
-http.get('http://nodejs.org/api/', { agent }, (res) => {
-  console.log('"response" event!', res.headers);
-  res.pipe(process.stdout);
-});
-```
-
-License
--------
+pac-proxy-agent@7.0.2 (https://github.com/TooTallNate/proxy-agents)
 
 (The MIT License)
 
-Copyright (c) 2014 Nathan Rajlich &lt;nathan@tootallnate.net&gt;
+Copyright (c) 2014 Nathan Rajlich <nathan@tootallnate.net>
 
 Permission is hereby granted, free of charge, to any person obtaining
 a copy of this software and associated documentation files (the
@@ -2773,101 +2271,6 @@ IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
 CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
 TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
 SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-
-[pac-wikipedia]: http://wikipedia.org/wiki/Proxy_auto-config
-
-------------------------------------------------------------
-
-MIT
-
-pac-resolver@7.0.0 (https://github.com/TooTallNate/proxy-agents)
-
-pac-resolver
-============
-### Generates an asynchronous resolver function from a [PAC file][pac-wikipedia]
-
-
-This module accepts a JavaScript String of code, which is meant to be a
-[PAC proxy file][pac-wikipedia], and returns a generated asynchronous
-`FindProxyForURL()` function.
-
-Example
--------
-
-Given the PAC proxy file named `proxy.pac`:
-
-```js
-function FindProxyForURL(url, host) {
-  if (isInNet(myIpAddress(), "10.1.10.0", "255.255.255.0")) {
-    return "PROXY 1.2.3.4:8080";
-  } else {
-    return "DIRECT";
-  }
-}
-```
-
-You can consume this PAC file with `pac-resolver` like so:
-
-```ts
-import { readFileSync } from 'fs';
-import { createPacResolver } from 'pac-resolver';
-
-const FindProxyForURL = createPacResolver(readFileSync('proxy.pac'));
-
-const res = await FindProxyForURL('http://foo.com/');
-console.log(res);
-// "DIRECT"
-```
-
-
-API
----
-
-### pac(qjs: QuickJSWASMModule, pacFileContents: string | Buffer, options?: PacResolverOptions) → Function
-
-Returns an asynchronous `FindProxyForURL()` function based off of the given JS
-string `pacFileContents` PAC proxy file. An optional `options` object may be
-passed in which respects the following options:
-
- * `filename` - String - the filename to use in error stack traces. Defaults to `proxy.pac`.
- * `sandbox` - Object - a map of functions to include in the sandbox of the
- JavaScript environment where the JS code will be executed. i.e. if you wanted to
- include the common `alert` function you could pass `alert: console.log`. For
- async functions, you must set the `async = true` property on the function
- instance, and the JS code will be able to invoke the function as if it were
- synchronous.
-
- The `qjs` parameter is a QuickJS module instance as returned from `getQuickJS()` from the `quickjs-emscripten` module.
-
-
-License
--------
-
-(The MIT License)
-
-Copyright (c) 2013 Nathan Rajlich &lt;nathan@tootallnate.net&gt;
-
-Permission is hereby granted, free of charge, to any person obtaining
-a copy of this software and associated documentation files (the
-'Software'), to deal in the Software without restriction, including
-without limitation the rights to use, copy, modify, merge, publish,
-distribute, sublicense, and/or sell copies of the Software, and to
-permit persons to whom the Software is furnished to do so, subject to
-the following conditions:
-
-The above copyright notice and this permission notice shall be
-included in all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND,
-EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
-IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
-CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
-TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
-SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-
-[pac-file-docs]: https://web.archive.org/web/20070602031929/http://wp.netscape.com/eng/mozilla/2.0/relnotes/demo/proxy-live.html
-[pac-wikipedia]: http://wikipedia.org/wiki/Proxy_auto-config
 
 ------------------------------------------------------------
 
@@ -2903,7 +2306,7 @@ SOFTWARE.
 
 MIT
 
-pinia-plugin-persistedstate@3.2.1 (https://github.com/prazdevs/pinia-plugin-persistedstate)
+pinia-plugin-persistedstate@3.2.3 (https://github.com/prazdevs/pinia-plugin-persistedstate)
 
 # `pinia-plugin-persistedstate`
 
@@ -2912,7 +2315,7 @@ pinia-plugin-persistedstate@3.2.1 (https://github.com/prazdevs/pinia-plugin-pers
 ## 🚀 Quickstart
 
 1. Install with your favorite package manager:
-   - **pnpm** : `pnpm i pinia-plugin-persistedstate`
+   - **pnpm** : `pnpm add pinia-plugin-persistedstate`
    - npm : `npm i pinia-plugin-persistedstate`
    - yarn : `yarn add pinia-plugin-persistedstate`
 
@@ -2925,23 +2328,21 @@ const pinia = createPinia()
 pinia.use(piniaPluginPersistedstate)
 ```
 
-
 ## 🔧 Configuration
 
 Usage and configuration informations can be found in [the documentation](https://prazdevs.github.io/pinia-plugin-persistedstate/guide/)
 
-
 ## 📝 License
 
-Copyright © 2022 [Sacha Bouillez](https://github.com/prazdevs).  
+Copyright © 2022 [Sacha Bouillez](https://github.com/prazdevs).
 This project is under [MIT](https://github.com/prazdevs/pinia-plugin-persistedstate/blob/main/LICENSE) license.
 
 ------------------------------------------------------------
 
 MIT
 
-pinia@2.1.7 (https://github.com/vuejs/pinia)
-vue-router@4.2.5 (https://github.com/vuejs/router)
+pinia@2.2.4 (https://github.com/vuejs/pinia)
+vue-router@4.4.5 (https://github.com/vuejs/router)
 
 The MIT License (MIT)
 
@@ -2969,7 +2370,7 @@ SOFTWARE.
 
 MIT
 
-postcss@8.4.33 (https://github.com/postcss/postcss)
+postcss@8.4.47 (https://github.com/postcss/postcss)
 
 The MIT License (MIT)
 
@@ -3020,100 +2421,6 @@ IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
 CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
 TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
 SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-
-------------------------------------------------------------
-
-MIT
-
-proxy-agent@6.3.1 (https://github.com/TooTallNate/proxy-agents)
-
-proxy-agent
-===========
-### Maps proxy protocols to `http.Agent` implementations
-
-This module provides an `http.Agent` implementation which automatically uses
-proxy servers based off of the various proxy-related environment variables
-(`HTTP_PROXY`, `HTTPS_PROXY` and `NO_PROXY` among others).
-
-Which proxy is used for each HTTP request is determined by the
-[`proxy-from-env`](https://www.npmjs.com/package/proxy-from-env) module, so
-check its documentation for instructions on configuring your environment variables.
-
-An LRU cache is used so that `http.Agent` instances are transparently re-used for
-subsequent HTTP requests to the same proxy server.
-
-The currently implemented protocol mappings are listed in the table below:
-
-
-| Protocol   | Proxy Agent for `http` requests | Proxy Agent for `https` requests | Example
-|:----------:|:-------------------------------:|:--------------------------------:|:--------:
-| `http`     | [http-proxy-agent][]            | [https-proxy-agent][]            | `http://proxy-server-over-tcp.com:3128`
-| `https`    | [http-proxy-agent][]            | [https-proxy-agent][]            | `https://proxy-server-over-tls.com:3129`
-| `socks(v5)`| [socks-proxy-agent][]           | [socks-proxy-agent][]            | `socks://username:password@some-socks-proxy.com:9050` (username & password are optional)
-| `socks5`   | [socks-proxy-agent][]           | [socks-proxy-agent][]            | `socks5://username:password@some-socks-proxy.com:9050` (username & password are optional)
-| `socks4`   | [socks-proxy-agent][]           | [socks-proxy-agent][]            | `socks4://some-socks-proxy.com:9050`
-| `pac-*`    | [pac-proxy-agent][]             | [pac-proxy-agent][]              | `pac+http://www.example.com/proxy.pac`
-
-Example
--------
-
-```ts
-import * as https from 'https';
-import { ProxyAgent } from 'proxy-agent';
-
-// The correct proxy `Agent` implementation to use will be determined
-// via the `http_proxy` / `https_proxy` / `no_proxy` / etc. env vars
-const agent = new ProxyAgent();
-
-// The rest works just like any other normal HTTP request
-https.get('https://jsonip.com', { agent }, (res) => {
-  console.log(res.statusCode, res.headers);
-  res.pipe(process.stdout);
-});
-```
-
-
-API
----
-
-### new ProxyAgent(options?: ProxyAgentOptions)
-
-Creates an `http.Agent` instance which relies on the various proxy-related
-environment variables. An LRU cache is used, so the same `http.Agent` instance
-will be returned if identical args are passed in.
-
-
-License
--------
-
-(The MIT License)
-
-Copyright (c) 2013 Nathan Rajlich &lt;nathan@tootallnate.net&gt;
-
-Permission is hereby granted, free of charge, to any person obtaining
-a copy of this software and associated documentation files (the
-'Software'), to deal in the Software without restriction, including
-without limitation the rights to use, copy, modify, merge, publish,
-distribute, sublicense, and/or sell copies of the Software, and to
-permit persons to whom the Software is furnished to do so, subject to
-the following conditions:
-
-The above copyright notice and this permission notice shall be
-included in all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND,
-EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
-IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
-CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
-TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
-SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-
-
-[http-proxy-agent]: ../http-proxy-agent
-[https-proxy-agent]: ../https-proxy-agent
-[socks-proxy-agent]: ../socks-proxy-agent
-[pac-proxy-agent]: ../pac-proxy-agent
 
 ------------------------------------------------------------
 
@@ -3230,90 +2537,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 MIT
 
-socks-proxy-agent@8.0.2 (https://github.com/TooTallNate/proxy-agents)
-
-socks-proxy-agent
-================
-### A SOCKS proxy `http.Agent` implementation for HTTP and HTTPS
-
-This module provides an `http.Agent` implementation that connects to a
-specified SOCKS proxy server, and can be used with the built-in `http`
-and `https` modules.
-
-It can also be used in conjunction with the `ws` module to establish a WebSocket
-connection over a SOCKS proxy. See the "Examples" section below.
-
-Examples
---------
-
-```ts
-import https from 'https';
-import { SocksProxyAgent } from 'socks-proxy-agent';
-
-const agent = new SocksProxyAgent(
-	'socks://your-name%40gmail.com:abcdef12345124@br41.nordvpn.com'
-);
-
-https.get('https://ipinfo.io', { agent }, (res) => {
-	console.log(res.headers);
-	res.pipe(process.stdout);
-});
-```
-
-#### `ws` WebSocket connection example
-
-```ts
-import WebSocket from 'ws';
-import { SocksProxyAgent } from 'socks-proxy-agent';
-
-const agent = new SocksProxyAgent(
-	'socks://your-name%40gmail.com:abcdef12345124@br41.nordvpn.com'
-);
-
-var socket = new WebSocket('ws://echo.websocket.events', { agent });
-
-socket.on('open', function () {
-	console.log('"open" event!');
-	socket.send('hello world');
-});
-
-socket.on('message', function (data, flags) {
-	console.log('"message" event! %j %j', data, flags);
-	socket.close();
-});
-```
-
-License
--------
-
-(The MIT License)
-
-Copyright (c) 2013 Nathan Rajlich &lt;nathan@tootallnate.net&gt;
-
-Permission is hereby granted, free of charge, to any person obtaining
-a copy of this software and associated documentation files (the
-'Software'), to deal in the Software without restriction, including
-without limitation the rights to use, copy, modify, merge, publish,
-distribute, sublicense, and/or sell copies of the Software, and to
-permit persons to whom the Software is furnished to do so, subject to
-the following conditions:
-
-The above copyright notice and this permission notice shall be
-included in all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND,
-EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
-IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
-CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
-TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
-SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-
-------------------------------------------------------------
-
-MIT
-
-socks@2.7.1 (https://github.com/JoshGlazebrook/socks)
+socks@2.8.3 (https://github.com/JoshGlazebrook/socks)
 
 The MIT License (MIT)
 
@@ -3362,6 +2586,51 @@ limitations under the License.
 
 MIT
 
+to-fast-properties@2.0.0 (https://github.com/sindresorhus/to-fast-properties)
+
+MIT License
+
+Copyright (c) 2014 Petka Antonov
+              2015 Sindre Sorhus
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+------------------------------------------------------------
+
+MIT
+
+typed-query-selector@2.12.0 (https://github.com/g-plane/typed-query-selector)
+
+MIT License
+
+Copyright (c) 2020-present Pig Fang
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+------------------------------------------------------------
+
+MIT
+
 unbzip2-stream@1.4.3 (https://github.com/regular/unbzip2-stream)
 
 Copyright (c) 2017 by Jan Boelsche (jan@lagomorph.de)
@@ -3393,7 +2662,20 @@ THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 MIT
 
-universalify@0.1.2 (https://github.com/RyanZim/universalify)
+undici-types@5.26.5 (https://github.com/nodejs/undici)
+
+# undici-types
+
+This package is a dual-publish of the [undici](https://www.npmjs.com/package/undici) library types. The `undici` package **still contains types**. This package is for users who _only_ need undici types (such as for `@types/node`). It is published alongside every release of `undici`, so you can always use the same version.
+
+- [GitHub nodejs/undici](https://github.com/nodejs/undici)
+- [Undici Documentation](https://undici.nodejs.org/#/)
+
+------------------------------------------------------------
+
+MIT
+
+universalify@2.0.1 (https://github.com/RyanZim/universalify)
 
 (The MIT License)
 
@@ -3420,7 +2702,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 MIT
 
-urlpattern-polyfill@9.0.0 (https://github.com/kenchris/urlpattern-polyfill)
+urlpattern-polyfill@10.0.0 (https://github.com/kenchris/urlpattern-polyfill)
 
 Copyright 2020 Intel Corporation
 
@@ -3445,7 +2727,7 @@ THE SOFTWARE.
 
 MIT
 
-vue-demi@0.14.6 (https://github.com/antfu/vue-demi)
+vue-demi@0.14.10 (https://github.com/antfu/vue-demi)
 
 MIT License
 
@@ -3473,7 +2755,7 @@ SOFTWARE.
 
 MIT
 
-vuetify@3.4.10 (https://github.com/vuetifyjs/vuetify)
+vuetify@3.7.2 (https://github.com/vuetifyjs/vuetify)
 
 The MIT License (MIT)
 
@@ -3501,35 +2783,7 @@ THE SOFTWARE.
 
 MIT
 
-whatwg-url@5.0.0 (https://github.com/jsdom/whatwg-url)
-
-The MIT License (MIT)
-
-Copyright (c) 2015–2016 Sebastian Mayr
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in
-all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-THE SOFTWARE.
-
-------------------------------------------------------------
-
-MIT
-
-ws@8.16.0 (https://github.com/websockets/ws)
+ws@8.18.0 (https://github.com/websockets/ws)
 
 Copyright (c) 2011 Einar Otto Stangvik <einaros@gmail.com>
 Copyright (c) 2013 Arnout Kazemier and contributors
@@ -3589,6 +2843,34 @@ yauzl@2.10.0 (https://github.com/thejoshwolfe/yauzl)
 The MIT License (MIT)
 
 Copyright (c) 2014 Josh Wolfe
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+------------------------------------------------------------
+
+MIT
+
+zod@3.23.8 (https://github.com/colinhacks/zod)
+
+MIT License
+
+Copyright (c) 2020 Colin McDonnell
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
