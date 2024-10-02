@@ -8,8 +8,8 @@ export default {
 		testpage: "テストページ",
 	},
 	top: {
-		task_accepting: "受付中の課題",
-		task_expired: "期限切れの課題",
+		task_accepting: "受付中のタスク",
+		task_expired: "期限切れのタスク",
 		unread_contact: "未読の連絡",
 		subject: "課題",
 		item: "項目",

@@ -95,11 +95,21 @@ import { tableClickHandler } from "../components/script/tableclickhandler"
 
 import { ExpireStatus } from "../../main/data/expirestatus"
 import { SubmitStatus } from "../../main/data/submitstatus"
+import { SubjectType } from "../../main/data/subjecttype"
 import { Pages } from "../../main/data/pages"
 
 const { t } = useI18n()
 const router = useRouter()
 const apiStore = useApiStore()
+
+const subjectTypeLangs = {
+	[SubjectType.Exam]: t("subject_type.exam"),
+	[SubjectType.Report]: t("subject_type.report"),
+	[SubjectType.SubjectSurvey]: t("subject_type.subject_survey"),
+	[SubjectType.SchoolSurvey]: t("subject_type.school_survey"),
+	[SubjectType.SubjectReview]: t("subject_type.subject_review"),
+	[SubjectType.Other]: t("subject_type.other")
+}
 
 const lastUpdate = computed(() => {
 	if (apiStore.subjectListDate === null) {
@@ -116,7 +126,8 @@ const taskAccTable = computed(() => {
 		row.status === ExpireStatus.Accepting
 	).map((row) => {
 		row.page = Pages.Subject
-		row.name = t("top.subject")
+		row.name = subjectTypeLangs[row.type]
+
 		return row
 	})
 
@@ -149,7 +160,7 @@ const taskExpTable = computed(() => {
 		row.status === ExpireStatus.Closed && row.submit === null
 	).map((row) => {
 		row.page = Pages.Subject
-		row.name = t("top.subject")
+		row.name = subjectTypeLangs[row.type]
 		return row
 	})
 
