@@ -31,7 +31,7 @@ export const useApiStore = defineStore('api', {
 		subjectDetails: {} as { [id: number]: ExpireDetailData },
 		contactDetails: {} as { [id: number]: ContactDetailData },
 		showingDetailPage: null as Pages | null,
-		showingDetailId: null as number | null,
+		showingDetailId: null as number | null
 	}),
 	actions: {
 		async init() {
@@ -103,16 +103,16 @@ export const useApiStore = defineStore('api', {
 			}
 			this.updateStatus()
 		},
-		async updateDetails(page: Pages, id: number) {
+		async updateDetails(page: Pages, id: number, title: string) {
 			switch(page) {
 				case Pages.Subject:
-					if(this.subjectDetails[id] !== undefined && this.subjectDetails[id] !== null) {
+					if(this.subjectDetails[id] !== undefined && this.subjectDetails[id] !== null && this.subjectDetails[id].title === title) {
 						return this.subjectDetails[id]
 					}
 					break
 
 				case Pages.Contact:
-					if(this.contactDetails[id] !== undefined && this.contactDetails[id] !== null) {
+					if(this.contactDetails[id] !== undefined && this.contactDetails[id] !== null && this.contactDetails[id].title === title) {
 						return this.contactDetails[id]
 					}
 					break
@@ -125,6 +125,7 @@ export const useApiStore = defineStore('api', {
 				case Pages.Subject:
 					this.subjectDetails[id] = data
 					break
+
 				case Pages.Contact:
 					this.contactDetails[id] = data
 					break

@@ -66,16 +66,17 @@ export class Scraper {
 				await loginBtn.evaluate(btn => btn.click())
 
 				// トップページかログイン画面か送信属性選択画面が読みこまれるのを待つ
-				const elmHandle = await this.page.waitForSelector([
+				let elmHandle = await this.page.waitForSelector([
 					Selectors.topPage,
 					Selectors.msLoginPage,
 					Selectors.msOtpPage,
-					Selectors.suSSOPage
+					Selectors.suSSOPage,
+					Selectors.dialogCloseBtn
 				].join(','))
 
 				// 上で検出した要素のIDを取得
 				elmId = await elmHandle.evaluate(elm => elm.id)
-				const elmClass = await elmHandle.evaluate(elm => elm.className)
+				let elmClass = await elmHandle.evaluate(elm => elm.className)
 
 				// IDかclass名で処理を分岐
 				if(elmId == Selectors.msLoginPageId || elmId == Selectors.msOtpPageId) {
@@ -89,6 +90,23 @@ export class Scraper {
 				if(elmClass == Selectors.suSSOPageClass) {
 					// 送信属性の選択画面の同意ボタンが出たならそれを押す
 					await elmHandle.click()
+
+					elmHandle = await this.page.waitForSelector([
+						Selectors.topPage,
+						Selectors.dialogCloseBtn
+					].join(','))
+
+					elmClass = await elmHandle.evaluate(elm => elm.className)
+					elmId = await elmHandle.evaluate(elm => elm.id)
+				}
+
+				if(elmClass.indexOf(Selectors.dialogCloseClass) !== -1) {
+					// なにかダイアログが出ているので閉じてトップページへ
+					// 閉じるときにページを離れますか？が出た場合自動で閉じるようにしておく
+					this.page.on('dialog', dialog => dialog.type() === 'beforeunload' && dialog.accept())
+
+					await elmHandle.evaluate(elm => elm.click())
+					await (await this.page.waitForSelector(Selectors.logoBtn)).evaluate(elm => elm.click())
 				}
 
 				elmId = await (
@@ -162,12 +180,14 @@ export class Scraper {
 						Selectors.dataTable,
 						{timeout: timeout}
 					)
-				).evaluate(elm =>
+				).evaluate((elm, statusNotice) =>
 					// テーブルをHTMLTableElementからarrayに変換
 					Array.from(elm.rows).map((row: any) => {// anyにしないと動かない
 						const newCells: TableData = {
 							id: -1,
-							cells: []
+							cells: [],
+							read: false,
+							important: false
 						}
 
 						// データのインデックスを取得
@@ -182,8 +202,19 @@ export class Scraper {
 							newCells.cells.push(cell.innerText)
 						}
 
+						// 重要かどうか
+						if(row.querySelector(statusNotice) !== null) {
+							newCells.important = true
+						}
+
+						// 未読かどうか
+						if(row.getAttribute('style') === null) {
+							newCells.read = true
+						}
+
 						return newCells
-					})
+					}),
+					Selectors.statusNotice
 				))
 
 				// 次ページへ
@@ -243,20 +274,20 @@ export class Scraper {
 			}
 
 			if(isFound) {
-				// データをObjectに変換
-				const data = await (
-					await this.page.waitForSelector(Selectors.lineTable)
-				).evaluate(elm => Object.fromEntries(
-					Array.from(elm.rows).map((row: any) =>
-						Array.from(row.cells).map((cell: any) =>
-							cell.innerText
-						)
-					)
-				))
-
 				switch(page) {
 					case Pages.Contact:
 						{
+							// データをObjectに変換
+							const data = await (
+								await this.page.waitForSelector(Selectors.lineTable)
+							).evaluate(elm => Object.fromEntries(
+								Array.from(elm.rows).map((row: any) =>
+									Array.from(row.cells).map((cell: any) =>
+										cell.innerText
+									)
+								)
+							))
+
 							// タイトル, 種別, カテゴリを取得
 							const title = await(
 								await this.page.waitForSelector(Selectors.contactTitle)

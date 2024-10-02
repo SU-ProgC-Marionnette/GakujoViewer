@@ -90,8 +90,8 @@ export class DataUtil {
 					DataUtil.toContactType(datum.cells[1]),
 					date,
 					targetDate,
-					false,
-					false
+					datum.read,
+					datum.important
 				)
 			)
 		}

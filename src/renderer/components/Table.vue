@@ -4,7 +4,7 @@
 			<span
 				class="text-none text-decoration-underline"
 				style="cursor: pointer"
-				@click="(e) => props.onclick(item.id)"
+				@click="(e) => props.onclick(item.id, item.title)"
 			>
 				{{ item.title }}
 			</span>

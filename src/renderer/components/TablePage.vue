@@ -23,7 +23,7 @@ const router = useRouter()
 
 const props = defineProps(["latestUpdate", "headers", "table", "page"])
 
-function clickHandler(id) {
-	tableClickHandler(props.page, id, apiStore, router)
+function clickHandler(id, title) {
+	tableClickHandler(props.page, id, title, apiStore, router)
 }
 </script>

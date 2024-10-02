@@ -3,7 +3,7 @@
 		:latestUpdate="latestUpdate"
 		:headers="headers"
 		:table="table"
-		:page="Pages.Report"
+		:page="Pages.Subject"
 	/>
 </template>
 

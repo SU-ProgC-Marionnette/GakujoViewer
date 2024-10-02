@@ -2,7 +2,7 @@ export class StringUtil {
 	static toDateArray(str: string): Date[] | null{
 		//strに含まれる日付を全部抽出して配列に返す
 		const dateArray = str.match(/\d{4}\/\d{1,2}\/\d{1,2} \d{2}:\d{2}/g);
-		
+
 		if(dateArray != null){
 			const resultArray: Date[] = new Array(dateArray.length);
 			for(let i:number=0;i<dateArray.length;i++){
@@ -18,6 +18,19 @@ export class StringUtil {
 			}
 			return resultArray;
 		}
+
+		// else
+		const altDateArray = str.match(/(\d{4})年(\d{1,2})月(\d{1,2})日 (\d{2})時(\d{2})分/)
+		if(altDateArray != null) {
+			return [new Date(
+				parseInt(altDateArray[1]),
+				parseInt(altDateArray[2]) - 1,
+				parseInt(altDateArray[3]),
+				parseInt(altDateArray[4]),
+				parseInt(altDateArray[5])
+			)]
+		}
+
 		return null;
 	}
 

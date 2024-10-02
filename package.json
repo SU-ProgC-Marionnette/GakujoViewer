@@ -1,6 +1,6 @@
 {
 	"name": "GakujoViewer",
-	"version": "0.2.0alpha",
+	"version": "0.2.0",
 	"description": "",
 	"main": "build/main/main.js",
 	"scripts": {
