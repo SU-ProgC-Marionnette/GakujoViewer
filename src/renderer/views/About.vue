@@ -31,6 +31,13 @@ code {
 				</div>
 			</v-col>
 		</v-row>
+		<v-row>
+			<v-col>
+				<v-btn @click="clearCache">
+					{{ $t("about.clear_cache") }}
+				</v-btn>
+			</v-col>
+		</v-row>
 		<v-expansion-panels>
 			<v-expansion-panel
 				:title="$t('about.oss_license')"
@@ -74,8 +81,24 @@ code {
 </template>
 
 <script setup>
+import { useApiStore } from "../stores/apistore"
+
 import licenses from "../assets/license.json"
 import icon from "../../main/static/resources/icon.png"
 
 const version = APP_VERSION
+
+const apiStore = useApiStore()
+
+function clearCache() {
+	apiStore.subjectList = []
+	apiStore.contactList = []
+	apiStore.subjectListDate = null
+	apiStore.contactListDate = null
+	apiStore.subjectDetails = {}
+	apiStore.contactDetails = {}
+	apiStore.showingDetailPage = null
+	apiStore.showingDetailId = null
+	apiStore.showingDetailTitle = null
+}
 </script>

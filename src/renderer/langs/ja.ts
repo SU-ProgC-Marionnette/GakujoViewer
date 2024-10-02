@@ -15,6 +15,7 @@ export default {
 		item: "項目",
 	},
 	about: {
+		clear_cache: "キャッシュクリア",
 		oss_license: "オープンソースライセンス",
 		license_title: "{name} ({num} softwares)",
 		this_app_contains: "このアプリケーションには次のソフトウェアが含まれています:",
