@@ -32,7 +32,7 @@
 		"electron-log": "^5.0.3",
 		"pinia": "^2.1.7",
 		"pinia-plugin-persistedstate": "^3.2.1",
-		"puppeteer": "^21.7.0",
+		"puppeteer": "^23.4.1",
 		"vue": "^3.4.14",
 		"vue-i18n": "^9.9.0",
 		"vue-router": "^4.2.5",
