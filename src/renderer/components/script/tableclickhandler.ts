@@ -1,9 +1,9 @@
 import { Pages } from "../../../main/data/pages"
 
-export function tableClickHandler(page: Pages, id: number, apiStore, router): void {
+export function tableClickHandler(page: Pages, id: number, title: string, apiStore, router): void {
 	if (apiStore.status === apiStore.statuses.CONNECTED) {
-		apiStore.updateDetails(page, id)
-		apiStore.changeDetail(page, id)
+		apiStore.updateDetails(page, id, title)
+		apiStore.changeDetail(page, id, title)
 		router.push("/detail")
 	} else {
 		let found = false
@@ -22,7 +22,7 @@ export function tableClickHandler(page: Pages, id: number, apiStore, router): vo
 		}
 
 		if (found) {
-			apiStore.changeDetail(page, id)
+			apiStore.changeDetail(page, id, title)
 			router.push("/detail")
 		}
 	}

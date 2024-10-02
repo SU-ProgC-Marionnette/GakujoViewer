@@ -33,6 +33,7 @@ const router = useRouter()
 const data = computed(() => {
 	const page = apiStore.showingDetailPage
 	const id = apiStore.showingDetailId
+	const title = apiStore.showingDetailTitle
 
 	if (page === null || id === null) {
 		return false
@@ -41,7 +42,7 @@ const data = computed(() => {
 	switch (page) {
 		case Pages.Subject: {
 			let detail = null
-			if (apiStore.subjectDetails[id] !== undefined && apoiStore.subjectDetails[id] !== null) {
+			if (apiStore.subjectDetails[id] !== undefined && apiStore.subjectDetails[id] !== null) {
 				detail = apiStore.subjectDetails[id]
 			}
 
@@ -49,11 +50,13 @@ const data = computed(() => {
 				return false
 			}
 
+			console.log(detail)
+
 			return [
 				{ label: t("detail.title"), value: detail.title },
 				{
 					label: t("detail.submit_period"),
-					value: `${detail.date.toLocaleString()} - ${detail.expireDate.toLocaleString()}`,
+					value: `${detail.expireDate.toLocaleString()}`,
 				},
 				{
 					label: t("detail.review_method"),

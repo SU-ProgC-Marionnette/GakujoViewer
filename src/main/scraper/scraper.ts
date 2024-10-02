@@ -274,20 +274,20 @@ export class Scraper {
 			}
 
 			if(isFound) {
-				// データをObjectに変換
-				const data = await (
-					await this.page.waitForSelector(Selectors.lineTable)
-				).evaluate(elm => Object.fromEntries(
-					Array.from(elm.rows).map((row: any) =>
-						Array.from(row.cells).map((cell: any) =>
-							cell.innerText
-						)
-					)
-				))
-
 				switch(page) {
 					case Pages.Contact:
 						{
+							// データをObjectに変換
+							const data = await (
+								await this.page.waitForSelector(Selectors.lineTable)
+							).evaluate(elm => Object.fromEntries(
+								Array.from(elm.rows).map((row: any) =>
+									Array.from(row.cells).map((cell: any) =>
+										cell.innerText
+									)
+								)
+							))
+
 							// タイトル, 種別, カテゴリを取得
 							const title = await(
 								await this.page.waitForSelector(Selectors.contactTitle)
